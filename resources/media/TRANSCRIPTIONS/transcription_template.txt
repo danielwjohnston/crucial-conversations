@@ -1,0 +1,88 @@
+# Video/Audio Transcription Template
+
+## File Information
+- **Source:** [VIDEO/AUDIO_FILE_NAME]
+- **Date Recorded:** [DATE]
+- **Duration:** [DURATION]
+- **Speaker(s):** [SPEAKER_NAMES]
+- **Chapter:** [CHAPTER_NUMBER]
+- **Topic:** [TOPIC]
+
+## Transcription
+
+[00:00:00] **[SPEAKER]:** [Opening remarks]
+
+[00:00:15] **[SPEAKER]:** [Content continues...]
+
+[00:00:30] **[SPEAKER]:** [Key point or transition]
+
+[00:00:45] **[SPEAKER]:** [Important concept]
+
+[00:01:00] **[SPEAKER]:** [Example or illustration]
+
+[00:01:15] **[SPEAKER]:** [Summary or conclusion]
+
+## Key Points Summary
+
+1. [KEY_POINT_1]
+2. [KEY_POINT_2]
+3. [KEY_POINT_3]
+4. [KEY_POINT_4]
+5. [KEY_POINT_5]
+
+## Action Items
+
+- [ ] [ACTION_ITEM_1]
+- [ ] [ACTION_ITEM_2]
+- [ ] [ACTION_ITEM_3]
+
+## Discussion Questions
+
+1. [QUESTION_1]
+2. [QUESTION_2]
+3. [QUESTION_3]
+
+## Integration Notes
+
+- **Chapter Relevance:** [HOW_THIS_CONTENT_RELATES_TO_CHAPTER]
+- **Integration Points:** [WHERE_THIS_CAN_BE_USED_IN_TRAINING]
+- **Additional Resources:** [RELATED_MATERIALS]
+- **Follow-up Activities:** [SUGGESTED_EXERCISES]
+
+## Quality Notes
+
+- **Audio Quality:** [RATING_1-5]
+- **Clarity:** [RATING_1-5]
+- **Completeness:** [RATING_1-5]
+- **Relevance:** [RATING_1-5]
+- **Overall Quality:** [RATING_1-5]
+
+## Processing Information
+
+- **Transcribed By:** [TRANSCRIBER_NAME]
+- **Date Transcribed:** [DATE]
+- **Reviewed By:** [REVIEWER_NAME]
+- **Date Reviewed:** [DATE]
+- **Status:** [STATUS - DRAFT/REVIEWED/APPROVED]
+
+---
+
+## Usage Guidelines
+
+This transcription can be used for:
+- Training material development
+- Reference documentation
+- Accessibility compliance
+- Content analysis
+- Translation preparation
+
+## Copyright Information
+
+- **Copyright:** [COPYRIGHT_HOLDER]
+- **Usage Rights:** [USAGE_PERMISSIONS]
+- **Attribution Required:** [YES/NO]
+- **Commercial Use:** [YES/NO]
+
+---
+
+*End of Transcription*

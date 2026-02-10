@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Retake Your Pen</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: var(--text-dark);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .timer-progress {
+                transition: none !important;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            z-index: 9999;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+            top: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        *:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 2px;
+        }
+
+        .nav-btn:focus-visible,
+        .auto-advance-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-accessible) 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-light);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--brand-red);
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--brand-red);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--brand-red);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .nav-btn {
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--brand-red-accessible);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .auto-advance-toggle {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .auto-advance-toggle.active {
+            background: white;
+            color: var(--brand-red);
+        }
+
+        .timer-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--brand-red);
+            transition: width linear;
+            z-index: 1001;
+        }
+
+        .highlight {
+            background: var(--bg-light);
+            padding: 20px;
+            border-left: 4px solid var(--brand-red);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .exercise {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .key-point {
+            font-weight: bold;
+            color: var(--brand-red);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.3em;
+            color: var(--text-light);
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+        }
+
+        .feedback {
+            background: #f8d7da;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #dc3545;
+        }
+
+        .skill {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2.2em; }
+            h3 { font-size: 1.5em; }
+            p, li { font-size: 1.1em; }
+            
+            .header, .footer {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="timer-progress" id="timerProgress"></div>
+    
+    <header class="header">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        </div>
+        <div>Leadership Bookclub - Retake Your Pen</div>
+        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
+            Auto-advance: OFF
+        </button>
+    </header>
+
+    <div class="persistent-header" id="persistentHeader">
+        <h2>Retake Your Pen</h2>
+    </div>
+
+    <main class="slideshow-container" id="main-content">
+        <div class="slide active">
+            <h1>Retake Your Pen</h1>
+            <h2>How to Be Resilient When Hearing Tough Feedback</h2>
+            <div class="quote">
+                "No one can hurt me without my permission."<br>
+                — Mahatma Gandhi
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Wedding Toast Disaster</h2>
+            <p>One of the authors once gave a lengthy wedding toast to a happy couple. Every time he referred to the bride, he erroneously used the name of the groom's ex-wife.</p>
+            <p>He was feeling flush with confidence in his artful delivery, until after his fourth use of the wrong name...</p>
+            <div class="feedback">
+                <h3>The Moment:</h3>
+                <p>At that point, a cringing guest couldn't take it anymore and yelled out, "It's Bonnie, not Becky!"</p>
+                <p>Oops.</p>
+            </div>
+            <div class="exercise">
+                <h3>Think About It:</h3>
+                <p>How would you feel if someone gave you feedback like that in front of everyone?</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Getting Feedback vs. Being Feed-Smacked</h2>
+            <p>Critical feedback can be hard to hear. Some of the most crucial conversations of all are when others tell you unpleasant things about yourself.</p>
+            <div class="highlight">
+                <h3>But there's a difference between getting feedback and being feed-smacked.</h3>
+            </div>
+            <p>Most of us have been feed-smacked at some point in our lives. In the middle of a meeting, a colleague says something that feels like a personal attack. Or during a performance review, your boss delivers criticism that feels unfair and unhelpful.</p>
+            <div class="warning">
+                <h3>The Question:</h3>
+                <p>How do you receive feedback without becoming defensive or shutting down?</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Challenge: Receiving Feedback</h2>
+            <p>When we receive feedback, our natural tendency is to:</p>
+            <div class="feedback">
+                <h3>Common Reactions:</h3>
+                <ul>
+                    <li><strong>Defend ourselves</strong> - "That's not fair!"</li>
+                    <li><strong>Explain our intentions</strong> - "I didn't mean to..."</li>
+                    <li><strong>Blame others</strong> - "But you were the one who..."</li>
+                    <li><strong>Shut down</strong> - Silence, withdrawal</li>
+                    <li><strong>Attack back</strong> - "Well, you're not perfect either!"</li>
+                </ul>
+            </div>
+            <div class="warning">
+                <h3>The Problem:</h3>
+                <p>These reactions prevent us from learning and growing. They damage relationships and shut down dialogue.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>How to Retake Your Pen</h2>
+            <p>The key to receiving feedback well is to "retake your pen" - to take control of your emotional response and choose how to react.</p>
+            <div class="skill">
+                <h3>Step 1: Breathe</h3>
+                <p>Take a moment to calm your initial emotional reaction.</p>
+            </div>
+            <div class="skill">
+                <h3>Step 2: Look for the Truth</h3>
+                <p>Ask yourself: Is there any truth in this feedback? Even 1%?</p>
+            </div>
+            <div class="skill">
+                <h3>Step 3: Clarify Understanding</h3>
+                <p>Ask questions to make sure you understand what they mean.</p>
+            </div>
+            <div class="skill">
+                <h3>Step 4: Thank Them</h3>
+                <p>Appreciate their courage and willingness to share feedback.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Look for the Truth</h2>
+            <p>Even poorly delivered feedback often contains valuable information.</p>
+            <div class="skill">
+                <h3>Ask Yourself:</h3>
+                <ul>
+                    <li>What part of this feedback is accurate?</li>
+                    <li>What could I learn from this?</li>
+                    <li>How might this feedback help me grow?</li>
+                    <li>What patterns am I not seeing?</li>
+                    <li>What would someone I respect say about this?</li>
+                </ul>
+            </div>
+            <div class="highlight">
+                <h3>The Goal:</h3>
+                <p>Find the kernel of truth, even if it's wrapped in poor delivery.</p>
+                <p class="key-point">Focus on the message, not the delivery.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Clarify and Thank</h2>
+            <div class="skill">
+                <h3>Clarifying Questions:</h3>
+                <ul>
+                    <li>"Can you give me an example of when I did that?"</li>
+                    <li>"What would you suggest I do differently?"</li>
+                    <li>"How does this affect you/the team/the project?"</li>
+                    <li>"What's the impact when I do X?"</li>
+                </ul>
+            </div>
+            <div class="skill">
+                <h3>Gratitude Statements:</h3>
+                <ul>
+                    <li>"Thank you for sharing that with me."</li>
+                    <li>"I appreciate you being honest with me."</li>
+                    <li>"That's helpful feedback, thank you."</li>
+                    <li>"I know that wasn't easy to say, so thank you."</li>
+                </ul>
+            </div>
+            <div class="exercise">
+                <h3>Remember:</h3>
+                <p>People who give feedback are taking a risk. Acknowledge their courage.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Power of Receiving Feedback Well</h2>
+            <p>When you learn to receive feedback effectively, you gain:</p>
+            <ul>
+                <li><strong>Continuous learning</strong> - You can grow from any feedback</li>
+                <li><strong>Stronger relationships</strong> - People trust you with honest input</li>
+                <li><strong>Personal growth</strong> - You see your blind spots</li>
+                <li><strong>Professional development</strong> - You improve your performance</li>
+                <li><strong>Emotional resilience</strong> - You're not easily offended</li>
+            </ul>
+            <div class="highlight">
+                <h3>The Ultimate Benefit:</h3>
+                <p>You become the kind of person others want to help succeed.</p>
+                <p class="key-point">When people know you can handle feedback, they'll give you more of it.</p>
+            </div>
+            <div class="exercise">
+                <h3>Your Challenge:</h3>
+                <p>What feedback have you received recently that you initially rejected? How could you "retake your pen" and learn from it?</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous slide">Previous</button>
+        <button class="nav-btn" id="nextBtn" aria-label="Next slide">Next</button>
+    </footer>
+
+    <script>
+        let currentSlideIndex = 0;
+        let autoAdvanceInterval = null;
+        let autoAdvanceEnabled = false;
+        const autoAdvanceDelay = 10000; // 10 seconds
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            
+            document.getElementById('totalSlides').textContent = totalSlides;
+            
+            // Show first slide
+            showSlide(0);
+            
+            // Set up event listeners
+            document.getElementById('prevBtn').addEventListener('click', previousSlide);
+            document.getElementById('nextBtn').addEventListener('click', nextSlide);
+            document.getElementById('autoAdvanceToggle').addEventListener('click', toggleAutoAdvance);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // Update button states
+            updateButtonStates();
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const persistentHeader = document.getElementById('persistentHeader');
+            
+            if (index >= 0 && index < slides.length) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // Show current slide
+                slides[index].classList.add('active');
+                currentSlideIndex = index;
+                
+                // Update counter
+                document.getElementById('currentSlide').textContent = index + 1;
+                
+                // Show/hide persistent header
+                if (index > 0) {
+                    persistentHeader.classList.add('show');
+                } else {
+                    persistentHeader.classList.remove('show');
+                }
+                
+                // Reset and restart timer if auto-advance is enabled
+                if (autoAdvanceEnabled) {
+                    resetAutoAdvanceTimer();
+                }
+                
+                updateButtonStates();
+            }
+        }
+
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            if (currentSlideIndex < slides.length - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            const toggle = document.getElementById('autoAdvanceToggle');
+            
+            if (autoAdvanceEnabled) {
+                toggle.classList.add('active');
+                toggle.textContent = 'Auto-advance: ON';
+                startAutoAdvance();
+            } else {
+                toggle.classList.remove('active');
+                toggle.textContent = 'Auto-advance: OFF';
+                stopAutoAdvance();
+            }
+        }
+
+        function startAutoAdvance() {
+            const slides = document.querySelectorAll('.slide');
+            if (currentSlideIndex < slides.length - 1) {
+                autoAdvanceInterval = setTimeout(() => {
+                    nextSlide();
+                    if (autoAdvanceEnabled && currentSlideIndex < slides.length - 1) {
+                        startAutoAdvance();
+                    }
+                }, autoAdvanceDelay);
+                startTimerProgress();
+            }
+        }
+
+        function stopAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearTimeout(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+            stopTimerProgress();
+        }
+
+        function resetAutoAdvanceTimer() {
+            stopAutoAdvance();
+            if (autoAdvanceEnabled) {
+                startAutoAdvance();
+            }
+        }
+
+        function startTimerProgress() {
+            const progressBar = document.getElementById('timerProgress');
+            progressBar.style.transition = `width ${autoAdvanceDelay}ms linear`;
+            progressBar.style.width = '100%';
+        }
+
+        function stopTimerProgress() {
+            const progressBar = document.getElementById('timerProgress');
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+        }
+
+        function handleKeyPress(event) {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousSlide();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    event.preventDefault();
+                    nextSlide();
+                    break;
+                case 'Home':
+                    showSlide(0);
+                    break;
+                case 'End':
+                    const slides = document.querySelectorAll('.slide');
+                    showSlide(slides.length - 1);
+                    break;
+            }
+        }
+
+        function updateButtonStates() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentSlideIndex === 0;
+            nextBtn.disabled = currentSlideIndex === slides.length - 1;
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initSlideshow);
+    </script>
+</body>
+</html>

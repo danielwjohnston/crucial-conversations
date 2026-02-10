@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Putting It All Together</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: var(--text-dark);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .timer-progress {
+                transition: none !important;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            z-index: 9999;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+            top: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        *:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 2px;
+        }
+
+        .nav-btn:focus-visible,
+        .auto-advance-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-accessible) 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-light);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--brand-red);
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--brand-red);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--brand-red);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .nav-btn {
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: var(--brand-red-accessible);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .auto-advance-toggle {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .auto-advance-toggle.active {
+            background: white;
+            color: var(--brand-red);
+        }
+
+        .timer-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--brand-red);
+            transition: width linear;
+            z-index: 1001;
+        }
+
+        .highlight {
+            background: var(--bg-light);
+            padding: 20px;
+            border-left: 4px solid var(--brand-red);
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .exercise {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .key-point {
+            font-weight: bold;
+            color: var(--brand-red);
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1.3em;
+            color: var(--text-light);
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .summary {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        .tool {
+            background: #e2e3e5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2.2em; }
+            h3 { font-size: 1.5em; }
+            p, li { font-size: 1.1em; }
+            
+            .header, .footer {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="timer-progress" id="timerProgress"></div>
+    
+    <header class="header">
+        <div class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        </div>
+        <div>Leadership Bookclub - Putting It All Together</div>
+        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
+            Auto-advance: OFF
+        </button>
+    </header>
+
+    <div class="persistent-header" id="persistentHeader">
+        <h2>Putting It All Together</h2>
+    </div>
+
+    <main class="slideshow-container" id="main-content">
+        <div class="slide active">
+            <h1>Putting It All Together</h1>
+            <h2>Tools for Preparing and Learning</h2>
+            <div class="quote">
+                "I can win any argument. People know this and steer clear of me at parties, often as a sign of their great respect, they don't even invite me."<br>
+                — Dave Barry
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Anaconda Problem</h2>
+            <p>If you've listened to this point in a short period of time, you probably feel like an anaconda that just swallowed a warthog. It's a lot to digest.</p>
+            <p>You may well be wondering at this point how you can possibly keep all of these ideas straight, especially during something as unpredictable and fast-moving as a crucial conversation.</p>
+            <div class="summary">
+                <h3>This chapter will help with the daunting task of making dialogue tools and skills memorable and usable.</h3>
+            </div>
+            <p class="key-point">We'll simplify things by sharing what we've heard from people who have changed their lives by using these skills.</p>
+        </div>
+
+        <div class="slide">
+            <h2>The Seven Skills - A Quick Review</h2>
+            <div class="tool">
+                <h3>Before You Open Your Mouth:</h3>
+                <ol>
+                    <li><strong>Start with Heart</strong> - Focus on what you really want</li>
+                    <li><strong>Choose Your Topic</strong> - Pick the right conversation</li>
+                </ol>
+            </div>
+            <div class="tool">
+                <h3>How to Open Your Mouth:</h3>
+                <ol start="3">
+                    <li><strong>Learn to Look</strong> - Spot safety problems</li>
+                    <li><strong>Make It Safe</strong> - Create conditions for dialogue</li>
+                    <li><strong>Master My Stories</strong> - Control your emotions</li>
+                    <li><strong>STATE My Path</strong> - Share your views persuasively</li>
+                    <li><strong>Explore Others' Paths</strong> - Listen to understand</li>
+                </ol>
+            </div>
+            <div class="tool">
+                <h3>How to Finish:</h3>
+                <ol start="8">
+                    <li><strong>Move to Action</strong> - Turn dialogue into results</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Mental Checklist</h2>
+            <p>When you find yourself in a crucial conversation, run through this quick mental checklist:</p>
+            <div class="summary">
+                <h3>1. What do I really want?</h3>
+                <p>For myself? For others? For the relationship?</p>
+            </div>
+            <div class="summary">
+                <h3>2. Is this the right topic?</h3>
+                <p>Content, Pattern, or Relationship issue?</p>
+            </div>
+            <div class="summary">
+                <h3>3. Is it safe?</h3>
+                <p>Look for warning signs. Create safety if needed.</p>
+            </div>
+            <div class="summary">
+                <h3>4. Am I in control?</h3>
+                <p>Master your stories before you speak.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Preparation Tool</h2>
+            <p>For high-stakes conversations, use this preparation framework:</p>
+            <div class="tool">
+                <h3>Step 1: Heart Check</h3>
+                <p>What are my real goals? What do I want for others? For the relationship?</p>
+            </div>
+            <div class="tool">
+                <h3>Step 2: Topic Selection</h3>
+                <p>What's the real issue? CPR: Content, Pattern, Relationship?</p>
+            </div>
+            <div class="tool">
+                <h3>Step 3: Safety Assessment</h3>
+                <p>What might make them defensive? How can I create psychological safety?</p>
+            </div>
+            <div class="tool">
+                <h3>Step 4: Story Work</h3>
+                <p>What stories am I telling? What are the facts? What are my assumptions?</p>
+            </div>
+            <div class="tool">
+                <h3>Step 5: Action Plan</h3>
+                <p>How will we decide? Who will do what by when? How will we follow up?</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Real Stories, Real Results</h2>
+            <p>Here's what we've heard from people who've mastered these skills:</p>
+            <div class="highlight">
+                <h3>The Executive Who Saved Her Career</h3>
+                <p>"I was about to be fired for poor relationships. After learning these skills, I turned around my entire team and got promoted."</p>
+            </div>
+            <div class="highlight">
+                <h3>The Parent Who Reconnected</h3>
+                <p>"My teenage daughter and I hadn't spoken in months. One crucial conversation brought us back together."</p>
+            </div>
+            <div class="highlight">
+                <h3>The Nurse Who Saved a Life</h3>
+                <p>"I finally spoke up to a defensive doctor about a patient's symptoms. It changed the treatment and saved their life."</p>
+            </div>
+            <p class="key-point">These skills work in real life, in real situations, with real people.</p>
+        </div>
+
+        <div class="slide">
+            <h2>The Journey to Mastery</h2>
+            <p>Learning crucial conversations is a journey, not a destination. Here's how to continue growing:</p>
+            <div class="summary">
+                <h3>Practice Daily</h3>
+                <p>Start with low-stakes conversations. Build muscle memory.</p>
+            </div>
+            <div class="summary">
+                <h3>Find a Partner</h3>
+                <p>Practice with someone who can give you honest feedback.</p>
+            </div>
+            <div class="summary">
+                <h3>Review and Reflect</h3>
+                <p>After each crucial conversation, ask: What went well? What could I improve?</p>
+            </div>
+            <div class="summary">
+                <h3>Teach Others</h3>
+                <p>The best way to learn is to teach. Share these skills with your team.</p>
+            </div>
+            <div class="exercise">
+                <h3>Your Commitment:</h3>
+                <p>What one crucial conversation will you have this week? How will you prepare? What will you do differently?</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>The Final Word</h2>
+            <p>Crucial conversations are the moments that define our lives, our relationships, and our organizations.</p>
+            <p>When you master these skills, you gain the power to:</p>
+            <ul>
+                <li>Strengthen relationships rather than damage them</li>
+                <li>Solve problems rather than create them</li>
+                <li>Build trust rather than erode it</li>
+                <li>Achieve results rather than excuses</li>
+                <li>Lead with influence rather than force</li>
+            </ul>
+            <div class="summary">
+                <h3>The choice is yours:</h3>
+                <p>Will you continue to avoid crucial conversations, or will you step up and master them?</p>
+                <p class="key-point">Your future self is counting on you to make the right choice.</p>
+            </div>
+            <p><strong>Thank you for joining us on this journey. Now go change your world, one conversation at a time.</strong></p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous slide">Previous</button>
+        <button class="nav-btn" id="nextBtn" aria-label="Next slide">Next</button>
+    </footer>
+
+    <script>
+        let currentSlideIndex = 0;
+        let autoAdvanceInterval = null;
+        let autoAdvanceEnabled = false;
+        const autoAdvanceDelay = 10000; // 10 seconds
+
+        function initSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            
+            document.getElementById('totalSlides').textContent = totalSlides;
+            
+            // Show first slide
+            showSlide(0);
+            
+            // Set up event listeners
+            document.getElementById('prevBtn').addEventListener('click', previousSlide);
+            document.getElementById('nextBtn').addEventListener('click', nextSlide);
+            document.getElementById('autoAdvanceToggle').addEventListener('click', toggleAutoAdvance);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', handleKeyPress);
+            
+            // Update button states
+            updateButtonStates();
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const persistentHeader = document.getElementById('persistentHeader');
+            
+            if (index >= 0 && index < slides.length) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                // Show current slide
+                slides[index].classList.add('active');
+                currentSlideIndex = index;
+                
+                // Update counter
+                document.getElementById('currentSlide').textContent = index + 1;
+                
+                // Show/hide persistent header
+                if (index > 0) {
+                    persistentHeader.classList.add('show');
+                } else {
+                    persistentHeader.classList.remove('show');
+                }
+                
+                // Reset and restart timer if auto-advance is enabled
+                if (autoAdvanceEnabled) {
+                    resetAutoAdvanceTimer();
+                }
+                
+                updateButtonStates();
+            }
+        }
+
+        function nextSlide() {
+            const slides = document.querySelectorAll('.slide');
+            if (currentSlideIndex < slides.length - 1) {
+                showSlide(currentSlideIndex + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+            }
+        }
+
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            const toggle = document.getElementById('autoAdvanceToggle');
+            
+            if (autoAdvanceEnabled) {
+                toggle.classList.add('active');
+                toggle.textContent = 'Auto-advance: ON';
+                startAutoAdvance();
+            } else {
+                toggle.classList.remove('active');
+                toggle.textContent = 'Auto-advance: OFF';
+                stopAutoAdvance();
+            }
+        }
+
+        function startAutoAdvance() {
+            const slides = document.querySelectorAll('.slide');
+            if (currentSlideIndex < slides.length - 1) {
+                autoAdvanceInterval = setTimeout(() => {
+                    nextSlide();
+                    if (autoAdvanceEnabled && currentSlideIndex < slides.length - 1) {
+                        startAutoAdvance();
+                    }
+                }, autoAdvanceDelay);
+                startTimerProgress();
+            }
+        }
+
+        function stopAutoAdvance() {
+            if (autoAdvanceInterval) {
+                clearTimeout(autoAdvanceInterval);
+                autoAdvanceInterval = null;
+            }
+            stopTimerProgress();
+        }
+
+        function resetAutoAdvanceTimer() {
+            stopAutoAdvance();
+            if (autoAdvanceEnabled) {
+                startAutoAdvance();
+            }
+        }
+
+        function startTimerProgress() {
+            const progressBar = document.getElementById('timerProgress');
+            progressBar.style.transition = `width ${autoAdvanceDelay}ms linear`;
+            progressBar.style.width = '100%';
+        }
+
+        function stopTimerProgress() {
+            const progressBar = document.getElementById('timerProgress');
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+        }
+
+        function handleKeyPress(event) {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    previousSlide();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    event.preventDefault();
+                    nextSlide();
+                    break;
+                case 'Home':
+                    showSlide(0);
+                    break;
+                case 'End':
+                    const slides = document.querySelectorAll('.slide');
+                    showSlide(slides.length - 1);
+                    break;
+            }
+        }
+
+        function updateButtonStates() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentSlideIndex === 0;
+            nextBtn.disabled = currentSlideIndex === slides.length - 1;
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initSlideshow);
+    </script>
+</body>
+</html>

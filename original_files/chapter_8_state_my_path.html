@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - STATE My Path</title>
+    <style>
+        :root {
+            --brand-red-accessible: #c20510;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .timer-progress {
+                transition: none !important;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            z-index: 9999;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+            top: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        *:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 2px;
+        }
+
+        .nav-btn:focus-visible,
+        .auto-advance-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .persistent-header h3 {
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .persistent-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        .persistent-header p {
+            color: #f0f0f0;
+            font-size: 0.85em;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .slide.with-header {
+            margin-top: 180px;
+        }
+
+        .slide.with-header .slide-content {
+            margin-top: 0;
+        }
+
+        .discussion-slide.with-header .slide-content {
+            padding-top: 40px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .slide.active {
+                animation: fadeIn 0.5s;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #e30613;
+            color: white;
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid #e30613;
+        }
+
+        .story-box {
+            background: #f8f8f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .story-box h3 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #e30613;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #c20510;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+
+        .timer-container {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid #e30613;
+        }
+
+        .timer-container.active {
+            display: flex;
+        }
+
+        .circular-timer {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            transform: rotate(-90deg);
+            display: block;
+        }
+
+        .timer-background {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 4;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: #e30613;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .auto-advance-toggle {
+            background: #333;
+            color: white;
+            border: 2px solid #e30613;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .auto-advance-toggle:hover {
+            background: #444;
+        }
+
+        .auto-advance-toggle.active {
+            background: #e30613;
+            border-color: #e30613;
+        }
+
+        .discussion-slide {
+            background: #f0f8ff;
+            border: 3px solid #4a90e2;
+        }
+
+        .discussion-slide h2 {
+            color: #4a90e2;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #4a90e2;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+            text-align: left;
+        }
+
+        .column-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+        }
+
+        .title-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 140px);
+            margin: 0;
+        }
+
+        .title-slide h1, .title-slide h2 {
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            color: #f0f0f0;
+        }
+
+        .brand-logo {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slide-content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+
+        .number-box {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            display: inline-block;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .step-box {
+            background: white;
+            border: 3px solid #e30613;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .step-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .bridge-box {
+            background: linear-gradient(135deg, #e30613 10%, #c20510 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .bridge-box h3,
+        .bridge-box p,
+        .bridge-box li,
+        .bridge-box ul {
+            color: white;
+        }
+
+        .goldilocks-box {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #e30613;
+        }
+
+        .goldilocks-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .example-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .understated {
+            background: #ffe6e6;
+            border: 3px solid #ff6b6b;
+        }
+
+        .overstated {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+        }
+
+        .just-right {
+            background: #d4edda;
+            border: 3px solid #28a745;
+        }
+
+        .example-card h4 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .example-card p {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .two-column,
+            .three-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="header" role="banner">
+        CrucialLearning.com | 800.449.5989
+    </header>
+
+    <footer class="footer" role="contentinfo">
+        ©2024 Leadership Development. All rights reserved.
+    </footer>
+
+    <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">30</span>
+        </div>
+
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Persistent Chapter Header (shows on slides 2+) -->
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>STATE MY PATH</h2>
+            <p>Chapter 8 • How to speak persuasively, not abrasively</p>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>DISCUSSION QUESTIONS</h1>
+            <p class="subtitle">Chapter 8</p>
+            <h2>STATE My Path</h2>
+            <p class="subtitle">How to speak persuasively, not abrasively</p>
+            <p class="subtitle">"Outspoken by whom?" — Dorothy Parker</p>
+        </div>
+
+        <!-- Slide 2: The Challenge -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Challenge</h2>
+                <div class="highlight">
+                    <p>When both stakes and emotions rise, we often express our views in ways that <strong>provoke defensiveness and resistance</strong>.</p>
+                    <p style="margin-top: 15px;">The more important the discussion, the less likely we are to be on our best behavior.</p>
+                </div>
+                <h3>Most People Alternate Between:</h3>
+                <ul>
+                    <li><strong>Bluntly dumping</strong> their ideas ("You're not going to like this, but...")</li>
+                    <li><strong>Saying nothing at all</strong> out of fear</li>
+                    <li><strong>Sugar-coating</strong> their message so much it loses impact</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Goal -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Goal</h2>
+                <div class="highlight">
+                    <h3>Be Totally Candid AND Completely Respectful</h3>
+                    <p>The best at dialogue speak their minds <strong>completely</strong> and do it in a way that makes it safe for others to hear and respond.</p>
+                    <p style="margin-top: 15px;">They are both <strong>100% candid</strong> and <strong>100% respectful</strong>.</p>
+                </div>
+                <p style="margin-top: 25px;">How? By finding a way to maintain safety without compromising candor.</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Three Essential Ingredients -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Three Essential Ingredients</h2>
+                <h3>To speak honestly when honesty could offend:</h3>
+                <div class="step-box">
+                    <div class="number-box">1</div>
+                    <h4>Confidence</h4>
+                    <p>Your opinions deserve to be in the pool of meaning</p>
+                    <p>You can speak openly without brutalizing others</p>
+                </div>
+                <div class="step-box">
+                    <div class="number-box">2</div>
+                    <h4>Humility</h4>
+                    <p>You don't have a monopoly on the truth</p>
+                    <p>You're willing to change your mind with new information</p>
+                </div>
+                <div class="step-box">
+                    <div class="number-box">3</div>
+                    <h4>Skill</h4>
+                    <p>You've found a path for both candor and safety</p>
+                    <p>Your skill comes from practice and repetition</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Follow the Path to Action -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Follow the Path to Action</h2>
+                <h3>Share your view from beginning to end</h3>
+                <div class="two-column">
+                    <div class="step-box">
+                        <h4>1. See and Hear</h4>
+                        <p>Concrete experiences</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>2. Tell a Story</h4>
+                        <p>The meaning you make</p>
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="step-box">
+                        <h4>3. Feel</h4>
+                        <p>Emotions generated</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>4. Act</h4>
+                        <p>Behaviors that follow</p>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <p><strong>Start with facts, not your story!</strong></p>
+                    <p>When drunk on adrenaline, we start with stories and emotions—the most controversial and insulting way to begin.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: The STATE Model -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The STATE Model</h2>
+                <div class="bridge-box">
+                    <div class="step-box" style="border-color: white;">
+                        <h4 style="color: white;"><strong>S</strong> – Share your facts</h4>
+                        <p>Start with least controversial, most persuasive elements</p>
+                    </div>
+                    <div class="step-box" style="border-color: white;">
+                        <h4 style="color: white;"><strong>T</strong> – Tell your story</h4>
+                        <p>Explain what you're beginning to conclude</p>
+                    </div>
+                    <div class="step-box" style="border-color: white;">
+                        <h4 style="color: white;"><strong>A</strong> – Ask for others' paths</h4>
+                        <p>Encourage others to share their facts and stories</p>
+                    </div>
+                    <div class="step-box" style="border-color: white;">
+                        <h4 style="color: white;"><strong>T</strong> – Talk tentatively</h4>
+                        <p>State your story as a story, not as fact</p>
+                    </div>
+                    <div class="step-box" style="border-color: white;">
+                        <h4 style="color: white;"><strong>E</strong> – Encourage testing</h4>
+                        <p>Make it safe to express differing views</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Share Your Facts -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Share Your Facts</h2>
+                <h3>Start at the source—with concrete evidence</h3>
+                <div class="highlight">
+                    <h3>Why Start with Facts?</h3>
+                    <ul>
+                        <li><strong>Facts are least controversial</strong> – Less likely to spark offense</li>
+                        <li><strong>Facts provide context</strong> – They lay groundwork for conclusions</li>
+                        <li><strong>Facts demonstrate reasonableness</strong> – Show how a rational person reached your conclusion</li>
+                    </ul>
+                </div>
+                <div class="story-box">
+                    <h3>Example Comparison</h3>
+                    <p><strong>Fact:</strong> "You arrived at 8:20 AM"</p>
+                    <p><strong>Story:</strong> "You were 20 minutes late"</p>
+                    <p><strong>Judgment:</strong> "You can't be trusted"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Why Facts Matter -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Why Facts Matter</h2>
+                <ul>
+                    <li><strong>Facts form the foundation</strong> for the conversation</li>
+                    <li><strong>Facts are less offensive</strong> than jumping to conclusions</li>
+                    <li>Facts help others see <strong>how a reasonable person</strong> reached your conclusion</li>
+                    <li>Facts prevent others from telling <strong>villain stories</strong> about you</li>
+                </ul>
+                <div class="highlight">
+                    <p>When you start with shocking conclusions, people are left to make up reasons you're saying them—they're likely to believe you're either stupid or evil.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Tell Your Story -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tell Your Story</h2>
+                <h3>After sharing facts, explain your conclusion</h3>
+                <div class="highlight">
+                    <h3>Key Points:</h3>
+                    <ul>
+                        <li><strong>Don't start</strong> with your story—earn the right by sharing facts first</li>
+                        <li><strong>Tell it tentatively</strong> as a possible story, not proven fact</li>
+                        <li><strong>Don't pile on</strong>—avoid unloading your entire arsenal of judgments</li>
+                        <li><strong>Watch for safety</strong> problems as you share</li>
+                    </ul>
+                </div>
+                <div class="story-box">
+                    <h3>Example</h3>
+                    <p><em>"Since I started working here, you've asked to meet with me twice a day—more than anyone else. You've also asked me to pass all my ideas by you first. I'm not sure you're intending this, but I'm beginning to wonder if you don't trust me. Is that what's going on?"</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Why Share Your Story? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Why Share Your Story?</h2>
+                <ul>
+                    <li><strong>Facts alone</strong> are rarely worth mentioning</li>
+                    <li>It's <strong>facts + conclusion</strong> that call for discussion</li>
+                    <li>If you only mention facts, others may <strong>not understand the severity</strong></li>
+                    <li>Sharing your story shows you've thought through the implications</li>
+                </ul>
+                <div class="highlight">
+                    <h3>It Takes Confidence</h3>
+                    <p>Sharing potentially inflammatory conclusions (like "I think you're a thief") requires confidence.</p>
+                    <p style="margin-top: 15px;">But if you've done your homework by thinking through the facts, you'll realize you're drawing a <strong>reasonable, rational, and decent conclusion</strong>—one that deserves to be heard.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Ask for Others' Paths -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Ask for Others' Paths</h2>
+                <h3>Blend confidence with humility</h3>
+                <p>Once you've shared your facts and stories clearly, <strong>invite others to do the same</strong>.</p>
+                <div class="story-box">
+                    <h3>Open-Ended Questions</h3>
+                    <p>"How do you see it?"</p>
+                    <p>"What's your perspective?"</p>
+                    <p>"Can you help me understand?"</p>
+                </div>
+                <div class="highlight">
+                    <p><strong>Be willing to abandon or reshape your story</strong> as more information pours into the pool of meaning.</p>
+                    <p style="margin-top: 15px;">Your goal is to achieve valued results, not to gratify your ego by being right.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Talk Tentatively -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Talk Tentatively</h2>
+                <h3>Tell your story as a story, not as fact</h3>
+                <div class="highlight">
+                    <p><strong>Tentative language:</strong></p>
+                    <ul>
+                        <li>"I'm beginning to conclude that..."</li>
+                        <li>"I'm tempted to think..."</li>
+                        <li>"In my opinion..."</li>
+                        <li>"Perhaps you were unaware..."</li>
+                        <li>"I don't think it will work..."</li>
+                    </ul>
+                </div>
+                <p>Strike a blend between confidence and humility—share in a way that expresses appropriate confidence while demonstrating willingness to be challenged.</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Tentative vs. Wimpy -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tentative vs. Wimpy</h2>
+                <div class="two-column">
+                    <div class="highlight">
+                        <h3>❌ Wimpy</h3>
+                        <p>"I know this is probably not true..."</p>
+                        <p>"Call me crazy, but..."</p>
+                        <p>"I'm probably wrong..."</p>
+                        <p style="margin-top: 15px;"><em>Acts clinically uncertain</em></p>
+                    </div>
+                    <div class="highlight">
+                        <h3>✓ Tentative</h3>
+                        <p>"I'm beginning to wonder if..."</p>
+                        <p>"It appears to me that..."</p>
+                        <p>"I'm starting to feel like..."</p>
+                        <p style="margin-top: 15px;"><em>Shares opinion, not nervousness</em></p>
+                    </div>
+                </div>
+                <p style="margin-top: 25px;"><strong>Important:</strong> Being tentative is not being manipulative. You should speak tentatively because you're <em>actually</em> not certain your opinions represent absolute truth.</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: The Irony of Dialogue -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Irony of Dialogue</h2>
+                <div class="bridge-box">
+                    <h3>A Counterintuitive Truth</h3>
+                    <p>When there's a difference of opinions:</p>
+                    <p style="margin-top: 20px; font-size: 1.3em;"><strong>The more convinced and forceful you act,<br>the more resistant others become.</strong></p>
+                    <p style="margin-top: 20px;">Speaking in absolute and overstated terms does not increase your influence—it <strong>decreases</strong> it.</p>
+                    <p style="margin-top: 20px;">The converse is also true: <strong>The more tentatively you speak, the more open people become</strong> to your opinions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Encourage Testing -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Encourage Testing</h2>
+                <h3>Make it safe to disagree with you</h3>
+                <div class="highlight">
+                    <p><strong>The only limit to how strongly you can express your opinion is your willingness to be equally vigorous in encouraging others to challenge it.</strong></p>
+                </div>
+                <h3>Ways to Encourage Testing:</h3>
+                <ul>
+                    <li><strong>Invite opposing views:</strong> "Does anyone see it differently?"</li>
+                    <li><strong>Be genuine:</strong> Make sure your invitation doesn't sound like a threat</li>
+                    <li><strong>Play devil's advocate:</strong> "Maybe I'm wrong here. What if the opposite is true?"</li>
+                    <li><strong>Persist:</strong> Continue encouraging until your openness becomes obvious</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 16: Discussion Question 1 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Think of a recent conversation where you jumped straight to your conclusion instead of starting with facts. How might starting with facts have changed the outcome?
+                </div>
+                <p><em>Take 4-5 minutes to discuss with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 17: The Goldilocks Test -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Goldilocks Test</h2>
+                <h3>Finding the right balance</h3>
+                <p>Not too soft, not too harsh—just right!</p>
+                <div class="goldilocks-box">
+                    <h4>Example 1: Suspected Theft</h4>
+                    <div class="three-column">
+                        <div class="example-card understated">
+                            <h4>Understated</h4>
+                            <p>"This is probably stupid, but..."</p>
+                        </div>
+                        <div class="example-card overstated">
+                            <h4>Overstated</h4>
+                            <p>"How come you ripped us off?"</p>
+                        </div>
+                        <div class="example-card just-right">
+                            <h4>Just Right</h4>
+                            <p>"It appears you're taking this home for your own use. Is that right?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: More Goldilocks Examples -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>More Goldilocks Examples</h2>
+                <div class="goldilocks-box">
+                    <h4>Example 2: Drug Use Concern</h4>
+                    <div class="three-column">
+                        <div class="example-card understated">
+                            <h4>Understated</h4>
+                            <p>"I'm ashamed to even mention this..."</p>
+                        </div>
+                        <div class="example-card overstated">
+                            <h4>Overstated</h4>
+                            <p>"When did you start using hard drugs?"</p>
+                        </div>
+                        <div class="example-card just-right">
+                            <h4>Just Right</h4>
+                            <p>"This is leading me to conclude you're using drugs. Do you have another explanation?"</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="goldilocks-box">
+                    <h4>Example 3: Trust Issues</h4>
+                    <div class="three-column">
+                        <div class="example-card understated">
+                            <h4>Understated</h4>
+                            <p>"It's probably my fault, but..."</p>
+                        </div>
+                        <div class="example-card overstated">
+                            <h4>Overstated</h4>
+                            <p>"You wouldn't trust your own mother!"</p>
+                        </div>
+                        <div class="example-card just-right">
+                            <h4>Just Right</h4>
+                            <p>"I'm starting to feel like you don't trust me. Is that what's going on?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: The Missing Money Story -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Missing Money</h2>
+                <h3>Anita's story demonstrates STATE in action</h3>
+                <div class="story-box">
+                    <h3>The Situation</h3>
+                    <p>Anita planned to use $40 from her wallet to pay for groceries. The money was gone. Her 16-year-old daughter Amber had asked for money the night before, was told no, but went out anyway.</p>
+                </div>
+                <div class="highlight">
+                    <h3>The Wrong Way</h3>
+                    <p><em>"I can't believe you would steal from me! You want to spend the next decade in your room?"</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: The Missing Money - STATE Approach -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Missing Money - Done Right</h2>
+                <div class="story-box">
+                    <h3>Share Facts</h3>
+                    <p><em>"Amber, when I went to pay just now, I was planning to use $40 I thought I had in my wallet. But when I opened it, the money wasn't there. I saw it yesterday. Then I remembered you asking for money last night. I told you no, and you went out anyway."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>Tell Story (Tentatively)</h3>
+                    <p><em>"Obviously, one possibility is that you took the money."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>Ask for Others' Path</h3>
+                    <p><em>"Honestly, I don't know what to think. All I know is what I just shared, and I hope you can see how I might at least have the question. Did you?"</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: The Missing Money - Conclusion -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Missing Money - Result</h2>
+                <div class="story-box">
+                    <h3>Contrast (When Needed)</h3>
+                    <p><em>"Amber, honey. I know you're a good kid, and I don't want to jump to hurtful conclusions. I also know people make mistakes—I did when I was your age. I want us to be able to talk about things, even hard things, honestly and openly."</em></p>
+                </div>
+                <div class="highlight">
+                    <h3>The Outcome</h3>
+                    <p>Amber admitted: <em>"I was planning to put it back. I wasn't trying to steal it. I didn't think you'd notice before I got my paycheck today."</em></p>
+                    <p style="margin-top: 20px;">They talked about it. There were consequences. But Anita also learned about the pressures Amber was facing and gained influence in her daughter's life.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Discussion Question 2 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Which step of STATE feels most challenging for you—and why? Share an example of when you struggled with that step.
+                </div>
+                <p><em>Take 5-6 minutes to discuss</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 23: When Strong Belief Weakens Influence -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>When Strong Belief Weakens Influence</h2>
+                <h3>The problem with being absolutely certain</h3>
+                <div class="highlight">
+                    <p>When you're <strong>sure you're right</strong> and others are wrong:</p>
+                    <ul>
+                        <li>You feel no need to expand the pool of meaning</li>
+                        <li>You believe it's your <strong>duty to fight for truth</strong></li>
+                        <li>You start using <strong>debate tricks</strong> and dirty tactics</li>
+                        <li>The harder you try, the greater the resistance you create</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 25px;">We appeal to authority, attack the person, draw hasty generalizations, attack straw men—all while creating more and more resistance.</p>
+            </div>
+        </div>
+
+        <!-- Slide 24: The Solution -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Solution</h2>
+                <h3>When you're dying to convince others you're right</h3>
+                <div class="step-box">
+                    <h4>Step 1: Back off and think</h4>
+                    <p>What do I really want—for myself, others, and the relationship?</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 2: Ask yourself</h4>
+                    <p>What should I do right now to move toward what I really want?</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 3: Check your behavior</h4>
+                    <p>Are you leaning forward? Speaking louder? Trying to win?</p>
+                </div>
+                <div class="highlight">
+                    <p><strong>The harder it is for you to use STATE skills, the more likely your goal is to WIN rather than LEARN.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Practice This Week -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Practice This Week</h2>
+                <div class="highlight">
+                    <h3>In your next crucial conversation:</h3>
+                    <ul>
+                        <li><strong>Prepare your facts:</strong> Write down observable evidence before the conversation</li>
+                        <li><strong>Plan tentative language:</strong> Practice saying "I'm beginning to wonder..." instead of "You always..."</li>
+                        <li><strong>Ask genuine questions:</strong> Invite others' perspectives with curiosity</li>
+                        <li><strong>Watch for your own certainty:</strong> When you feel absolutely right, pause and use STATE</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: This Week's Challenge -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>This Week's Challenge</h2>
+                <div class="highlight">
+                    <h3>Plan and execute one STATE conversation</h3>
+                    <p><strong>Step 1:</strong> Identify a crucial conversation you need to have</p>
+                    <p><strong>Step 2:</strong> Write out your facts (only observable data)</p>
+                    <p><strong>Step 3:</strong> Write your story using tentative language</p>
+                    <p><strong>Step 4:</strong> Prepare open-ended questions to ask for their path</p>
+                    <p><strong>Step 5:</strong> Have the conversation and notice what happens</p>
+                </div>
+                <p style="margin-top: 25px;"><strong>Next Meeting:</strong> Share how using STATE changed the conversation</p>
+            </div>
+        </div>
+
+        <!-- Slide 27: Remember -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Remember</h2>
+                <div class="two-column">
+                    <div class="highlight">
+                        <h3>Facts First</h3>
+                        <p>Start with observable evidence, not your conclusions. Let others travel your path with you.</p>
+                    </div>
+                    <div class="highlight">
+                        <h3>Stay Curious</h3>
+                        <p>The goal is to achieve valued results, not to be right. Be willing to revise your story.</p>
+                    </div>
+                </div>
+                <div class="bridge-box" style="margin-top: 25px;">
+                    <h3>Confidence + Humility + Skill = Effective Dialogue</h3>
+                    <p>You can be both totally candid and completely respectful.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28: Common Mistakes to Avoid -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Common Mistakes to Avoid</h2>
+                <ul>
+                    <li><strong>Starting with your story</strong> instead of facts</li>
+                    <li><strong>Piling on</strong> by sharing every negative conclusion you've drawn</li>
+                    <li><strong>Being wimpy</strong> instead of appropriately tentative</li>
+                    <li><strong>Asking fake questions</strong> that are really accusations</li>
+                    <li><strong>Not really wanting</strong> to hear the other person's perspective</li>
+                    <li><strong>Defending your story</strong> instead of being open to changing it</li>
+                </ul>
+                <div class="highlight">
+                    <p><strong>Your willingness to use STATE skills is a reliable indicator of whether you want dialogue or just to win.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 29: The Complete Process -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Complete Process</h2>
+                <div class="step-box">
+                    <h4>Before: Start with Heart</h4>
+                    <p>What do I really want? How can dialogue help?</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 1: Share your facts</h4>
+                    <p>Start with concrete, observable evidence</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 2: Tell your story</h4>
+                    <p>Explain what you're beginning to conclude (tentatively)</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 3: Ask for others' paths</h4>
+                    <p>Encourage them to share their facts and stories</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 4: Talk tentatively</h4>
+                    <p>Present your story as a story, not as fact</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 5: Encourage testing</h4>
+                    <p>Make it genuinely safe to express differing views</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 30: Key Takeaway -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Takeaway</h2>
+                <div class="bridge-box">
+                    <h3>STATE Your Path</h3>
+                    <p style="font-size: 1.2em; margin: 25px 0;">When you have a tough message to share, or when you're so convinced of your rightness that you may push too hard:</p>
+                    <p style="font-size: 1.3em; margin: 25px 0;"><strong>Share your facts. Tell your story. Ask for others' paths. Talk tentatively. Encourage testing.</strong></p>
+                    <p style="margin-top: 25px;">Follow the Path to Action from beginning to end. Help others see how a reasonable, rational, and decent person could end up with the story you're carrying.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Navigation -->
+    <nav class="navigation" aria-label="Slide navigation controls">
+        <button class="auto-advance-toggle" 
+                id="autoAdvanceToggle" 
+                onclick="toggleAutoAdvance()" 
+                aria-pressed="false"
+                aria-label="Toggle automatic slide advancement">
+            <span aria-hidden="true">▶</span> Auto-Advance: OFF
+        </button>
+        <button class="nav-btn" onclick="previousSlide()" aria-label="Go to previous slide">
+            Previous
+        </button>
+        
+        <div class="timer-container" id="timerContainer">
+            <div class="circular-timer">
+                <svg width="60" height="60" aria-hidden="true">
+                    <circle class="timer-background" cx="30" cy="30" r="26"></circle>
+                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26" 
+                            stroke-dasharray="163.36" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timerText">0:00</div>
+            </div>
+        </div>
+        
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Go to next slide">
+            Next
+        </button>
+    </nav>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        
+        let autoAdvanceEnabled = false;
+        let countdownInterval = null;
+        let remainingTime = 0;
+        let totalDuration = 0;
+        let lastAnnouncement = -1;
+        
+        const timerContainer = document.getElementById('timerContainer');
+        const timerCircle = document.getElementById('timerCircle');
+        const timerText = document.getElementById('timerText');
+        const timerAria = document.getElementById('timerAria');
+        const autoAdvanceToggle = document.getElementById('autoAdvanceToggle');
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        // Slide durations in seconds
+        const DURATIONS_SECONDS = [
+            30,  // 1 Title
+            60,  // 2 The Challenge
+            45,  // 3 The Goal
+            120, // 4 Three Ingredients
+            90,  // 5 Path to Action
+            60,  // 6 STATE Model
+            90,  // 7 Share Facts
+            60,  // 8 Why Facts Matter
+            90,  // 9 Tell Story
+            60,  // 10 Why Share Story
+            60,  // 11 Ask for Paths
+            60,  // 12 Talk Tentatively
+            60,  // 13 Tentative vs Wimpy
+            45,  // 14 Irony of Dialogue
+            90,  // 15 Encourage Testing
+            300, // 16 Discussion Q1 (5 min)
+            90,  // 17 Goldilocks Test
+            90,  // 18 More Goldilocks
+            60,  // 19 Missing Money Setup
+            90,  // 20 Missing Money STATE
+            60,  // 21 Missing Money Result
+            360, // 22 Discussion Q2 (6 min)
+            60,  // 23 Strong Belief
+            75,  // 24 The Solution
+            60,  // 25 Practice
+            60,  // 26 Challenge
+            45,  // 27 Remember
+            60,  // 28 Common Mistakes
+            90,  // 29 Complete Process
+            60   // 30 Key Takeaway
+        ];
+        
+        function getSlideDuration() {
+            return DURATIONS_SECONDS[currentSlide] ?? 60;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateTimerCircle() {
+            const circumference = 163.36;
+            const progress = remainingTime / totalDuration;
+            const offset = circumference * (1 - progress);
+            timerCircle.style.strokeDashoffset = offset;
+        }
+        
+        function announceTimer(msg) {
+            if (timerAria) {
+                timerAria.textContent = msg;
+            }
+        }
+        
+        function startTimer() {
+            if (!autoAdvanceEnabled) return;
+            
+            stopTimer();
+            
+            totalDuration = getSlideDuration();
+            remainingTime = totalDuration;
+            lastAnnouncement = -1;
+            
+            timerText.textContent = formatTime(remainingTime);
+            updateTimerCircle();
+            
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                timerText.textContent = formatTime(remainingTime);
+                updateTimerCircle();
+                
+                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
+                    if (remainingTime !== lastAnnouncement) {
+                        announceTimer(`${formatTime(remainingTime)} remaining`);
+                        lastAnnouncement = remainingTime;
+                    }
+                }
+                
+                if (remainingTime <= 0) {
+                    stopTimer();
+                    nextSlide();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            
+            if (autoAdvanceEnabled) {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">⏸</span> Auto-Advance: ON';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
+                autoAdvanceToggle.classList.add('active');
+                timerContainer.classList.add('active');
+                startTimer();
+            } else {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">▶</span> Auto-Advance: OFF';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
+                autoAdvanceToggle.classList.remove('active');
+                timerContainer.classList.remove('active');
+                stopTimer();
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('with-header');
+            slides[currentSlide].removeAttribute('tabindex');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            if (currentSlide === 0) {
+                chapterHeader.classList.remove('show');
+            } else {
+                chapterHeader.classList.add('show');
+                slides[currentSlide].classList.add('with-header');
+            }
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            
+            slides[currentSlide].setAttribute('tabindex', '-1');
+            slides[currentSlide].focus();
+            
+            if (autoAdvanceEnabled) {
+                startTimer();
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'a' || event.key === 'A') {
+                toggleAutoAdvance();
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

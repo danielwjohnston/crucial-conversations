@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Explore Others' Paths</title>
+    <style>
+        :root {
+            --brand-red-accessible: #c20510;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .timer-progress {
+                transition: none !important;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            z-index: 9999;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+            top: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        *:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 2px;
+        }
+
+        .nav-btn:focus-visible,
+        .auto-advance-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .persistent-header h3 {
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .persistent-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        .persistent-header p {
+            color: #f0f0f0;
+            font-size: 0.85em;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .slide.with-header {
+            margin-top: 180px;
+        }
+
+        .slide.with-header .slide-content {
+            margin-top: 0;
+        }
+
+        .discussion-slide.with-header .slide-content,
+        .dans-digest-slide.with-header .slide-content {
+            padding-top: 40px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .slide.active {
+                animation: fadeIn 0.5s;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #e30613;
+            color: white;
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid #e30613;
+        }
+
+        .story-box {
+            background: #f8f8f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .story-box h3 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #e30613;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #c20510;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+
+        .timer-container {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid #e30613;
+        }
+
+        .timer-container.active {
+            display: flex;
+        }
+
+        .circular-timer {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            transform: rotate(-90deg);
+            display: block;
+        }
+
+        .timer-background {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 4;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: #e30613;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .auto-advance-toggle {
+            background: #333;
+            color: white;
+            border: 2px solid #e30613;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .auto-advance-toggle:hover {
+            background: #444;
+        }
+
+        .auto-advance-toggle.active {
+            background: #e30613;
+            border-color: #e30613;
+        }
+
+        .discussion-slide {
+            background: #f0f8ff;
+            border: 3px solid #4a90e2;
+        }
+
+        .discussion-slide h2 {
+            color: #4a90e2;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #4a90e2;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+            text-align: left;
+        }
+
+        .column-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+        }
+
+        .title-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 140px);
+            margin: 0;
+        }
+
+        .title-slide h1, .title-slide h2 {
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            color: #f0f0f0;
+        }
+
+        .brand-logo {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slide-content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+
+        .number-box {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            display: inline-block;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .step-box {
+            background: white;
+            border: 3px solid #e30613;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .step-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .bridge-box {
+            background: linear-gradient(135deg, #e30613 10%, #c20510 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .bridge-box h3,
+        .bridge-box p,
+        .bridge-box li,
+        .bridge-box ul {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="header" role="banner">
+        CrucialLearning.com | 800.449.5989
+    </header>
+
+    <footer class="footer" role="contentinfo">
+        ©2024 Leadership Development. All rights reserved.
+    </footer>
+
+    <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">23</span>
+        </div>
+
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>EXPLORE OTHERS' PATHS</h2>
+            <p>Chapter 9 • How to listen when others blow up or clam up</p>
+        </div>
+
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>DISCUSSION QUESTIONS</h1>
+            <p class="subtitle">Chapter 9</p>
+            <h2>Explore Others' Paths</h2>
+            <p class="subtitle">How to listen when others blow up or clam up</p>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Scenario: Sanj's Dilemma</h2>
+                <div class="story-box">
+                    <h3>The Project Meeting</h3>
+                    <p>Sanj asks his team for risks on a critical project plan. He gets <strong>silence</strong>. Blank stares. No one speaks up.</p>
+                    <p style="margin-top:15px;">Later, he asks Tony privately. Tony explodes into <strong>violence</strong>:</p>
+                    <p><em>"Everyone knows this project is a train ride to disaster land... You're that guy from corporate on his white horse... I'm not taking the fall when this goes south!"</em></p>
+                </div>
+                <p>When others move to silence or violence, we often react by joining them.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Goal: Restore Safety</h2>
+                <div class="highlight">
+                    <h3>Explore Others' Paths</h3>
+                    <p>To get to the truth, you have to make it safe for others to share their truth.</p>
+                    <p style="margin-top: 15px;">When others blow up or clam up, the best way to bring them back to dialogue is to let them know it's okay to share their path to action—even their nasty stories and ugly feelings.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Start with Heart</h2>
+                <h3>Be Curious, Not Furious</h3>
+                <p>When people become furious, we need to become curious.</p>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>The Bad Question</h4>
+                        <p>When we feel attacked, we naturally ask: <em>"What is wrong with this person?"</em> (Assigning bad motives)</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>The Good Question</h4>
+                        <p>Distract your brain from judgment by asking: <strong>"Why would a reasonable, rational, and decent person say this?"</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Retracing the Path</h2>
+                <h3>We join the conversation at the end</h3>
+                 
+                <p>We usually see their <strong>Action</strong> (yelling or silence) first. We need to help them trace it back to the source.</p>
+                <div class="step-box">
+                    <p><strong>Action</strong> (Silence/Violence) &larr; <strong>Emotion</strong> &larr; <strong>Story</strong> &larr; <strong>Facts</strong></p>
+                </div>
+                <p>Every sentence has a history. If you don't get to the facts, you're just arguing about the emotions.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Power Listening Tools (AMPP)</h2>
+                <h3>Use these skills to encourage others to share their path</h3>
+                <div class="two-column">
+                    <div class="step-box">
+                        <div class="number-box">A</div>
+                        <h4>Ask</h4>
+                        <p>Start by simply expressing interest in their views.</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="number-box">M</div>
+                        <h4>Mirror</h4>
+                        <p>Respectfully acknowledge the emotions they appear to be feeling.</p>
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="step-box">
+                        <div class="number-box">P</div>
+                        <h4>Paraphrase</h4>
+                        <p>Restate what you've heard to show you understand.</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="number-box">P</div>
+                        <h4>Prime</h4>
+                        <p>Take your best guess at what they are thinking/feeling.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Ask</h2>
+                <h3>Get things rolling</h3>
+                <p>The easiest way to encourage someone to share is to invite them.</p>
+                <div class="story-box">
+                    <h3>Common Invitations</h3>
+                    <ul>
+                        <li>"What's going on?"</li>
+                        <li>"I'd really like to hear your opinion on this."</li>
+                        <li>"Please let me know if you see it differently."</li>
+                        <li>"Don't worry about hurting my feelings. I really want to hear your thoughts."</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Mirror</h2>
+                <h3>Confirm feelings when words and tone don't match</h3>
+                <p>Use this when their tone of voice or gestures hints at emotions that contradict their words.</p>
+                <div class="highlight">
+                    <p><strong>Person:</strong> "Don't worry, I'm fine." (Said while looking away and kicking the ground)</p>
+                    <p style="margin-top:15px;"><strong>You (Mirroring):</strong> "Really? From the way you're saying that, it doesn't sound like you are. You seem upset."</p>
+                </div>
+                <p><em>Important: Keep your tone calm. You are describing what you see, not mocking them.</em></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Paraphrase</h2>
+                <h3>Acknowledge the story</h3>
+                <p>When you get a clue about why they are feeling that way, restate it in your own words.</p>
+                <div class="story-box">
+                    <h3>Example</h3>
+                    <p><strong>You:</strong> "Let's see if I've got this right. You're worried because the previous project manager was fired, and you're wondering if the team might be at risk too. Is that it?"</p>
+                </div>
+                <p>Don't just parrot back. Put the message in abbreviated form to show you are trying to understand.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Prime</h2>
+                <h3>When you're getting nowhere</h3>
+                
+                <p>Sometimes people feel unsafe and won't talk even after you Ask, Mirror, and Paraphrase. You may need to "Prime the Pump."</p>
+                <div class="highlight">
+                    <h3>How to Prime</h3>
+                    <p>Take your best guess at what they might be thinking and say it out loud (tentatively) to make it safe to discuss.</p>
+                    <p style="margin-top:15px;"><em>"Are you thinking that the only reason we're doing this is to make money? That maybe we don't care about your personal lives?"</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Think of a recent situation where someone "clammed up" (Silence) or "blew up" (Violence). Which of the AMPP skills (Ask, Mirror, Paraphrase, Prime) would have been most useful to get them back to dialogue?
+                </div>
+                <p><em>Take 5 minutes to discuss.</em></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>What If You Disagree?</h2>
+                <h3>Remember your ABCs</h3>
+                <p>Once they have shared their path, it is your turn. But what if their facts are wrong? What if you completely disagree?</p>
+                <div class="bridge-box">
+                    <h3>Don't move to argument. Move to ABC.</h3>
+                    <ul>
+                        <li><strong>A</strong>gree</li>
+                        <li><strong>B</strong>uild</li>
+                        <li><strong>C</strong>ompare</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Agree</h2>
+                <h3>Don't turn an agreement into an argument</h3>
+                <div class="highlight">
+                    <p><strong>Violent Agreement:</strong> When two people actually agree on the main point but fight over the 5-10% of details they differ on.</p>
+                </div>
+                <p>If you agree with the other person's path, say so and move on. Start with an area of agreement.</p>
+                <p><em>"I agree with you that we need to be careful about the timeline..."</em></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Build</h2>
+                <h3>When they leave something out</h3>
+                <p>We are trained to look for errors (the "Teacher's Pet" syndrome). Instead of saying "Wrong!", try building.</p>
+                <div class="step-box">
+                    <h4>The Method</h4>
+                    <p>If you agree with what was said but the info is incomplete:</p>
+                    <p>1. Point out the agreement.</p>
+                    <p>2. Add elements that were left out.</p>
+                    <p><em>"Absolutely. In addition, I noticed that..."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Compare</h2>
+                <h3>When you differ significantly</h3>
+                <p>If you truly disagree, don't suggest they are "wrong." Suggest that you <strong>differ</strong>.</p>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>Don't Say</h4>
+                        <p>"No, that's wrong. Here is the truth..."</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Do Say</h4>
+                        <p>"I see things differently. Let me describe how I come at this..."</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px;">Use your STATE skills (Chapter 8) to share your path, then invite them to compare the two views.</p>
+            </div>
+        </div>
+
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Do you have a tendency to fall into "Violent Agreement"? Do you find yourself nitpicking minor differences (Build) or flat out saying "You're wrong" (Compare)?
+                </div>
+                <p><em>Discuss how using "Yes, and..." (Build) or "I see it differently" (Compare) changes the tone.</em></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Sanj's Turnaround</h2>
+                <h3>Putting it all together</h3>
+                <p>Sanj returns to the team meeting where Andrea is defensive about the deadline.</p>
+                <div class="story-box">
+                    <p><strong>Sanj (Mirror):</strong> "The way you say that... makes me wonder if you trust me."</p>
+                    <p><strong>Sanj (Prime):</strong> "I've heard references to 'Singapore Sanj'... Are you worried that because I'm from corporate, I'm just here to evaluate you?"</p>
+                    <p><strong>Andrea:</strong> "Well, Sanj... yes. If that is a concern, I want to address it..."</p>
+                </div>
+                <p>By exploring their path (even the nasty parts), Sanj got to the real issue: <strong>Trust and Job Security</strong>, not just timelines.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Success Story: Darrell Kay</h2>
+                <div class="highlight">
+                    <h3>From Deal-Breaker to Deal-Maker</h3>
+                    <p>Darrell was negotiating a venture capital deal that was falling apart. He was being bullied on the phone at 5 AM.</p>
+                    <p style="margin-top:15px;"><strong>The Change:</strong> "I had to fight my impulse to argue for my view and instead restore safety by simply exploring the other side's perspective."</p>
+                </div>
+                <p>Result: A successful 17-page agreement that saved the partnership.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Set Expectations Up Front</h2>
+                <h3>The "Uncle Carl" Strategy</h3>
+                <p>What if you explore their path, but they won't listen to yours?</p>
+                <div class="story-box">
+                    <p><strong>You:</strong> "I really want to understand your point of view. I'm committing to listening with an open mind. I wonder if, once I've done that, you'd be willing to listen to my point of view?"</p>
+                </div>
+                <p>Most people will feel an obligation to reciprocate if you listen sincerely first.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Practice This Week</h2>
+                <div class="highlight">
+                    <h3>Pick a conversation where someone closes up:</h3>
+                    <ul>
+                        <li><strong>Retrace their path:</strong> Go from their Action back to their Facts.</li>
+                        <li><strong>Use AMPP:</strong> Ask, Mirror, Paraphrase, or Prime to get them talking.</li>
+                        <li><strong>Use ABC:</strong> When it's your turn, Agree, Build, or Compare.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Summary</h2>
+                <div class="two-column">
+                    <div class="step-box">
+                        <h4>Explore Others' Paths</h4>
+                        <p>Ask</p>
+                        <p>Mirror</p>
+                        <p>Paraphrase</p>
+                        <p>Prime</p>
+                    </div>
+                    <div class="step-box">
+                        <h4>Share Your Path</h4>
+                        <p>Agree</p>
+                        <p>Build</p>
+                        <p>Compare</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px;"><strong>Remember:</strong> Understanding doesn't equate to agreement. You can listen to understand without agreeing with everything they say.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Takeaway</h2>
+                <div class="highlight">
+                    <h3>One of the best ways to persuade others is with your ears.</h3>
+                    <p style="margin-top: 20px;">When you listen to others' deep concerns and "prime" the pump for their real stories, you build the safety needed to solve the real problems.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide title-slide">
+             <div class="slide-content">
+                <h1>Next Chapter</h1>
+                <h2>Retake Your Pen</h2>
+                <p class="subtitle">How to be resilient when hearing tough feedback</p>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="navigation" aria-label="Slide navigation controls">
+        <button class="auto-advance-toggle" 
+                id="autoAdvanceToggle" 
+                onclick="toggleAutoAdvance()" 
+                aria-pressed="false"
+                aria-label="Toggle automatic slide advancement">
+            <span aria-hidden="true">▶</span> Auto-Advance: OFF
+        </button>
+        <button class="nav-btn" onclick="previousSlide()" aria-label="Go to previous slide">
+            Previous
+        </button>
+        
+        <div class="timer-container" id="timerContainer">
+            <div class="circular-timer">
+                <svg width="60" height="60" aria-hidden="true">
+                    <circle class="timer-background" cx="30" cy="30" r="26"></circle>
+                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26" 
+                            stroke-dasharray="163.36" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timerText">0:00</div>
+            </div>
+        </div>
+        
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Go to next slide">
+            Next
+        </button>
+    </nav>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        
+        let autoAdvanceEnabled = false;
+        let countdownInterval = null;
+        let remainingTime = 0;
+        let totalDuration = 0;
+        let lastAnnouncement = -1;
+        
+        const timerContainer = document.getElementById('timerContainer');
+        const timerCircle = document.getElementById('timerCircle');
+        const timerText = document.getElementById('timerText');
+        const timerAria = document.getElementById('timerAria');
+        const autoAdvanceToggle = document.getElementById('autoAdvanceToggle');
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        // Updated timings for Chapter 9 content
+        const DURATIONS_SECONDS = [
+            30,  // 1 Title
+            90,  // 2 Scenario (Sanj)
+            60,  // 3 Core Message
+            90,  // 4 Start with Heart
+            120, // 5 Retracing Path
+            60,  // 6 AMPP Overview
+            60,  // 7 Ask
+            90,  // 8 Mirror
+            90,  // 9 Paraphrase
+            120, // 10 Prime
+            300, // 11 Discussion Q1
+            60,  // 12 Intro ABC
+            90,  // 13 Agree
+            90,  // 14 Build
+            90,  // 15 Compare
+            300, // 16 Discussion Q2
+            120, // 17 Sanj Turnaround
+            90,  // 18 Success Story
+            90,  // 19 Expectations
+            60,  // 20 Practice
+            60,  // 21 Summary
+            45,  // 22 Takeaway
+            30   // 23 Closing
+        ];
+        
+        function getSlideDuration() {
+            return DURATIONS_SECONDS[currentSlide] ?? 60;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateTimerCircle() {
+            const circumference = 163.36;
+            const progress = remainingTime / totalDuration;
+            const offset = circumference * (1 - progress);
+            timerCircle.style.strokeDashoffset = offset;
+        }
+        
+        function announceTimer(msg) {
+            if (timerAria) {
+                timerAria.textContent = msg;
+            }
+        }
+        
+        function startTimer() {
+            if (!autoAdvanceEnabled) return;
+            
+            stopTimer();
+            
+            totalDuration = getSlideDuration();
+            remainingTime = totalDuration;
+            lastAnnouncement = -1;
+            
+            timerText.textContent = formatTime(remainingTime);
+            updateTimerCircle();
+            
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                timerText.textContent = formatTime(remainingTime);
+                updateTimerCircle();
+                
+                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
+                    if (remainingTime !== lastAnnouncement) {
+                        announceTimer(`${formatTime(remainingTime)} remaining`);
+                        lastAnnouncement = remainingTime;
+                    }
+                }
+                
+                if (remainingTime <= 0) {
+                    stopTimer();
+                    nextSlide();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            
+            if (autoAdvanceEnabled) {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">⏸</span> Auto-Advance: ON';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
+                autoAdvanceToggle.classList.add('active');
+                timerContainer.classList.add('active');
+                startTimer();
+            } else {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">▶</span> Auto-Advance: OFF';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
+                autoAdvanceToggle.classList.remove('active');
+                timerContainer.classList.remove('active');
+                stopTimer();
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('with-header');
+            slides[currentSlide].removeAttribute('tabindex');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            if (currentSlide === 0) {
+                chapterHeader.classList.remove('show');
+            } else {
+                chapterHeader.classList.add('show');
+                slides[currentSlide].classList.add('with-header');
+            }
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            
+            slides[currentSlide].setAttribute('tabindex', '-1');
+            slides[currentSlide].focus();
+            
+            if (autoAdvanceEnabled) {
+                startTimer();
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'a' || event.key === 'A') {
+                toggleAutoAdvance();
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Learn to Look</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .persistent-header h3 {
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .persistent-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        .persistent-header p {
+            color: #f0f0f0;
+            font-size: 0.85em;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .slide.with-header {
+            margin-top: 180px;
+        }
+
+        .slide.with-header .slide-content {
+            margin-top: 0;
+        }
+
+        .discussion-slide.with-header .slide-content,
+        .dans-digest-slide.with-header .slide-content {
+            padding-top: 40px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #e30613;
+            color: white;
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: #e30613;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: #e30613;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid #e30613;
+        }
+
+        .story-box {
+            background: #f8f8f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .story-box h3 {
+            color: #e30613;
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #e30613;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #c20510;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+
+        .timer-container {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid #e30613;
+        }
+
+        .timer-container.active {
+            display: flex;
+        }
+
+        .circular-timer {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            transform: rotate(-90deg);
+            display: block;
+        }
+
+        .timer-background {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 4;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: #e30613;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .auto-advance-toggle {
+            background: #333;
+            color: white;
+            border: 2px solid #e30613;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .auto-advance-toggle:hover {
+            background: #444;
+        }
+
+        .auto-advance-toggle.active {
+            background: #e30613;
+            border-color: #e30613;
+        }
+
+        .discussion-slide {
+            background: #f0f8ff;
+            border: 3px solid #4a90e2;
+        }
+
+        .discussion-slide h2 {
+            color: #4a90e2;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            color: #4a90e2;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+            text-align: left;
+        }
+
+        .column-box h4 {
+            color: #e30613;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+        }
+
+        .title-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 140px);
+            margin: 0;
+        }
+
+        .title-slide h1, .title-slide h2 {
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            color: #f0f0f0;
+        }
+
+        .brand-logo {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slide-content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        CrucialLearning.com | 800.449.5989
+    </div>
+
+    <div class="footer">
+        ©2024 Leadership Development. All rights reserved.
+    </div>
+
+    <div class="slideshow-container">
+        <div class="slide-counter">
+            <span id="slideNumber">1</span> / <span id="totalSlides">20</span>
+        </div>
+
+        <!-- Persistent Chapter Header (shows on slides 2+) -->
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>LEARN TO LOOK</h2>
+            <p>Chapter 6 • How to notice when safety is at risk</p>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>PART II</h1>
+            <p class="subtitle">How to Open Your Mouth</p>
+            <h2>Chapter 6: Learn to Look</h2>
+            <p class="subtitle">How to notice when safety is at risk</p>
+        </div>
+
+        <!-- Slide 2: Part II Overview -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Part II: How to Open Your Mouth</h2>
+                <p>You're mentally and emotionally prepared. Now it's time to speak.</p>
+                <ul>
+                    <li><strong>Chapter 6 – Learn to Look:</strong> Be prepared for surprises</li>
+                    <li><strong>Chapter 7 – Make It Safe:</strong> Reduce defensiveness</li>
+                    <li><strong>Chapter 8 – State My Path:</strong> Invite interest, not defensiveness</li>
+                    <li><strong>Chapter 9 – Explore Others' Paths:</strong> Discover others' meaning</li>
+                    <li><strong>Chapter 10 – Retake Your Pen:</strong> Turn crucial conversations into action</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: Chapter 6 Core Message -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Core Message</h2>
+                <div class="highlight">
+                    <h3>The sooner you notice you're not in dialogue, the easier it is to get back—and the lower the costs.</h3>
+                    <p>When stakes get high, we get caught up in <em>what</em> we're saying. We must also observe the <em>process</em>—how it's being said.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Learn to Dual Process -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Learn to Dual Process</h2>
+                <h3>The key to maintaining dialogue</h3>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>Content</h4>
+                        <p><strong>What</strong> is being said</p>
+                        <p>The topic, the facts, the argument</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Process</h4>
+                        <p><strong>How</strong> it's being said</p>
+                        <p>Safety, emotions, behaviors</p>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    <strong>Challenge:</strong> When stakes get high, key brain functions shut down. We become so consumed with our ideas that we lose track of what we're doing.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Watch for Three Conditions -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Watch for Three Conditions</h2>
+                <h3>What to look for during crucial conversations</h3>
+                <ul>
+                    <li><strong>1. The moment a conversation turns crucial</strong><br>Physical signs, emotions, or behaviors that signal danger</li>
+                    <li><strong>2. Signs that people don't feel safe</strong><br>Silence or violence emerging in the conversation</li>
+                    <li><strong>3. Your own style under stress</strong><br>How YOU behave when feeling unsafe</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Spot Crucial Conversations -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Learn to Spot Crucial Conversations</h2>
+                <h3>Stay alert for warning signs</h3>
+                <div class="story-box">
+                    <h3>Physical Signals</h3>
+                    <p>Stomach gets tight, eyes dry, heart races, palms sweat</p>
+                </div>
+                <div class="story-box">
+                    <h3>Emotional Signals</h3>
+                    <p>Feeling scared, hurt, defensive, or angry</p>
+                </div>
+                <div class="story-box">
+                    <h3>Behavioral Signals</h3>
+                    <p>Raising voice, pointing finger, becoming very quiet</p>
+                </div>
+                <p style="margin-top: 20px;"><em>What are YOUR cues? Learn to recognize them as signs to step back and slow down.</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Learn to Look for Safety Problems -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Learn to Look for Safety Problems</h2>
+                <div class="highlight">
+                    <h3>When it's safe, you can say anything</h3>
+                    <p>Dialogue calls for the free flow of meaning—and nothing kills meaning like fear.</p>
+                </div>
+                <ul>
+                    <li>When you fear people aren't buying your ideas → you push too hard</li>
+                    <li>When you fear you may be harmed → you withdraw and hide</li>
+                    <li>Both reactions (fight and flight) are motivated by <strong>fear</strong></li>
+                </ul>
+                <div class="warning-box">
+                    <strong>Critical insight:</strong> People rarely become defensive because of WHAT you're saying. They become defensive when they no longer feel safe.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Safety vs Comfort -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Safety Isn't Synonymous with Comfort</h2>
+                <div class="highlight">
+                    <p>Crucial conversations are by definition hard. We have to stretch, venture into new territory, and feel vulnerable.</p>
+                    <p style="margin-top: 15px;"><strong>The measure of safety:</strong> Is meaning flowing? Can I and others share our meaning, have it heard, and listen honestly and respectfully?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: When Unsafe, You Go Blind -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>When It's Unsafe, You Start to Go Blind</h2>
+                <ul>
+                    <li>Emotions crank up → key brain functions shut down</li>
+                    <li>When genuinely threatened, peripheral vision narrows</li>
+                    <li>You can scarcely see beyond what's right in front of you</li>
+                </ul>
+                <div class="highlight">
+                    <h3>The Solution</h3>
+                    <p>Pull yourself out of the content and look for signs that safety is at risk. When you do:</p>
+                    <ul>
+                        <li>You re-engage your brain</li>
+                        <li>Your full vision returns</li>
+                        <li>Higher reasoning centers stay active</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Don't Let Safety Problems Lead You Astray -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Don't Let Safety Problems Lead You Astray</h2>
+                <h3>The wrong response</h3>
+                <p>When others feel unsafe, they attack, make fun of you, insult you, or steamroll you.</p>
+                <div class="warning-box">
+                    <strong>Natural tendency:</strong> Take the attack at face value and respond in kind (or try to escape)
+                </div>
+                <h3 style="margin-top: 30px;">The right response</h3>
+                <div class="highlight">
+                    <p><strong>Think:</strong> "They're feeling unsafe. I need to do something to make it safer."</p>
+                    <p style="margin-top: 10px;"><em>Be curious instead of angry or frightened</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Silence and Violence -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Silence and Violence</h2>
+                <h3>Two unhealthy paths when people feel unsafe</h3>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>Silence</h4>
+                        <p>Withholding meaning from the pool</p>
+                        <p><em>Done to avoid potential problems; always restricts flow of meaning</em></p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Violence</h4>
+                        <p>Forcing meaning into the pool</p>
+                        <p><em>Trying to convince, control, or compel others to your point of view</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Three Forms of Silence -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Three Forms of Silence</h2>
+                <div class="story-box">
+                    <h3>1. Masking</h3>
+                    <p>Understating or selectively showing true opinions</p>
+                    <p><strong>Examples:</strong> Sarcasm, sugarcoating, couching</p>
+                    <p><em>"I think your idea is brilliant... I just worry others won't catch the subtle nuances."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>2. Avoiding</h3>
+                    <p>Steering completely away from sensitive subjects</p>
+                    <p><em>"Speaking of cost-cutting, what if we diluted the coffee?"</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>3. Withdrawing</h3>
+                    <p>Pulling out of conversation entirely</p>
+                    <p><em>"Excuse me, I've got to take this call..."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Three Forms of Violence -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Three Forms of Violence</h2>
+                <div class="story-box">
+                    <h3>1. Controlling</h3>
+                    <p>Coercing others to your way of thinking</p>
+                    <p><strong>Tactics:</strong> Forcing views, dominating, interrupting, overstating facts, speaking in absolutes, changing subjects</p>
+                    <p><em>"There's not a person in the world who hasn't bought one of these."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>2. Labeling</h3>
+                    <p>Dismissing people or ideas with stereotypes</p>
+                    <p><em>"Only a [political party] would think that's a good idea."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>3. Attacking</h3>
+                    <p>Making the other person suffer</p>
+                    <p><strong>Tactics:</strong> Belittling, threatening</p>
+                    <p><em>"Try that stupid stunt and see what happens."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Discussion Question 1 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Think of a recent crucial conversation. What physical, emotional, or behavioral cues did you experience? When did you first notice the conversation had become crucial?
+                </div>
+                <p><em>Take 4-5 minutes to discuss with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Your Style Under Stress -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Your Style Under Stress</h2>
+                <h3>The hardest element to watch</h3>
+                <p>Most people have trouble pulling away from the tractor beam of the argument. You're on the wrong side of your eyeballs.</p>
+                <div class="highlight">
+                    <h3>Take the Style Under Stress Assessment</h3>
+                    <p>Visit <strong>crucialconversations.com</strong> to:</p>
+                    <ul>
+                        <li>Discover which forms of silence or violence you turn to most often</li>
+                        <li>Identify your dialogue skill strengths and weaknesses</li>
+                        <li>Get a personalized roadmap for improvement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Discussion Question 2 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Do you tend toward silence or violence when you feel unsafe? Can you share an example of when you masked, avoided, withdrew, controlled, labeled, or attacked?
+                </div>
+                <p><em>Take 4-5 minutes to discuss with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 17: Learning to Look Virtually -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Learning to Look Virtually</h2>
+                <h3>Expand your data stream</h3>
+                <p>Most virtual communication severely limits our data stream (no body language, tone, or eye contact).</p>
+                <div class="story-box">
+                    <h3>Choose the Right Medium</h3>
+                    <p><strong>Best to worst bandwidth:</strong></p>
+                    <ul>
+                        <li>Face-to-face (ideal)</li>
+                        <li>Video conferencing</li>
+                        <li>Phone call</li>
+                        <li>Email, text, instant messaging</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h3>When Virtual, Ask for More Data</h3>
+                    <p><em>"I haven't heard back in a couple days. How are you feeling about the proposal?"</em></p>
+                    <p><em>"I wish I could see your face. How are you hearing my message?"</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Practical Application -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Practice This Week</h2>
+                <div class="highlight">
+                    <h3>In your next crucial conversation:</h3>
+                    <ul>
+                        <li><strong>Watch for your cues:</strong> What signals tell you it's getting crucial?</li>
+                        <li><strong>Dual process:</strong> Pay attention to content AND conditions</li>
+                        <li><strong>Look for safety problems:</strong> Are people going to silence or violence?</li>
+                        <li><strong>Be curious:</strong> When you notice unsafe behavior, ask yourself "Why might they feel unsafe?"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: This Week's Challenge -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>This Week's Challenge</h2>
+                <div class="highlight">
+                    <h3>Become a better self-monitor</h3>
+                    <ul>
+                        <li>Take the Style Under Stress assessment at crucialconversations.com</li>
+                        <li>Identify YOUR personal warning signs (physical, emotional, behavioral)</li>
+                        <li>In one conversation this week, practice dual processing</li>
+                    </ul>
+                </div>
+                <p><strong>Next Meeting:</strong> Share what you noticed when you practiced "learning to look"</p>
+            </div>
+        </div>
+
+        <!-- Slide 20: Key Takeaway -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Takeaway</h2>
+                <div class="highlight">
+                    <h3>You can't fix what you don't see</h3>
+                    <p style="margin-top: 20px;">Learn to look for the moment conversations turn crucial, for signs that safety is at risk, and for your own style under stress.</p>
+                    <p style="margin-top: 20px;"><em>The sooner you notice, the easier it is to restore dialogue—and the lower the costs.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="auto-advance-toggle" id="autoAdvanceToggle" onclick="toggleAutoAdvance()">
+                Auto-Advance: OFF
+            </button>
+            <button class="nav-btn" onclick="previousSlide()">Previous</button>
+            
+            <div class="timer-container" id="timerContainer">
+                <div class="circular-timer">
+                    <svg width="60" height="60">
+                        <circle class="timer-background" cx="30" cy="30" r="26"></circle>
+                        <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26" 
+                                stroke-dasharray="163.36" stroke-dashoffset="0"></circle>
+                    </svg>
+                    <div class="timer-text" id="timerText">0:00</div>
+                </div>
+            </div>
+            
+            <button class="nav-btn" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        
+        let autoAdvanceEnabled = false;
+        let countdownInterval = null;
+        let remainingTime = 0;
+        let totalDuration = 0;
+        
+        const timerContainer = document.getElementById('timerContainer');
+        const timerCircle = document.getElementById('timerCircle');
+        const timerText = document.getElementById('timerText');
+        const autoAdvanceToggle = document.getElementById('autoAdvanceToggle');
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        // Timing for ~45 minute session
+        const DURATIONS_SECONDS = [
+            30,  // 1 Title
+            60,  // 2 Part II Overview
+            45,  // 3 Core Message
+            90,  // 4 Dual Process
+            90,  // 5 Three Conditions
+            120, // 6 Spot Crucial Conversations
+            120, // 7 Safety Problems
+            60,  // 8 Safety vs Comfort
+            90,  // 9 When Unsafe
+            120, // 10 Don't Let Safety Problems Lead Astray
+            90,  // 11 Silence and Violence
+            150, // 12 Three Forms of Silence
+            150, // 13 Three Forms of Violence
+            300, // 14 Discussion Q1 (5 min)
+            90,  // 15 Style Under Stress
+            300, // 16 Discussion Q2 (5 min)
+            120, // 17 Learning to Look Virtually
+            90,  // 18 Practical Application
+            60,  // 19 This Week's Challenge
+            45   // 20 Key Takeaway
+        ];
+        
+        function getSlideDuration() {
+            return DURATIONS_SECONDS[currentSlide] ?? 60;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateTimerCircle() {
+            const circumference = 163.36;
+            const progress = remainingTime / totalDuration;
+            const offset = circumference * (1 - progress);
+            timerCircle.style.strokeDashoffset = offset;
+        }
+        
+        function startTimer() {
+            if (!autoAdvanceEnabled) return;
+            
+            stopTimer();
+            
+            totalDuration = getSlideDuration();
+            remainingTime = totalDuration;
+            
+            timerText.textContent = formatTime(remainingTime);
+            updateTimerCircle();
+            
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                timerText.textContent = formatTime(remainingTime);
+                updateTimerCircle();
+                
+                if (remainingTime <= 0) {
+                    stopTimer();
+                    nextSlide();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            
+            if (autoAdvanceEnabled) {
+                autoAdvanceToggle.textContent = 'Auto-Advance: ON';
+                autoAdvanceToggle.classList.add('active');
+                timerContainer.classList.add('active');
+                startTimer();
+            } else {
+                autoAdvanceToggle.textContent = 'Auto-Advance: OFF';
+                autoAdvanceToggle.classList.remove('active');
+                timerContainer.classList.remove('active');
+                stopTimer();
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('with-header');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            if (currentSlide === 0) {
+                chapterHeader.classList.remove('show');
+            } else {
+                chapterHeader.classList.add('show');
+                slides[currentSlide].classList.add('with-header');
+            }
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            
+            if (autoAdvanceEnabled) {
+                startTimer();
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'a' || event.key === 'A') {
+                toggleAutoAdvance();
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

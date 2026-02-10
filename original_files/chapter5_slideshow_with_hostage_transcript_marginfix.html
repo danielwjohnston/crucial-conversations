@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Master My Stories</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .persistent-header h3 {
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .persistent-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        .persistent-header p {
+            color: #f0f0f0;
+            font-size: 0.85em;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .slide.with-header {
+            margin-top: 180px;
+        }
+
+        .slide.with-header .slide-content {
+            margin-top: 0;
+        }
+
+        .discussion-slide.with-header .slide-content,
+        .dans-digest-slide.with-header .slide-content {
+            padding-top: 40px;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #e30613;
+            color: white;
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: #e30613;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: #e30613;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid #e30613;
+        }
+
+        .story-box {
+            background: #f8f8f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .story-box h3 {
+            color: #e30613;
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #e30613;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            margin: 0 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #c20510;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 60px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .discussion-slide {
+            background: #f0f8ff;
+            border: 3px solid #4a90e2;
+        }
+
+        .discussion-slide h2 {
+            color: #4a90e2;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            color: #4a90e2;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .dans-digest-slide {
+            background: #f9f9f9;
+            border: 3px solid #28a745;
+        }
+
+        .dans-digest-slide h2 {
+            color: #28a745;
+        }
+
+        .digest-answer {
+            text-align: left;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        .digest-insights {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .digest-insights h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .path-box {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #e30613;
+            margin: 10px 0;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+        }
+
+        .column-box h4 {
+            color: #e30613;
+            margin-bottom: 15px;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+        }
+
+        .title-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 140px);
+            margin: 0;
+        }
+
+        .title-slide h1, .title-slide h2 {
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            color: #f0f0f0;
+        }
+
+        .brand-logo {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slide-content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        CrucialLearning.com | 800.449.5989
+    </div>
+
+    <div class="footer">
+        ©2024 Leadership Development. All rights reserved.
+    </div>
+
+    <div class="slideshow-container">
+        <div class="slide-counter">
+            <span id="slideNumber">1</span> / <span id="totalSlides">30</span>
+        </div>
+
+        <!-- Persistent Chapter Header (shows on slides 2+) -->
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>MASTER MY STORIES</h2>
+            <p>Chapter 5 • How to stay in dialogue when you're angry, scared, or hurt</p>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>DISCUSSION QUESTIONS</h1>
+            <p class="subtitle">Chapter 5</p>
+            <h2>Master My Stories</h2>
+            <p class="subtitle">How to stay in dialogue when you're angry, scared, or hurt</p>
+        </div>
+
+        <!-- Slide 2: Core Message -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Core Message</h2>
+                <div class="highlight">
+                    <h3>Others don't make you mad. You make you mad.</h3>
+                    <p>Between what we observe and how we feel, we tell ourselves a story. Change the story, change the emotion.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Path to Action -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Path to Action</h2>
+                <div class="path-box">SEE & HEAR</div>
+                <div class="arrow">↓</div>
+                <div class="path-box">TELL A STORY</div>
+                <div class="arrow">↓</div>
+                <div class="path-box">FEEL</div>
+                <div class="arrow">↓</div>
+                <div class="path-box">ACT</div>
+                <p style="margin-top: 20px;">The story is where we have leverage and control</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Discussion Question 1 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Who makes us angry?
+                </div>
+                <p><em>Take 3-4 minutes to discuss this with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Dan's Digest 1 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>We make ourselves angry. While it's comfortable to say "he made me mad," others don't create our emotions—we do. Our emotions come from the stories we tell ourselves about what we observe, not from the observations themselves.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>Why do different people have different emotional responses to the same situation?</li>
+                        <li>The intermediate step between observation and emotion is the story we tell</li>
+                        <li>Taking ownership of our emotions puts us back in control</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Stories Create Feelings -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Stories Create Feelings</h2>
+                <h3>What happens between seeing/hearing and feeling?</h3>
+                <ul>
+                    <li>We observe what others do (facts)</li>
+                    <li>We add meaning to the action (interpretation)</li>
+                    <li>We make a guess at the motive (attribution)</li>
+                    <li>We add judgment (good or bad)</li>
+                    <li>Based on our story, our body responds with emotion</li>
+                </ul>
+                <div class="highlight">
+                    <strong>We tell ourselves a story so quickly that we don't even know we're doing it</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Discussion Question 2 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    What role do stories play in the creation of our feelings and actions?
+                </div>
+                <p><em>Take 4-5 minutes to discuss this with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Dan's Digest 2 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>Stories are the link between what we observe and how we feel and act. They provide rationale for what's happening—our interpretations of facts. Once told, stories control us: they control how we feel, then how we act, and thus the results we get.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>Any set of facts can be used to tell an infinite number of stories</li>
+                        <li>If we take control of our stories, they won't control us</li>
+                        <li>Maria's story about Louis: same facts, different stories create different emotions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Three Clever Stories -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Three Clever Stories</h2>
+                <p>Self-justifying stories that allow us to feel good about behaving badly</p>
+                <div class="three-column">
+                    <div class="column-box">
+                        <h4>Victim Stories</h4>
+                        <p>"It's not my fault"</p>
+                        <p>Make us out to be innocent sufferers</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Villain Stories</h4>
+                        <p>"It's all your fault"</p>
+                        <p>Turn others into bad guys</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Helpless Stories</h4>
+                        <p>"There's nothing I can do"</p>
+                        <p>Make us powerless to act</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Victim Stories -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Victim Stories</h2>
+                <h3>"It's not my fault"</h3>
+                <ul>
+                    <li>Make us out to be innocent sufferers</li>
+                    <li>We ignore the role we played in the problem</li>
+                    <li>We speak only of our noble motives</li>
+                    <li>We're being punished for our virtues, not our vices</li>
+                </ul>
+                <div class="highlight">
+                    <strong>Example:</strong> "I took longer because I was trying to beat the standard specs. He just doesn't appreciate a person with my superb attention to detail."
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Villain Stories -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Villain Stories</h2>
+                <h3>"It's all your fault"</h3>
+                <ul>
+                    <li>Turn normal, decent people into villains</li>
+                    <li>Impute bad motives</li>
+                    <li>Exaggerate their flaws into indictments</li>
+                    <li>Ignore any of their virtues</li>
+                    <li>Replace their name with a label ("bonehead," "control freak")</li>
+                </ul>
+                <div class="highlight">
+                    <strong>The Double Standard:</strong> When we make mistakes, our intentions were innocent. When others hurt us, they had terrible motives.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Helpless Stories -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Helpless Stories</h2>
+                <h3>"There's nothing I can do"</h3>
+                <ul>
+                    <li>Make ourselves powerless to do anything helpful</li>
+                    <li>Convince ourselves there are no healthy alternatives</li>
+                    <li>Justify the actions we're about to take</li>
+                    <li>Often stem from villain stories</li>
+                    <li>Offer fool's choices: "I can be honest and ruin the relationship, or stay silent and suffer"</li>
+                </ul>
+                <div class="highlight">
+                    <strong>Example:</strong> "If I didn't yell at my son, he wouldn't listen" or "If I told the boss, he'd just be defensive, so I say nothing"
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Discussion Question 3 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    What are Victim, Villain, and Helpless Stories?
+                </div>
+                <p><em>Take 4-5 minutes to discuss examples from your own experience</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Dan's Digest 3 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>These are self-justifying stories that allow us to feel good about behaving badly. Victim stories make us innocent sufferers. Villain stories turn others into bad guys. Helpless stories make us powerless to act. They're "clever" because they justify our ineffective behavior.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>Which clever story do you tell most often?</li>
+                        <li>These stories usually start after we've done something we feel we need to justify</li>
+                        <li>They keep us stuck in ineffective behavior patterns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Separating Fact from Story -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Separating Fact from Story</h2>
+                <h3>Spot the story by watching for hot words</h3>
+
+                <div class="story-box">
+                    <h3>Hot Words = Story (Judgments & Attributions)</h3>
+                    <p><strong>"She scowled at me."</strong> • <strong>"He was sarcastic."</strong> • <strong>"He's controlling."</strong></p>
+                    <p>These are judgments/attributions that generate strong emotions—they're <em>story</em>, not fact.</p>
+                </div>
+
+                <div class="story-box" style="border-color:#28a745;">
+                    <h3>Facts = Observable Behaviors (See/Hear)</h3>
+                    <p><strong>"Her eyes pinched shut and her lips tightened."</strong></p>
+                    <p><strong>"He spoke for 10 minutes and met with the boss 1:1."</strong></p>
+                </div>
+
+                <div class="highlight">
+                    <strong>Key tip:</strong> Ask, "Can I see or hear the thing I'm calling a 'fact'?"
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: From Story to Facts (Iterations) -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>From Story to Facts</h2>
+                <h3>Iterate until you're back to observable data</h3>
+                <ul>
+                    <li><strong>First attempt (all story):</strong> "Louis violated our plan, stole my slides, and forced me to the sidelines."</li>
+                    <li><strong>Second attempt (some facts):</strong> "Louis took 10 slides I was supposed to cover and never looked at me for questions."</li>
+                    <li><strong>Third attempt (more facts):</strong> "Louis covered 10 slides we had agreed I would cover; when questions were asked, he answered them."</li>
+                    <li><strong>Fourth attempt (even more facts + my role):</strong> "Louis covered 10 slides we'd agreed I would cover, and I let him. When questions came, he answered; I did not step in."</li>
+                </ul>
+                <div class="highlight">
+                    <strong>Why this matters:</strong> Each pass strips out judgments and adds <em>your role</em>, which calms emotions and reopens dialogue.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Scan for Other Facts -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Scan for Other Facts</h2>
+                <p>Once we pick a story, we tend to see only confirming evidence and miss disconfirming data.</p>
+                <ul>
+                    <li>Ask: "What facts might contradict my story?"</li>
+                    <li>e.g., "Louis praised my work last month" or "He collaborates well with a colleague I respect."</li>
+                </ul>
+                <div class="highlight">
+                    <strong>Goal:</strong> Build a complete picture before acting.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Discussion Question 4 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    When we're feeling upset, why is it important to get back to the facts?
+                </div>
+                <p><em>Take 3-4 minutes to discuss this with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 19: Dan's Digest 4 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>Facts help us abandon our absolute certainty and open up to dialogue. Getting back to observable behaviors (what we can see or hear) separates our interpretations from reality. This creates space for alternative explanations and softens our emotions.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>"Hot words" (e.g., scowl, sarcastic, controlling) are story, not fact</li>
+                        <li>Ask: "Can I see or hear this thing I'm calling a fact?"</li>
+                        <li>Facts are specific, objective, and verifiable by any observer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Sellouts Lead to Clever Stories -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Sellouts Lead to Clever Stories</h2>
+                <h3>Why we tell clever stories</h3>
+                <ul>
+                    <li><strong>Sometimes</strong> our conclusions match reality — but that's the exception.</li>
+                    <li><strong>More often</strong> they're convenient justifications after a <em>sellout</em> (we didn't do what we felt was right).</li>
+                </ul>
+                <p><em>When we don't admit our errors, we invent stories that make us right and others wrong.</em></p>
+                <h3 style="margin-top:20px;">Common sellouts</h3>
+                <ul>
+                    <li>You believed you should help/apologize/speak up — and didn't.</li>
+                    <li>You said yes when you should've said no.</li>
+                    <li>You failed to meet a commitment and didn't inform others.</li>
+                </ul>
+                <p style="margin-top: 20px;">Sellouts → justification → victim/villain/helpless stories.</p>
+            </div>
+        </div>
+
+        <!-- Slide 21: Discussion Question 5 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Why should we ask what role we may be playing in the problem?
+                </div>
+                <p><em>Take 4-5 minutes to discuss this with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 22: Dan's Digest 5 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>Asking about our role forces us to face up to the fact that we contributed to the problem. It jars us out of victim stories and into accountability. Most often, when we face persistent problems, our role is one of silent complicity—we've said nothing.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>Ask: "What am I pretending not to notice about my role in the problem?"</li>
+                        <li>This turns victims into actors—we move from passive to active</li>
+                        <li>It helps us see how selective our perception has been</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: Tell the Rest of the Story -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Tell the Rest of the Story</h2>
+                <h3>Transform clever stories into useful ones</h3>
+                <div class="three-column">
+                    <div class="column-box">
+                        <h4>Turn Victims into Actors</h4>
+                        <p>What am I pretending not to notice about my role?</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Turn Villains into Humans</h4>
+                        <p>Why would a reasonable, rational person do this?</p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Turn Helpless into Able</h4>
+                        <p>What do I really want? What should I do now?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Discussion Question 6 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Why should we start by assuming that others are reasonable and rational?
+                </div>
+                <p><em>Take 3-4 minutes to discuss this with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 25: Dan's Digest 6 -->
+        <div class="slide dans-digest-slide">
+            <div class="slide-content">
+                <h2>Dan's Digest</h2>
+                <div class="digest-answer">
+                    <h4>Key Answer Points:</h4>
+                    <p>This question humanizes others and softens our emotions. It provides alternative explanations for behavior, helping us worry less about intent and more about impact. It's not about excusing bad behavior—it's about getting ourselves in a position to have meaningful dialogue.</p>
+                </div>
+                <div class="digest-insights">
+                    <h4>Worth Considering:</h4>
+                    <ul>
+                        <li>It relaxes our absolute certainty enough to allow for dialogue</li>
+                        <li>Empathy often replaces judgment when we search for plausible answers</li>
+                        <li>The goal: deal with our own stories and emotions first</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: The Hostage Negotiator Video -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Hostage Negotiator</h2>
+                <p>Ron McMillan learned about humanizing others from a man in a very high-risk occupation</p>
+                <div style="display: flex; justify-content: center; margin: 30px 0;">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/GZrMn8RlyOw?si=r3yW22oelXANFz9J" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border-radius: 10px;"></iframe>
+                </div>
+                <p><em>When we humanize others, we're not excusing bad behaviors—we're helping ourselves be in a position to have meaningful dialogue.</em></p>
+            </div>
+        </div>
+
+        
+        <!-- Slide 27: The Hostage Negotiator – Transcript Excerpt -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Hostage Negotiator – Transcript Excerpt</h2>
+                <div class="highlight">
+                    <p><em>“I just closed my eyes and told myself: I don’t know what led to this, but I know you are a human being, and you are due the respect every human being deserves.”</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>Why this matters</h3>
+                    <ul>
+                        <li><strong>People are respect radars:</strong> if they sense disrespect, that becomes issue #1.</li>
+                        <li><strong>Respect first opens dialogue:</strong> you’re not excusing behavior—you’re preparing yourself to talk effectively.</li>
+                        <li><strong>Turn villains into humans:</strong> choose to see a reasonable, rational, decent person before you assume motives.</li>
+                    </ul>
+                </div>
+                <p><em>Use this mindset in tough conversations: start with respect to stabilize emotions and stay in dialogue.</em></p>
+            </div>
+        </div>
+
+<!-- Slide 27: Maria's New Story -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Maria's New Story</h2>
+                <div class="story-box">
+                    <h3>What am I pretending not to notice?</h3>
+                    <p>I chose not to interrupt when Louis started covering my slides, and I didn't step in during Q&A.</p>
+
+                    <h3>Why would a reasonable person do this?</h3>
+                    <p>He cares about quality and may have been nervous. He might not realize I'm equally committed.</p>
+
+                    <h3>What do I really want?</h3>
+                    <p>A respectful working relationship and clarity on presenting roles.</p>
+
+                    <h3>What should I do now?</h3>
+                    <p>Schedule a conversation to debrief the presentation and agree on who covers what next time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 28: Practical Application -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Retrace Your Path</h2>
+                <h3>When you find yourself in silence or violence:</h3>
+                <ul>
+                    <li><strong>Notice your behavior:</strong> Am I in silence or violence?</li>
+                    <li><strong>Get in touch with your feelings:</strong> What emotions am I feeling?</li>
+                    <li><strong>Analyze your stories:</strong> What story is creating these emotions?</li>
+                    <li><strong>Get back to the facts:</strong> What have I seen or heard?</li>
+                    <li><strong>Watch for clever stories:</strong> Am I playing victim, villain, or helpless?</li>
+                    <li><strong>Tell the rest of the story:</strong> Use the three questions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 29: This Week's Challenge -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>This Week's Challenge</h2>
+                <div class="highlight">
+                    <h3>When you notice strong emotions:</h3>
+                    <ul>
+                        <li>Pause and separate fact from story</li>
+                        <li>Identify which clever story you're telling</li>
+                        <li>Ask the three questions to tell the rest of the story</li>
+                    </ul>
+                </div>
+                <p><strong>Next Meeting:</strong> Share an example of when you caught yourself telling a clever story and how you reframed it</p>
+            </div>
+        </div>
+
+        <!-- Slide 30: Key Takeaway -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Takeaway</h2>
+                <div class="highlight">
+                    <h3>We are not hostages to our emotions. We create them through the stories we tell.</h3>
+                    <p style="margin-top: 20px;">Master your stories, and you'll master your emotions and your crucial conversations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">Previous</button>
+            <button class="nav-btn" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('with-header');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Show/hide persistent header based on slide number
+            if (currentSlide === 0) {
+                chapterHeader.classList.remove('show');
+            } else {
+                chapterHeader.classList.add('show');
+                slides[currentSlide].classList.add('with-header');
+            }
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

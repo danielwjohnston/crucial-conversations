@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leadership Bookclub - Make It Safe</title>
+    <style>
+        :root {
+            --brand-red-accessible: #c20510;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .timer-progress {
+                transition: none !important;
+            }
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: auto;
+            z-index: 9999;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+            top: 16px;
+            background: #000;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        *:focus-visible {
+            outline: 3px solid #000;
+            outline-offset: 2px;
+        }
+
+        .nav-btn:focus-visible,
+        .auto-advance-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .slideshow-container {
+            padding-top: 120px;
+            padding-bottom: 100px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .persistent-header {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: all 0.6s ease-in-out;
+        }
+
+        .persistent-header.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .persistent-header h3 {
+            color: white;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .persistent-header h2 {
+            color: white;
+            font-size: 1.5em;
+            margin: 5px 0;
+            text-transform: uppercase;
+        }
+
+        .persistent-header p {
+            color: #f0f0f0;
+            font-size: 0.85em;
+            margin: 5px 0 0 0;
+            font-style: italic;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            text-align: center;
+            max-width: 1000px;
+            width: 90%;
+            margin-top: 0;
+        }
+
+        .slide.with-header {
+            margin-top: 180px;
+        }
+
+        .slide.with-header .slide-content {
+            margin-top: 0;
+        }
+
+        .discussion-slide.with-header .slide-content,
+        .dans-digest-slide.with-header .slide-content {
+            padding-top: 40px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            .slide.active {
+                animation: fadeIn 0.5s;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #e30613;
+            color: white;
+            padding: 15px 30px;
+            text-align: right;
+            font-size: 14px;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--brand-red-accessible);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid #e30613;
+        }
+
+        .story-box {
+            background: #f8f8f8;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 2px solid #ddd;
+            text-align: left;
+        }
+
+        .story-box h3 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-btn {
+            background: #e30613;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            width: 120px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #c20510;
+            transform: translateY(-2px);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 1001;
+        }
+
+        .timer-container {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border: 2px solid #e30613;
+        }
+
+        .timer-container.active {
+            display: flex;
+        }
+
+        .circular-timer {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-timer svg {
+            transform: rotate(-90deg);
+            display: block;
+        }
+
+        .timer-background {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 4;
+        }
+
+        .timer-progress {
+            fill: none;
+            stroke: #e30613;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .auto-advance-toggle {
+            background: #333;
+            color: white;
+            border: 2px solid #e30613;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .auto-advance-toggle:hover {
+            background: #444;
+        }
+
+        .auto-advance-toggle.active {
+            background: #e30613;
+            border-color: #e30613;
+        }
+
+        .discussion-slide {
+            background: #f0f8ff;
+            border: 3px solid #4a90e2;
+        }
+
+        .discussion-slide h2 {
+            color: #4a90e2;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #4a90e2;
+            font-weight: bold;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .column-box {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            border: 2px solid #e30613;
+            text-align: left;
+        }
+
+        .column-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
+            color: white;
+        }
+
+        .title-slide .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 140px);
+            margin: 0;
+        }
+
+        .title-slide h1, .title-slide h2 {
+            color: white;
+        }
+
+        .title-slide .subtitle {
+            color: #f0f0f0;
+        }
+
+        .brand-logo {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .slide-content {
+            margin-top: 120px;
+            margin-bottom: 80px;
+        }
+
+        .number-box {
+            background: #e30613;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            display: inline-block;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .step-box {
+            background: white;
+            border: 3px solid #e30613;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .step-box h4 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .bridge-box {
+            background: linear-gradient(135deg, #e30613 10%, #c20510 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .bridge-box h3,
+        .bridge-box p,
+        .bridge-box li,
+        .bridge-box ul {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="header" role="banner">
+        CrucialLearning.com | 800.449.5989
+    </header>
+
+    <footer class="footer" role="contentinfo">
+        ©2024 Leadership Development. All rights reserved.
+    </footer>
+
+    <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">25</span>
+        </div>
+
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- Persistent Chapter Header (shows on slides 2+) -->
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>MAKE IT SAFE</h2>
+            <p>Chapter 7 • How to make it safe to talk about almost anything</p>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>DISCUSSION QUESTIONS</h1>
+            <p class="subtitle">Chapter 7</p>
+            <h2>Make It Safe</h2>
+            <p class="subtitle">How to make it safe to talk about almost anything</p>
+        </div>
+
+        <!-- Slide 2: Core Message -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Core Message</h2>
+                <div class="highlight">
+                    <h3>When safety is at risk, step out of the content and rebuild safety</h3>
+                    <p>People never become defensive about <em>what</em> you're saying—they become defensive because of <em>why</em> they think you're saying it.</p>
+                    <p style="margin-top: 15px;"><strong>Safety is about intent, not content.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Process -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Step Out, Make It Safe, Step Back In</h2>
+                <div class="step-box">
+                    <h4>1. Notice safety is at risk</h4>
+                    <p>Watch for silence or violence</p>
+                </div>
+                <div class="step-box">
+                    <h4>2. Step out of the content</h4>
+                    <p>Stop talking about the topic</p>
+                </div>
+                <div class="step-box">
+                    <h4>3. Rebuild safety</h4>
+                    <p>Use the skills in this chapter</p>
+                </div>
+                <div class="step-box">
+                    <h4>4. Step back in</h4>
+                    <p>Return to the conversation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Two Conditions of Safety -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Two Conditions of Safety</h2>
+                <p>For people to feel safe, they need to know two things about your intent:</p>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>Mutual Purpose</h4>
+                        <p><strong>The Entrance Condition</strong></p>
+                        <p>Others perceive you're working toward a common outcome</p>
+                        <p><em>You care about their goals, interests, and values</em></p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Mutual Respect</h4>
+                        <p><strong>The Continuance Condition</strong></p>
+                        <p>Others perceive that you respect them</p>
+                        <p><em>Respect is like air—when it's gone, it's all people think about</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Mutual Purpose -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Mutual Purpose</h2>
+                <h3>The entrance condition of dialogue</h3>
+                <ul>
+                    <li>Others believe you're working toward a <strong>common outcome</strong></li>
+                    <li>You care about their goals, interests, and values (and vice versa)</li>
+                    <li>Find a shared goal → you have a reason and climate for talking</li>
+                </ul>
+                <div class="highlight">
+                    <h3>A Surefire Mutual Purpose</h3>
+                    <p>Human beings have an innate need to be heard and understood. So a great starting mutual purpose is: <strong>seek mutual understanding</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Mutual Respect -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Mutual Respect</h2>
+                <h3>The continuance condition of dialogue</h3>
+                <div class="highlight">
+                    <p><strong>Respect is like air.</strong> As long as it's present, nobody thinks about it. But if you take it away, it's all people can think about.</p>
+                </div>
+                <ul>
+                    <li>When people perceive disrespect → dialogue stops</li>
+                    <li>The conversation becomes about <strong>defending dignity</strong></li>
+                    <li>Watch for signs people are defending dignity (heightened emotions)</li>
+                </ul>
+                <div class="story-box">
+                    <h3>Can you respect people you don't respect?</h3>
+                    <p>You don't have to respect every element of their character. Find a way to honor their basic humanity. Look for ways you're <em>similar</em> rather than dwelling on differences.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Discussion Question 1 -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Think of a time when you felt unsafe in a conversation. Which condition was violated—mutual purpose or mutual respect? How did you know?
+                </div>
+                <p><em>Take 4-5 minutes to discuss with the group</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Four Skills to Build Safety -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Four Skills to Build Safety</h2>
+                <h3>Use these to build safety up front or rebuild when it's lost</h3>
+                <div class="two-column">
+                    <div class="step-box">
+                        <div class="number-box">1</div>
+                        <h4>Share Your Good Intent</h4>
+                        <p>State what you want for everyone</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="number-box">2</div>
+                        <h4>Apologize When Appropriate</h4>
+                        <p>Express sorrow for your role in causing pain</p>
+                    </div>
+                </div>
+                <div class="two-column">
+                    <div class="step-box">
+                        <div class="number-box">3</div>
+                        <h4>Contrast to Fix Misunderstandings</h4>
+                        <p>Clarify what you don't and do intend</p>
+                    </div>
+                    <div class="step-box">
+                        <div class="number-box">4</div>
+                        <h4>Create a Mutual Purpose</h4>
+                        <p>Use CRIB when at cross purposes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Skill 1 - Share Your Good Intent -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Skill 1: Share Your Good Intent</h2>
+                <h3>If people aren't sure of your intent, they'll assume the worst</h3>
+                <div class="highlight">
+                    <p><strong>It's not enough to have good intentions. The other person must know that's the case.</strong></p>
+                </div>
+                <div class="story-box">
+                    <h3>Example: Oba and Mari</h3>
+                    <p><strong>Before:</strong> "Mari, I was wondering if we could talk about what happened Friday night..."</p>
+                    <p style="margin-top: 15px;"><strong>After:</strong> "Mari, I love you, and I want to make sure we're talking about things that impact our relationship. Our relationship is the most important thing in the world to me. Could we talk?"</p>
+                </div>
+                <p style="margin-top: 20px;">Starting with your good intent lays the foundation for safety</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Skill 2 - Apologize When Appropriate -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Skill 2: Apologize When Appropriate</h2>
+                <h3>When you've clearly violated respect</h3>
+                <div class="highlight">
+                    <p>An apology is a statement that sincerely expresses your sorrow for your role in causing—or at least not preventing—pain or difficulty to others.</p>
+                </div>
+                <ul>
+                    <li>An apology isn't really an apology unless you experience a <strong>change in heart</strong></li>
+                    <li>You have to give up saving face, being right, or winning</li>
+                    <li>You sacrifice a bit of ego to focus on what you really want</li>
+                </ul>
+                <div class="story-box">
+                    <h3>Example</h3>
+                    <p><em>"I'm sorry I didn't give you a call when I learned we wouldn't be coming by. You worked all night, and I didn't even explain what happened. I apologize."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Skill 3 - Contrast to Fix Misunderstandings -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Skill 3: Contrast to Fix Misunderstandings</h2>
+                <h3>When respect/purpose is violated by misinterpretation</h3>
+                <p>Contrasting is a <strong>don't/do</strong> statement:</p>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>Don't Part</h4>
+                        <p>Address concerns that you don't respect them or have malicious purpose</p>
+                        <p><em>"I don't want you to think..."</em></p>
+                    </div>
+                    <div class="column-box">
+                        <h4>Do Part</h4>
+                        <p>Clarify what your real intention is</p>
+                        <p><em>"I do want..."</em></p>
+                    </div>
+                </div>
+                <div class="story-box" style="margin-top: 20px;">
+                    <h3>Example</h3>
+                    <p><em>"I don't want to criticize you or get on your case. I know you're carrying a huge load. I <strong>do</strong> want us to be able to talk about our concerns so we can build our relationship."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Use Contrasting for Prevention -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Use Contrasting for Prevention</h2>
+                <h3>Don't wait until safety is violated</h3>
+                <div class="story-box">
+                    <h3>Example 1: Financial Discussion</h3>
+                    <p><em>"I wanted to talk about how we're managing our finances. I don't want you to think I don't appreciate the time you've taken to keep our account balanced. I do appreciate it. I do, however, have some concerns with how we're using the online banking system."</em></p>
+                </div>
+                <div class="story-box">
+                    <h3>Example 2: Relationship Issue</h3>
+                    <p><em>"I'd like to talk about something worrying me, and I'm not sure how to handle this conversation. My fear is that I'll damage our relationship, and that's not my intent at all. My goal in bringing this up is to <strong>strengthen</strong> our relationship."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Bridge to Skill 4 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Most Complex Skill</h2>
+                <div class="bridge-box">
+                    <h3>Skills 1-3 handle most safety issues</h3>
+                    <p>Share intent, apologize, and contrast work when:</p>
+                    <ul>
+                        <li>Your intent is misunderstood</li>
+                        <li>You've made a mistake</li>
+                        <li>There's a simple misunderstanding</li>
+                    </ul>
+                </div>
+                <div class="highlight">
+                    <h3>But what if you're truly at cross purposes?</h3>
+                    <p>When you genuinely want different things, you need a more sophisticated approach...</p>
+                    <p style="margin-top: 15px;"><strong>Enter Skill 4: Create a Mutual Purpose</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Skill 4 - Create a Mutual Purpose (CRIB) -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Skill 4: Create a Mutual Purpose</h2>
+                <h3>When you're at cross purposes, use CRIB</h3>
+                <div class="story-box">
+                    <h3><strong>C</strong>ommit to seek mutual purpose</h3>
+                    <p>Make a public commitment to stay in conversation until you find something that serves everyone</p>
+                </div>
+                <div class="story-box">
+                    <h3><strong>R</strong>ecognize the purpose behind the strategy</h3>
+                    <p>Ask WHY they want what they're asking for. Separate demands from underlying purpose</p>
+                </div>
+                <div class="story-box">
+                    <h3><strong>I</strong>nvent a mutual purpose</h3>
+                    <p>If still at odds, invent a higher or longer-term purpose that's more motivating</p>
+                </div>
+                <div class="story-box">
+                    <h3><strong>B</strong>rainstorm new strategies</h3>
+                    <p>With mutual purpose clear, jointly search for solutions that serve everyone</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: CRIB Step 1 - Commit -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Commit to Seek Mutual Purpose</h2>
+                <h3>Stop fighting and start with heart</h3>
+                <ul>
+                    <li>Stop using silence or violence to compel others</li>
+                    <li>Suspend belief that your choice is the only one</li>
+                    <li>Open your mind: maybe there's a third choice</li>
+                    <li>Act on faith that your partner is stuck because they feel unsafe</li>
+                </ul>
+                <div class="highlight">
+                    <h3>Say It Out Loud</h3>
+                    <p><em>"It seems like we're both trying to force our view on each other. I commit to stay in this discussion until we have a solution that satisfies both of us."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: CRIB Step 2 - Recognize -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Recognize the Purpose Behind the Strategy</h2>
+                <h3>We confuse wants (purpose) with strategy</h3>
+                <div class="story-box">
+                    <h3>Example: Movie vs. Stay Home</h3>
+                    <p><strong>Strategies:</strong> "I want to go to a movie" vs. "I want to stay home"</p>
+                    <p style="margin-top: 15px;"><strong>Ask WHY:</strong></p>
+                    <p>"Why do you want to stay home?" → <em>"Peace and quiet"</em></p>
+                    <p>"Why do you want to go to a movie?" → <em>"Time with you, away from kids"</em></p>
+                    <p style="margin-top: 15px;"><strong>Real purposes:</strong> Peace/quiet AND time together away</p>
+                    <p><strong>New option:</strong> Drive up the canyon together—quiet AND away!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: CRIB Step 3 - Invent -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Invent a Mutual Purpose</h2>
+                <h3>When purposes can't both be served</h3>
+                <p>Move to more <strong>encompassing goals</strong>—find objectives that are more meaningful or rewarding</p>
+                <div class="story-box">
+                    <h3>Example: Job Promotion Requiring Move</h3>
+                    <p><strong>Your goal:</strong> Take promotion (career advancement)</p>
+                    <p><strong>Spouse's goal:</strong> Stay put (family stability, kids' friends)</p>
+                    <p style="margin-top: 15px;"><strong>Higher purpose:</strong> The needs of our relationship and children come before career aspirations</p>
+                    <p><em>By focusing on higher and longer-term goals, you transcend short-term compromises</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: CRIB Step 4 - Brainstorm -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Brainstorm New Strategies</h2>
+                <h3>With mutual purpose clear, create options</h3>
+                <ul>
+                    <li>Once safety is restored, return to content</li>
+                    <li>Come up with options that serve everyone</li>
+                    <li>Suspend judgment and think outside the box</li>
+                    <li>You'll no longer spend energy on unproductive conflict</li>
+                </ul>
+                <div class="highlight">
+                    <h3>Questions to Ask</h3>
+                    <p>Can we find a local job that meets career goals? Is this the only opportunity? Is a move really necessary? Is there another community offering similar benefits?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Combined Discussion Question -->
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Question</h2>
+                <div class="question-text">
+                    Which skill feels easiest and which feels hardest for you? Think of a time arguing over what to do instead of why—how could CRIB help you get unstuck in your next crucial conversation?
+                </div>
+                <p><em>Discuss ~10 minutes.</em></p>
+            </div>
+        </div>
+
+        <!-- Slide 20: Safety in Virtual Communication -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Safety in Virtual Communication</h2>
+                <h3>Same principles, different medium</h3>
+                <div class="highlight">
+                    <p>The core conditions don't change. You still need mutual purpose and mutual respect. But in written communication, it's <strong>even more essential</strong> to verbalize your intent.</p>
+                </div>
+                <div class="story-box">
+                    <h3>The "Write It Twice" Rule</h3>
+                    <p><strong>First:</strong> Write to get your content across</p>
+                    <p><strong>Second:</strong> Read slowly imagining their face. How might they feel? Rewrite with safety in mind.</p>
+                </div>
+                <div class="story-box">
+                    <h3>Be Explicit About Intent</h3>
+                    <p><em>"If you could see my face right now, you'd see the wrinkles in my worried forehead as I hope this isn't coming across as harsh or critical..."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Putting It All Together -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Putting It All Together</h2>
+                <h3>The complete process</h3>
+                <div class="step-box">
+                    <h4>Step 1: Notice safety is at risk</h4>
+                    <p>Watch for silence or violence</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 2: Step out of content</h4>
+                    <p>Stop talking about the topic</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 3: Decide which condition is at risk</h4>
+                    <p>Mutual Purpose or Mutual Respect?</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 4: Use the appropriate skill(s)</h4>
+                    <p>Share Intent, Apologize, Contrast, or CRIB</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 5: Step back into content</h4>
+                    <p>Once safety is restored, continue dialogue</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Practice This Week -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Practice This Week</h2>
+                <div class="highlight">
+                    <h3>In your next crucial conversation:</h3>
+                    <ul>
+                        <li><strong>Start with good intent:</strong> Share what you want for everyone up front</li>
+                        <li><strong>Watch for safety violations:</strong> Notice when respect or purpose is at risk</li>
+                        <li><strong>Step out when needed:</strong> Stop and rebuild safety before continuing</li>
+                        <li><strong>Use contrasting preventively:</strong> Clarify intent before misunderstandings occur</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: This Week's Challenge -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>This Week's Challenge</h2>
+                <div class="highlight">
+                    <h3>Practice one conversation with these steps:</h3>
+                    <ul>
+                        <li>Plan a crucial conversation you need to have</li>
+                        <li>Write out how you'll <strong>share your good intent</strong> at the start</li>
+                        <li>Prepare a <strong>contrasting statement</strong> to prevent misunderstanding</li>
+                        <li>If you get stuck, use <strong>CRIB</strong> to create mutual purpose</li>
+                    </ul>
+                </div>
+                <p><strong>Next Meeting:</strong> Share what happened when you made it safe</p>
+            </div>
+        </div>
+
+        <!-- Slide 24: Remember -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Remember</h2>
+                <div class="two-column">
+                    <div class="highlight">
+                        <h3>Safety ≠ Comfort</h3>
+                        <p>Crucial conversations require stretch and vulnerability. Safety means meaning flows freely, not that everyone feels comfortable.</p>
+                    </div>
+                    <div class="highlight">
+                        <h3>It's About Intent</h3>
+                        <p>People don't become defensive about WHAT you say—they become defensive about WHY they think you're saying it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Key Takeaway -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Key Takeaway</h2>
+                <div class="highlight">
+                    <h3>When it's safe, you can talk about almost anything</h3>
+                    <p style="margin-top: 20px;">Step out of the content when safety is at risk. Rebuild safety using the four skills. Then step back in and continue the dialogue.</p>
+                    <p style="margin-top: 20px;"><em>People never become defensive about what you're saying—only about why they think you're saying it.</em></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation -->
+    <nav class="navigation" aria-label="Slide navigation controls">
+        <button class="auto-advance-toggle" 
+                id="autoAdvanceToggle" 
+                onclick="toggleAutoAdvance()" 
+                aria-pressed="false"
+                aria-label="Toggle automatic slide advancement">
+            <span aria-hidden="true">▶</span> Auto-Advance: OFF
+        </button>
+        <button class="nav-btn" onclick="previousSlide()" aria-label="Go to previous slide">
+            Previous
+        </button>
+        
+        <div class="timer-container" id="timerContainer">
+            <div class="circular-timer">
+                <svg width="60" height="60" aria-hidden="true">
+                    <circle class="timer-background" cx="30" cy="30" r="26"></circle>
+                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26" 
+                            stroke-dasharray="163.36" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-text" id="timerText">0:00</div>
+            </div>
+        </div>
+        
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Go to next slide">
+            Next
+        </button>
+    </nav>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        
+        let autoAdvanceEnabled = false;
+        let countdownInterval = null;
+        let remainingTime = 0;
+        let totalDuration = 0;
+        let lastAnnouncement = -1;
+        
+        const timerContainer = document.getElementById('timerContainer');
+        const timerCircle = document.getElementById('timerCircle');
+        const timerText = document.getElementById('timerText');
+        const timerAria = document.getElementById('timerAria');
+        const autoAdvanceToggle = document.getElementById('autoAdvanceToggle');
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+        
+        const DURATIONS_SECONDS = [
+            30,  // 1 Title
+            45,  // 2 Core Message
+            90,  // 3 The Process
+            120, // 4 Two Conditions
+            120, // 5 Mutual Purpose
+            120, // 6 Mutual Respect
+            300, // 7 Discussion Q1 (5 min)
+            90,  // 8 Four Skills Overview
+            120, // 9 Share Good Intent
+            120, // 10 Apologize
+            150, // 11 Contrast
+            120, // 12 Contrast Prevention
+            60,  // 13 Bridge to Skill 4
+            120, // 14 CRIB Overview
+            120, // 15 Commit
+            150, // 16 Recognize
+            120, // 17 Invent
+            90,  // 18 Brainstorm
+            600, // 19 COMBINED Discussion (10 min)
+            120, // 20 Virtual Communication
+            90,  // 21 Putting It Together
+            90,  // 22 Practice This Week
+            60,  // 23 This Week's Challenge
+            60,  // 24 Remember
+            45   // 25 Key Takeaway
+        ];
+        
+        function getSlideDuration() {
+            return DURATIONS_SECONDS[currentSlide] ?? 60;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateTimerCircle() {
+            const circumference = 163.36;
+            const progress = remainingTime / totalDuration;
+            const offset = circumference * (1 - progress);
+            timerCircle.style.strokeDashoffset = offset;
+        }
+        
+        function announceTimer(msg) {
+            if (timerAria) {
+                timerAria.textContent = msg;
+            }
+        }
+        
+        function startTimer() {
+            if (!autoAdvanceEnabled) return;
+            
+            stopTimer();
+            
+            totalDuration = getSlideDuration();
+            remainingTime = totalDuration;
+            lastAnnouncement = -1;
+            
+            timerText.textContent = formatTime(remainingTime);
+            updateTimerCircle();
+            
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                timerText.textContent = formatTime(remainingTime);
+                updateTimerCircle();
+                
+                // Announce at minute marks and 10-second intervals under 1 min
+                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
+                    if (remainingTime !== lastAnnouncement) {
+                        announceTimer(`${formatTime(remainingTime)} remaining`);
+                        lastAnnouncement = remainingTime;
+                    }
+                }
+                
+                if (remainingTime <= 0) {
+                    stopTimer();
+                    nextSlide();
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }
+        
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            
+            if (autoAdvanceEnabled) {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">⏸</span> Auto-Advance: ON';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
+                autoAdvanceToggle.classList.add('active');
+                timerContainer.classList.add('active');
+                startTimer();
+            } else {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">▶</span> Auto-Advance: OFF';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
+                autoAdvanceToggle.classList.remove('active');
+                timerContainer.classList.remove('active');
+                stopTimer();
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('with-header');
+            slides[currentSlide].removeAttribute('tabindex');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            if (currentSlide === 0) {
+                chapterHeader.classList.remove('show');
+            } else {
+                chapterHeader.classList.add('show');
+                slides[currentSlide].classList.add('with-header');
+            }
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            
+            // Focus management for screen readers
+            slides[currentSlide].setAttribute('tabindex', '-1');
+            slides[currentSlide].focus();
+            
+            if (autoAdvanceEnabled) {
+                startTimer();
+            }
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (event.key === 'ArrowRight') {
+                nextSlide();
+            } else if (event.key === 'a' || event.key === 'A') {
+                toggleAutoAdvance();
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

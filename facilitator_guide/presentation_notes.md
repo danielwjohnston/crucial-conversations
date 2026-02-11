@@ -385,3 +385,7 @@
 - **Rest**: Recover your energy
 - **Document**: Notes for next time
 - **Celebrate**: Acknowledge your effort
+
+## Slidedeck QA Standards
+- Use `slidedeck_quality_standards.md` as the baseline before each facilitation cycle.
+- Re-run `python ../tools/chapter_alignment_audit.py` whenever chapter content changes.

@@ -767,20 +767,18 @@
     </footer>
 
     <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
-        <div class="slide title-slide">
-<span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">1</span>
         </div>
-        <div>Leadership Bookclub - Learn to Look</div>
-        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
-            Auto-advance: OFF
-        </button>
-    </header>
 
-    <div class="persistent-header" id="persistentHeader">
-        <h2>Learn to Look</h2>
-    </div>
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <main class="slideshow-container" id="main-content">
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>Learn to Look</h2>
+            <p>How to Notice When Safety is at Risk</p>
+        </div>
+
         <div class="slide active">
             <h1>Learn to Look</h1>
             <h2>How to Notice When Safety is at Risk</h2>
@@ -945,7 +943,7 @@
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const totalSlides = 7;
+        const totalSlides = slides.length;
         const chapterHeader = document.getElementById('chapterHeader');
         const timerContainer = document.getElementById('timerContainer');
         const timerText = document.getElementById('timerText');

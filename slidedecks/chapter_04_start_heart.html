@@ -767,20 +767,18 @@
     </footer>
 
     <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
-        <div class="slide title-slide">
-<span id="currentSlide">1</span> / <span id="totalSlides">9</span>
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">1</span>
         </div>
-        <div>Leadership Bookclub - Start with Heart</div>
-        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
-            Auto-advance: OFF
-        </button>
-    </header>
 
-    <div class="persistent-header" id="persistentHeader">
-        <h2>Start with Heart</h2>
-    </div>
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <main class="slideshow-container" id="main-content">
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>Start with Heart</h2>
+            <p>How to Stay Focused on What You Really Want</p>
+        </div>
+
         <div class="slide active">
             <h1>Start with Heart</h1>
             <h2>How to Stay Focused on What You Really Want</h2>
@@ -899,6 +897,34 @@
             </div>
         </div>
 
+
+        <div class="slide">
+<h2>Discussion Lab: Return to What You Really Want</h2>
+            <div class="exercise">
+                <h3>Pair Debrief (8 min)</h3>
+                <ul>
+                    <li>Describe a conversation where you shifted into winning, revenge, or avoidance.</li>
+                    <li>Rework that moment using the three questions (self, others, relationship).</li>
+                    <li>What would you say differently to restore mutual purpose?</li>
+                </ul>
+            </div>
+            <p class="key-point">Facilitator cue: Keep the focus on purpose, not blame.</p>
+        </div>
+
+        <div class="slide">
+<h2>Action Commitment: CPR Reset</h2>
+            <p>When emotions spike, use this quick reset to stay aligned with Start with Heart.</p>
+            <div class="highlight">
+                <h3>CPR in the Moment</h3>
+                <ol>
+                    <li><strong>C</strong>larify what you really want.</li>
+                    <li><strong>P</strong>ause and breathe before responding.</li>
+                    <li><strong>R</strong>estate purpose in one sentence.</li>
+                </ol>
+            </div>
+            <p class="key-point">Before next book club, practice this once and bring your reflection.</p>
+        </div>
+
 </main>
 
     <nav class="navigation" role="navigation" aria-label="Slide navigation">
@@ -921,7 +947,7 @@
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const totalSlides = 8;
+        const totalSlides = slides.length;
         const chapterHeader = document.getElementById('chapterHeader');
         const timerContainer = document.getElementById('timerContainer');
         const timerText = document.getElementById('timerText');
@@ -940,13 +966,16 @@
         // Timings for Chapter 4 content (in seconds)
                 const DURATIONS_SECONDS = [
             30,   // 1 Title
-            90,   // 2 Content
-            90,   // 3 Content
-            90,   // 4 Content
-            90,   // 5 Content
-            120,   // 6 Exercise
-            90,   // 7 Content
-            120,   // 8 Exercise
+            90,   // 2 Challenge
+            90,   // 3 Change possible
+            90,   // 4 Skill intro
+            90,   // 5 Three questions
+            120,  // 6 Return to purpose
+            90,   // 7 Common traps
+            120,  // 8 Power of clarity
+            120,  // 9 Discussion lab
+            90,   // 10 Action commitment
+            60,   // 11 Buffer
         ];
         
         function getSlideDuration() {

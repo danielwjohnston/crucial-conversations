@@ -499,9 +499,9 @@
             <div class="progress-section">
                 <h3>Your Training Progress</h3>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 30%">30% Complete</div>
+                    <div class="progress-fill" style="width: 0%">0% Complete</div>
                 </div>
-                <p>You've completed 4 of 13 chapters. Keep going!</p>
+                <p>You've completed 0 of 13 chapters. Keep going!</p>
                 <button class="btn btn-secondary" onclick="resetProgress()">Reset Progress</button>
             </div>
         </section>
@@ -616,13 +616,15 @@
     </footer>
 
     <script>
+        const CHAPTER_PROGRESS_STORAGE_KEY = 'crucial-conversations-progress';
+
         const chapters = [
             {
                 number: 1,
                 title: "What's a Crucial Conversation",
                 description: "Definition and importance of crucial conversations",
                 file: "slidedecks/chapter_01_crucial_conversation.html",
-                completed: true,
+                completed: false,
                 tags: ["Foundation", "Introduction"]
             },
             {
@@ -630,7 +632,7 @@
                 title: "Mastering Crucial Conversations",
                 description: "The power of dialogue and how skills are learned",
                 file: "slidedecks/chapter_02_mastering_conversations.html",
-                completed: true,
+                completed: false,
                 tags: ["Foundation", "Skills"]
             },
             {
@@ -638,7 +640,7 @@
                 title: "Choose Your Topic",
                 description: "How to be sure you hold the right conversation",
                 file: "slidedecks/chapter_03_choose_topic.html",
-                completed: true,
+                completed: false,
                 tags: ["Preparation", "Strategy"]
             },
             {
@@ -646,7 +648,7 @@
                 title: "Start with Heart",
                 description: "How to stay focused on what you really want",
                 file: "slidedecks/chapter_04_start_heart.html",
-                completed: true,
+                completed: false,
                 tags: ["Mindset", "Preparation"]
             },
             {
@@ -654,7 +656,7 @@
                 title: "Master My Stories",
                 description: "How to control your emotions and assumptions",
                 file: "slidedecks/chapter_05_master_stories.html",
-                completed: true,
+                completed: false,
                 tags: ["Emotional Control", "Mindset"]
             },
             {
@@ -662,7 +664,7 @@
                 title: "Learn to Look",
                 description: "How to spot when conversations become crucial",
                 file: "slidedecks/chapter_06_learn_to_look.html",
-                completed: true,
+                completed: false,
                 tags: ["Awareness", "Detection"]
             },
             {
@@ -670,7 +672,7 @@
                 title: "Make It Safe",
                 description: "How to create conditions for open dialogue",
                 file: "slidedecks/chapter_07_make_safe.html",
-                completed: true,
+                completed: false,
                 tags: ["Safety", "Environment"]
             },
             {
@@ -678,7 +680,7 @@
                 title: "STATE My Path",
                 description: "How to share your views persuasively",
                 file: "slidedecks/chapter_08_state_path.html",
-                completed: true,
+                completed: false,
                 tags: ["Communication", "Speaking"]
             },
             {
@@ -686,7 +688,7 @@
                 title: "Explore Others' Paths",
                 description: "How to listen with understanding",
                 file: "slidedecks/chapter_09_explore_paths.html",
-                completed: true,
+                completed: false,
                 tags: ["Listening", "Empathy"]
             },
             {
@@ -694,7 +696,7 @@
                 title: "Retake Your Pen",
                 description: "How to move to dialogue and action",
                 file: "slidedecks/chapter_10_retake_pen.html",
-                completed: true,
+                completed: false,
                 tags: ["Action", "Decision"]
             },
             {
@@ -702,7 +704,7 @@
                 title: "Move to Action",
                 description: "How to turn crucial conversations into results",
                 file: "slidedecks/chapter_11_move_action.html",
-                completed: true,
+                completed: false,
                 tags: ["Action", "Results"]
             },
             {
@@ -710,7 +712,7 @@
                 title: "Yeah, But",
                 description: "Advice for tough cases and challenging situations",
                 file: "slidedecks/chapter_12_yeah_but.html",
-                completed: true,
+                completed: false,
                 tags: ["Challenges", "Advanced"]
             },
             {
@@ -718,10 +720,46 @@
                 title: "Putting It All Together",
                 description: "Tools for preparing and continuing to learn",
                 file: "slidedecks/chapter_13_putting_together.html",
-                completed: true,
+                completed: false,
                 tags: ["Integration", "Practice"]
             }
         ];
+
+        function getSavedProgress() {
+            try {
+                const raw = localStorage.getItem(CHAPTER_PROGRESS_STORAGE_KEY);
+                if (!raw) return {};
+                const parsed = JSON.parse(raw);
+                return parsed && typeof parsed === 'object' ? parsed : {};
+            } catch {
+                return {};
+            }
+        }
+
+        function saveProgress() {
+            const progress = Object.fromEntries(
+                chapters.map(chapter => [chapter.file, chapter.completed])
+            );
+
+            localStorage.setItem(CHAPTER_PROGRESS_STORAGE_KEY, JSON.stringify(progress));
+        }
+
+        function applySavedProgress() {
+            const savedProgress = getSavedProgress();
+            chapters.forEach(chapter => {
+                chapter.completed = Boolean(savedProgress[chapter.file]);
+            });
+        }
+
+        function markChapterCompleted(file) {
+            const chapter = chapters.find(ch => ch.file === file);
+            if (!chapter || chapter.completed) return;
+
+            chapter.completed = true;
+            saveProgress();
+            updateProgress();
+            renderChapters();
+        }
 
         function renderChapters() {
             const grid = document.getElementById('chaptersGrid');
@@ -733,11 +771,17 @@
                     <div style="margin-bottom: 15px;">
                         ${chapter.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                     </div>
-                    <a href="${chapter.file}" class="btn" ${!chapter.completed ? 'style="background: #6c757d;"' : ''}>
-                        ${chapter.completed ? 'Start Chapter' : 'Coming Soon'}
+                    <a href="${chapter.file}" class="btn" data-chapter-file="${chapter.file}">
+                        ${chapter.completed ? 'Review Chapter' : 'Start Chapter'}
                     </a>
                 </div>
             `).join('');
+
+            grid.querySelectorAll('[data-chapter-file]').forEach((link) => {
+                link.addEventListener('click', () => {
+                    markChapterCompleted(link.dataset.chapterFile);
+                });
+            });
         }
 
         function updateProgress() {
@@ -759,7 +803,11 @@
 
         function resetProgress() {
             if (confirm('Are you sure you want to reset your progress?')) {
-                localStorage.removeItem('crucial-conversations-progress');
+                chapters.forEach(chapter => {
+                    chapter.completed = false;
+                });
+                localStorage.removeItem(CHAPTER_PROGRESS_STORAGE_KEY);
+                renderChapters();
                 updateProgress();
             }
         }
@@ -781,6 +829,7 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
+            applySavedProgress();
             renderChapters();
             updateProgress();
             setupSearch();

@@ -767,20 +767,18 @@
     </footer>
 
     <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
-        <div class="slide title-slide">
-<span id="currentSlide">1</span> / <span id="totalSlides">9</span>
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">1</span>
         </div>
-        <div>Leadership Bookclub - STATE My Path</div>
-        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
-            Auto-advance: OFF
-        </button>
-    </header>
 
-    <div class="persistent-header" id="persistentHeader">
-        <h2>STATE My Path</h2>
-    </div>
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <main class="slideshow-container" id="main-content">
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>STATE My Path</h2>
+            <p>How to Speak Persuasively, Not Abrasively</p>
+        </div>
+
         <div class="slide active">
             <h1>STATE My Path</h1>
             <h2>How to Speak Persuasively, Not Abrasively</h2>
@@ -938,6 +936,44 @@
             <p class="key-point">Tentative language doesn't weaken your position—it strengthens it by making it more approachable.</p>
         </div>
 
+
+        <div class="slide">
+<h2>E - Encourage Testing</h2>
+            <p>After sharing your path, explicitly invite people to challenge it.</p>
+            <div class="skill">
+                <h3>Why this matters</h3>
+                <ul>
+                    <li>Prevents defensiveness and false agreement.</li>
+                    <li>Signals confidence without arrogance.</li>
+                    <li>Keeps the pool of shared meaning open.</li>
+                </ul>
+            </div>
+            <div class="example">
+                <h3>Useful language</h3>
+                <ul>
+                    <li>"What data would lead you to a different conclusion?"</li>
+                    <li>"Where do you see this differently?"</li>
+                    <li>"Please push back—I'd rather test this now than miss something important."</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+<h2>Discussion + Action: STATE in a Real Case</h2>
+            <div class="exercise">
+                <h3>Book Club Practice (10 min)</h3>
+                <ol>
+                    <li>Pick one current workplace tension.</li>
+                    <li>Draft a 5-line STATE script (S/T/A/T/E).</li>
+                    <li>Role-play once, then revise for stronger safety.</li>
+                </ol>
+            </div>
+            <div class="highlight">
+                <h3>Weekly commitment</h3>
+                <p>Use your script in one real conversation and note what changed when you invited testing.</p>
+            </div>
+        </div>
+
 </main>
 
     <nav class="navigation" role="navigation" aria-label="Slide navigation">
@@ -960,7 +996,7 @@
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const totalSlides = 8;
+        const totalSlides = slides.length;
         const chapterHeader = document.getElementById('chapterHeader');
         const timerContainer = document.getElementById('timerContainer');
         const timerText = document.getElementById('timerText');
@@ -979,13 +1015,16 @@
         // Timings for Chapter 8 content (in seconds)
                 const DURATIONS_SECONDS = [
             30,   // 1 Title
-            90,   // 2 Content
-            90,   // 3 Content
-            90,   // 4 Content
-            90,   // 5 Content
-            90,   // 6 Content
-            90,   // 7 Content
-            90,   // 8 Content
+            90,   // 2 Ready to speak
+            90,   // 3 Challenge
+            90,   // 4 STATE overview
+            90,   // 5 Share facts
+            90,   // 6 Tell story
+            90,   // 7 Ask paths
+            90,   // 8 Talk tentatively
+            90,   // 9 Encourage testing
+            120,  // 10 Discussion + action
+            60,   // 11 Buffer
         ];
         
         function getSlideDuration() {

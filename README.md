@@ -22,13 +22,17 @@ crucial-conversations/
 │   └── chapter_13_putting_together.html
 ├── resources/                         # Supporting materials
 │   ├── pdfs/                         # PDF handouts and guides
-│   ├── handouts/                     # Participant materials
+│   ├── handouts/                     # Participant worksheet area
 │   ├── infographics/                 # Visual learning aids
-│   └── transcripts/                  # Audio transcriptions
+│   ├── transcripts/                  # Public transcript entry point
+│   └── media/                        # Media embeds + transcription source files
+│       ├── EMBEDS/
+│       └── TRANSCRIPTIONS/
 ├── templates/                        # Reusable components
 │   ├── slidedeck_template.html       # Master template
-│   ├── styles.css                    # Shared styles
-│   └── scripts.js                    # Interactive functionality
+│   └── (chapter decks currently inline CSS/JS)
+├── tools/                            # QA and audit scripts
+│   └── chapter_alignment_audit.py
 ├── original_files/                   # Original source materials
 ├── facilitator_guide/               # Session materials
 │   ├── session_timings.md
@@ -117,6 +121,11 @@ All slidedecks use a standardized template ensuring:
 - Easy maintenance
 - Scalable additions
 - Brand compliance
+
+### Quality Assurance Workflow
+- Run `python tools/chapter_alignment_audit.py` to compare each chapter deck against the corresponding source text in `original_files/`.
+- Review or regenerate `REVIEW_QUEUE/COMPLETED/slidedeck_alignment_report.md` after content updates.
+- Use chapter 10 (`Retake Your Pen`) as the benchmark for deck pacing, facilitator prompts, and action-oriented practice sections.
 
 ### File Organization
 - **Original Files**: All source materials preserved in `original_files/`

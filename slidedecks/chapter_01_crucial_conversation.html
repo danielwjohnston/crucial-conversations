@@ -64,8 +64,24 @@
         }
 
         *:focus-visible {
-            outline: 3px solid #000;
+            outline: 3px solid #e30613;
             outline-offset: 2px;
+        }
+
+        *:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        .slide:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.14);
+            border-radius: 12px;
+        }
+
+        .discussion-slide:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.28);
+            border-radius: 12px;
         }
 
         .nav-btn:focus-visible,
@@ -526,6 +542,97 @@
             margin-bottom: 15px;
         }
 
+        .digest-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(72, 187, 120, 0.55);
+            background: rgba(72, 187, 120, 0.10);
+            color: #1f5b3b;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .digest-pill:hover {
+            transform: translateY(-1px);
+            background: rgba(72, 187, 120, 0.16);
+        }
+
+        .digest-pill:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(72, 187, 120, 0.28);
+        }
+
+        .digest-pill .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.18);
+        }
+
+        .digest-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .digest-modal.active {
+            display: flex;
+        }
+
+        .digest-content {
+            background: #f0fff4;
+            border: 3px solid #48bb78;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 92%;
+            max-height: 82vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .digest-content h2 {
+            color: #48bb78;
+            margin-bottom: 12px;
+        }
+
+        .digest-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #48bb78;
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .digest-close:hover {
+            background: #38a169;
+        }
+
         .dans-digest-slide {
             background: #f0fff4;
             border: 3px solid #48bb78;
@@ -649,6 +756,27 @@
             color: #f0f0f0;
         }
 
+        .look-ahead-slide {
+            background: white;
+            border: 3px solid #e30613;
+        }
+
+        .look-ahead-slide h1 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+
+        .look-ahead-slide h2 {
+            color: #333;
+            text-transform: none;
+            font-size: 2.2em;
+            margin-bottom: 18px;
+        }
+
+        .look-ahead-slide .subtitle {
+            color: #666;
+        }
+
         .brand-logo {
             background: #e30613;
             color: white;
@@ -766,120 +894,253 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="header" role="banner">CrucialLearning.com | 800.449.5989</header>
+    <header class="header" role="banner">
+        CrucialLearning.com | 800.449.5989
+    </header>
 
     <footer class="footer" role="contentinfo">
         ©2026 Leadership Development. All rights reserved.
     </footer>
 
     <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
-        <div class="slide title-slide">
-<span id="currentSlide">1</span> / <span id="totalSlides">8</span>
+        <div class="slide-counter" aria-live="polite" aria-atomic="true">
+            Slide <span id="slideNumber">1</span> of <span id="totalSlides">14</span>
         </div>
-        <div>Leadership Bookclub - What's a Crucial Conversation</div>
-        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
-            Auto-advance: OFF
-        </button>
-    </header>
 
-    <div class="persistent-header" id="persistentHeader">
-        <h2>What's a Crucial Conversation</h2>
-    </div>
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-    <main class="slideshow-container" id="main-content">
-        <div class="slide active">
-            <h1>What's a Crucial Conversation?</h1>
-            <h2>Chapter 1</h2>
-            <div class="quote">
-                "The single biggest problem in communication is the illusion that it has taken place."<br>
-                — George Bernard Shaw
+        <div class="persistent-header" id="chapterHeader">
+            <h3>Leadership Bookclub</h3>
+            <h2>WHAT'S A CRUCIAL CONVERSATION</h2>
+            <p>Chapter 1 • And who cares?</p>
+        </div>
+
+        <div class="slide active title-slide">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>CHAPTER 1</h1>
+            <h2>What's a Crucial Conversation?</h2>
+            <p class="subtitle">And who cares?</p>
+            <div class="quote-box" style="margin-top: 25px;">
+                <p style="font-size: 1.25em; text-align: center; margin-bottom: 14px;">"The single biggest problem in communication is the illusion that it has taken place."</p>
+                <p style="text-align: center; font-size: 1.05em;">— George Bernard Shaw</p>
             </div>
         </div>
 
         <div class="slide">
-<h2>What Comes to Mind?</h2>
-            <p>When you hear "Crucial Conversation," what images appear?</p>
-            <ul>
-                <li>Presidents and prime ministers</li>
-                <li>Massive tables and debates</li>
-                <li>High-stakes decisions</li>
-                <li>Future of nations</li>
-            </ul>
-            <div class="highlight">
-                <p class="key-point">While these are important, crucial conversations happen to everyone, every day.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-<h2>The Real Definition</h2>
-            <div class="definition">
-                <h3>A Crucial Conversation is a discussion between:</h3>
+            <div class="slide-content">
+                <h2>What Comes to Mind?</h2>
+                <p>When you hear “crucial conversation,” what images appear?</p>
                 <ul>
-                    <li><strong>Two or more people</strong></li>
-                    <li>Where <strong>stakes are high</strong></li>
-                    <li><strong>Opinions vary</strong></li>
-                    <li><strong>Emotions run strong</strong></li>
+                    <li>Presidents and prime ministers</li>
+                    <li>Massive tables and debates</li>
+                    <li>High-stakes decisions</li>
+                    <li>The future of nations</li>
                 </ul>
-            </div>
-            <p>These conversations shape our relationships, teams, and organizations.</p>
-        </div>
-
-        <div class="slide">
-<h2>Everyday Examples</h2>
-            <ul>
-                <li>Talking to a coworker about poor performance</li>
-                <li>Discussing care options with aging parents</li>
-                <li>Addressing concerns about a friend's substance abuse</li>
-                <li>Dealing with a rebellious teenager</li>
-                <li>Giving your boss feedback about their behavior</li>
-                <li>Approaching a spouse who isn't keeping commitments</li>
-            </ul>
-            <div class="highlight">
-                <p class="key-point">These are the conversations that matter most in our lives.</p>
+                <div class="highlight">
+                    <p class="key-point">Crucial conversations happen to everyone—every day.</p>
+                </div>
             </div>
         </div>
 
         <div class="slide">
-<h2>What's at Stake?</h2>
-            <p>When we handle crucial conversations poorly:</p>
-            <ul>
-                <li>Results suffer</li>
-                <li>Relationships are damaged</li>
-                <li>Teams fall apart</li>
-                <li>Careers derail</li>
-                <li>Organizations fail</li>
-            </ul>
-            <div class="exercise">
-                <h3>Think About It:</h3>
-                <p>What crucial conversation are you currently avoiding? What's the cost of not having it?</p>
+            <div class="slide-content">
+                <h2>The Definition</h2>
+                <div class="bridge-box">
+                    <h3 style="text-align:center; margin-bottom: 15px;">A conversation becomes <em>crucial</em> when:</h3>
+                    <ul style="font-size: 1.2em;">
+                        <li><strong>Opinions vary</strong></li>
+                        <li><strong>Stakes are high</strong></li>
+                        <li><strong>Emotions run strong</strong></li>
+                    </ul>
+                </div>
+                <p style="margin-top: 20px;">When all three are present, the risk of breakdown rises—so does the payoff for doing it well.</p>
             </div>
         </div>
 
         <div class="slide">
-<h2>The Three Options</h2>
-            <p>When faced with a crucial conversation, we typically:</p>
-            <ol>
-                <li><strong>Avoid</strong> them - hope the problem goes away</li>
-                <li><strong>Face them and handle them poorly</strong> - make things worse</li>
-                <li><strong>Face them and handle them well</strong> - strengthen relationships and get results</li>
-            </ol>
-            <div class="highlight">
-                <p class="key-point">The good news: Dialogue skills are learnable and teachable.</p>
+            <div class="slide-content">
+                <h2>Everyday Examples</h2>
+                <div class="two-column">
+                    <div class="column-box">
+                        <h4>At Work</h4>
+                        <ul>
+                            <li><strong>Promotion:</strong> You think you’re ready. Your boss thinks you’re not.</li>
+                            <li><strong>Strategy meeting:</strong> Pick a new marketing approach—or the company suffers.</li>
+                            <li><strong>Performance:</strong> A teammate’s work is hurting results and trust.</li>
+                        </ul>
+                    </div>
+                    <div class="column-box">
+                        <h4>At Home</h4>
+                        <ul>
+                            <li><strong>Trust:</strong> Your spouse believes you flirted at a party. You don’t.</li>
+                            <li><strong>Neighbors:</strong> A small complaint escalates into a heated argument.</li>
+                            <li><strong>Parenting:</strong> Two people who love the child disagree on what’s best.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight" style="margin-top: 20px;">
+                    <p class="key-point">These conversations reshape your life now.</p>
+                </div>
             </div>
         </div>
 
         <div class="slide">
-<h2>The Dialogue Skills</h2>
-            <p>Master these skills to transform your crucial conversations:</p>
-            <ul>
-                <li><strong>Start with Heart</strong> - Know what you really want</li>
-                <li><strong>Learn to Look</strong> - Spot safety problems</li>
-                <li><strong>Make It Safe</strong> - Create conditions for dialogue</li>
-                <li><strong>Master My Stories</strong> - Control your emotions</li>
-                <li><strong>STATE My Path</strong> - Speak persuasively</li>
-                <li><strong>Explore Others' Paths</strong> - Listen with understanding</li>
-                <li><strong>Retake Your Pen</strong> - Move to action</li>
-            </ul>
+            <div class="slide-content">
+                <h2>Why We’re Often on Our Worst Behavior</h2>
+                <div class="warning-box">
+                    <h3>The cruel irony</h3>
+                    <p>The more important the conversation, the less likely we are to handle it well.</p>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Fight-or-flight</strong> hijacks thinking</li>
+                        <li><strong>Stories</strong> escalate emotion</li>
+                        <li><strong>Silence or violence</strong> replace dialogue</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Lag Time</h2>
+                <div class="highlight">
+                    <h3>Lag time = the delay between a problem and an honest conversation about it</h3>
+                    <p style="margin-top: 10px;">The damage often comes from what happens <em>during the delay</em>—assumptions, resentment, and workarounds.</p>
+                </div>
+                <div class="exercise">
+                    <h3>Quick reflection</h3>
+                    <p>Where do you see lag time in your work or relationships right now?</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>What Is Dialogue?</h2>
+                <div class="definition">
+                    <h3>Dialogue is the free flow of meaning between two or more people.</h3>
+                    <p style="margin-top: 10px;">The goal isn’t to “win”—it’s to create enough shared meaning to make better choices.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>The Pool of Shared Meaning</h2>
+                <div class="bridge-box">
+                    <ul>
+                        <li>When the pool gets bigger, people see more options.</li>
+                        <li>Better options lead to better decisions.</li>
+                        <li>Dialogue motivates and enables better choices.</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 20px;"><strong>Book club goal:</strong> Practice growing the pool—not shrinking it.</p>
+            </div>
+        </div>
+
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Break #1</h2>
+                <div class="discussion-question">
+                    <p><strong>Prompt 1:</strong> Think of a conversation you’ve been avoiding. Which element is most present right now: <em>opinions</em>, <em>stakes</em>, or <em>emotions</em>?</p>
+                </div>
+                <div class="discussion-question">
+                    <p><strong>Prompt 2:</strong> What’s a “plain vanilla” version of the issue—and what makes it become <em>crucial</em>?</p>
+                </div>
+                <div class="discussion-question">
+                    <p><strong>Prompt 3:</strong> When pressure rises, what’s your default: do you go quiet (silence) or get forceful (violence)? What’s the cost?</p>
+                </div>
+                <button class="digest-pill" type="button" data-digest="1" onclick="openDigest(1)" aria-haspopup="dialog" aria-controls="digestModal1">
+                    <span class="dot" aria-hidden="true"></span>
+                    Dan’s Digest
+                </button>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Apply It This Week</h2>
+                <div class="step-box">
+                    <h4>Step 1</h4>
+                    <p>Pick one conversation you’ve been delaying (lag time).</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 2</h4>
+                    <p>Name the three elements: opinions, stakes, emotions.</p>
+                </div>
+                <div class="step-box">
+                    <h4>Step 3</h4>
+                    <p>Define success as “grow the pool,” not “win the point.”</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide discussion-slide">
+            <div class="slide-content">
+                <h2>Discussion Break #2</h2>
+                <div class="discussion-question">
+                    <p><strong>Prompt 1:</strong> Why do you think we’re often on our worst behavior right when the stakes go up?</p>
+                </div>
+                <div class="discussion-question">
+                    <p><strong>Prompt 2:</strong> Where do you see lag time in your life—and what’s it costing you (results, relationships, stress)?</p>
+                </div>
+                <div class="discussion-question">
+                    <p><strong>Prompt 3:</strong> In one sentence, what is “dialogue” and what does it mean to “grow the pool”?</p>
+                </div>
+                <button class="digest-pill" type="button" data-digest="2" onclick="openDigest(2)" aria-haspopup="dialog" aria-controls="digestModal2">
+                    <span class="dot" aria-hidden="true"></span>
+                    Dan’s Digest
+                </button>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>This Week’s Challenge</h2>
+                <div class="highlight">
+                    <h3>Pick one conversation you’ve been delaying</h3>
+                    <ul>
+                        <li>Name the three elements (opinions, stakes, emotions)</li>
+                        <li>Define success as “grow the pool”</li>
+                        <li>Schedule a first step (even a 10-minute start)</li>
+                    </ul>
+                </div>
+                <div class="quote-box" style="margin-top: 25px;">
+                    <p style="text-align:center;"><strong>Key takeaway:</strong> Better outcomes come from better pools of shared meaning.</p>
+                </div>
+                <p style="margin-top: 18px;"><strong>Next meeting:</strong> Bring one example where you noticed opinions/stakes/emotions early—and what you did differently.</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-content">
+                <h2>More to Ponder</h2>
+                <p class="subtitle">Use these as a quick review of key takeaways and ideas to keep thinking about.</p>
+                <div class="story-box">
+                    <h3>Choose 1–2 prompts</h3>
+                    <ul>
+                        <li>What are the three elements that make a conversation crucial?</li>
+                        <li>How do you typically respond under pressure—silence, violence, or dialogue?</li>
+                        <li>Where is lag time showing up for you, and what is it costing you?</li>
+                        <li>What does it look like to “grow the pool” in a real conversation this week?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide look-ahead-slide">
+            <div class="slide-content">
+                <h1>Look Ahead</h1>
+                <h2>Chapter 2: Mastering Conversations</h2>
+                <div class="highlight" style="margin-top: 10px;">
+                    <h3>What we’ll focus on next</h3>
+                    <ul>
+                        <li><strong>Why</strong> it’s hard to choose the right topic when emotions rise</li>
+                        <li>How to avoid the trap of having the <strong>wrong conversation</strong></li>
+                        <li>A simple way to decide what to talk about when things get messy</li>
+                    </ul>
+                </div>
+                <p class="subtitle" style="margin-top: 18px;"><strong>Optional prep:</strong> Bring one situation where the conversation keeps drifting or looping.</p>
+            </div>
         </div>
 
 </main>
@@ -901,10 +1162,52 @@
         <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next →</button>
     </nav>
 
+    <div class="digest-modal" id="digestModal1" role="dialog" aria-labelledby="digestTitle1" aria-modal="true">
+        <div class="digest-content">
+            <button class="digest-close" onclick="closeDigest(1)" aria-label="Close">&times;</button>
+            <h2 id="digestTitle1">Dan’s Digest</h2>
+            <div class="digest-answer">
+                <h4>Answer Key (Discussion Break #1)</h4>
+                <p><strong>What makes it crucial:</strong> When <strong>opinions vary</strong>, <strong>stakes are high</strong>, and <strong>emotions run strong</strong>.</p>
+                <p style="margin-top: 12px;"><strong>Plain vanilla vs. crucial:</strong> The topic may be ordinary, but when disagreement matters, consequences feel big, and emotions show up, the conversation becomes crucial.</p>
+                <p style="margin-top: 12px;"><strong>Typical default reactions:</strong> People tend to move toward <strong>silence</strong> (avoid, withdraw, sugarcoat) or <strong>violence</strong> (control, pressure, attack). Either one shrinks shared meaning.</p>
+            </div>
+            <div class="digest-insights">
+                <h4>Key Points</h4>
+                <ul>
+                    <li>The goal isn’t to win—it’s to keep dialogue going.</li>
+                    <li>When someone feels unsafe, they stop contributing meaning.</li>
+                    <li>Better outcomes come from a bigger Pool of Shared Meaning.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="digest-modal" id="digestModal2" role="dialog" aria-labelledby="digestTitle2" aria-modal="true">
+        <div class="digest-content">
+            <button class="digest-close" onclick="closeDigest(2)" aria-label="Close">&times;</button>
+            <h2 id="digestTitle2">Dan’s Digest</h2>
+            <div class="digest-answer">
+                <h4>Answer Key (Discussion Break #2)</h4>
+                <p><strong>Why we’re often on our worst behavior:</strong> Under stress we revert to fight-or-flight. We tell ourselves fast stories, emotions spike, and we choose silence or violence instead of dialogue.</p>
+                <p style="margin-top: 12px;"><strong>Lag time:</strong> The delay between a problem and the conversation about it. During the delay, we build stories, resentment, and workarounds—making the eventual conversation harder and riskier.</p>
+                <p style="margin-top: 12px;"><strong>Dialogue & the Pool:</strong> Dialogue is the free flow of meaning. The Pool of Shared Meaning is what everyone knows, believes, and feels that’s been shared. A bigger pool creates better choices and stronger commitment—even without full agreement.</p>
+            </div>
+            <div class="digest-insights">
+                <h4>Key Points</h4>
+                <ul>
+                    <li>Skill isn’t just talking—it’s keeping conditions safe enough for meaning to flow.</li>
+                    <li>Shorten lag time to prevent stories from calcifying into certainty.</li>
+                    <li>Shared meaning expands options; options improve decisions and follow-through.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const totalSlides = 7;
+        const totalSlides = slides.length;
         const chapterHeader = document.getElementById('chapterHeader');
         const timerContainer = document.getElementById('timerContainer');
         const timerText = document.getElementById('timerText');
@@ -920,16 +1223,48 @@
         
         document.getElementById('totalSlides').textContent = totalSlides;
         
-        // Timings for Chapter 1 content (in seconds)
-                const DURATIONS_SECONDS = [
-            30,   // 1 Title
-            90,   // 2 Content
-            90,   // 3 Discussion
-            90,   // 4 Content
-            120,   // 5 Exercise
-            90,   // 6 Content
-            90,   // 7 Content
+        // Timings for Chapter 1 (in seconds) — ~60 minutes total
+        const DURATIONS_SECONDS = [
+            45,   // 1 Title
+            180,  // 2 What Comes to Mind
+            180,  // 3 Definition
+            240,  // 4 Everyday Examples
+            240,  // 5 Worst Behavior
+            240,  // 6 Lag Time
+            240,  // 7 Dialogue
+            540,  // 8 Discussion Break #1
+            300,  // 9 Apply It This Week
+            840,  // 10 Discussion Break #2
+            240,  // 11 This Week’s Challenge
+            240,  // 12 More to Ponder
+            90,   // 13 Look Ahead
         ];
+
+        function openDigest(n) {
+            const modal = document.getElementById(`digestModal${n}`);
+            if (!modal) return;
+            modal.classList.add('active');
+            const closeBtn = modal.querySelector('.digest-close');
+            if (closeBtn) closeBtn.focus();
+        }
+
+        function closeDigest(n) {
+            const modal = document.getElementById(`digestModal${n}`);
+            if (!modal) return;
+            modal.classList.remove('active');
+        }
+
+        function closeAllDigests() {
+            document.querySelectorAll('.digest-modal.active').forEach((modal) => modal.classList.remove('active'));
+        }
+
+        document.querySelectorAll('.digest-modal').forEach((modal) => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
         
         function getSlideDuration() {
             return DURATIONS_SECONDS[currentSlide] ?? 60;
@@ -1044,12 +1379,42 @@
         }
 
         document.addEventListener('keydown', function(event) {
+            const anyDigestOpen = !!document.querySelector('.digest-modal.active');
+
             if (event.key === 'ArrowLeft') {
+                if (anyDigestOpen) closeAllDigests();
                 previousSlide();
             } else if (event.key === 'ArrowRight') {
+                if (anyDigestOpen) closeAllDigests();
                 nextSlide();
+            } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                if (anyDigestOpen) {
+                    closeAllDigests();
+                    return;
+                }
+
+                const activeSlide = document.querySelector('.slide.active');
+                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
+                const digestId = digestBtn?.getAttribute('data-digest');
+                if (digestId) {
+                    openDigest(Number(digestId));
+                }
             } else if (event.key === 'a' || event.key === 'A') {
                 toggleAutoAdvance();
+            } else if (event.key === 'd' || event.key === 'D') {
+                if (anyDigestOpen) {
+                    closeAllDigests();
+                    return;
+                }
+
+                const activeSlide = document.querySelector('.slide.active');
+                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
+                const digestId = digestBtn?.getAttribute('data-digest');
+                if (digestId) {
+                    openDigest(Number(digestId));
+                }
+            } else if (event.key === 'Escape') {
+                closeAllDigests();
             }
         });
 

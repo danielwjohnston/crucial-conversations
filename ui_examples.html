@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Examples - Digest Triggers & Wrap-Up Question Framing</title>
+  <style>
+    :root {
+      --brand-red: #e30613;
+      --brand-red-accessible: #c20510;
+      --discussion-blue: #4a90e2;
+      --digest-green: #48bb78;
+      --digest-green-dark: #38a169;
+      --text-dark: #222;
+      --bg: #f6f7f9;
+      --card: #fff;
+      --border: #e6e8ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-accessible) 100%);
+      color: #fff;
+      padding: 18px 22px;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      opacity: 0.9;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 980px) {
+      .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    .card .card-hd {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .card .card-hd h2 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+
+    .slide {
+      padding: 16px;
+    }
+
+    .discussion {
+      background: #f0f8ff;
+      border: 2px solid rgba(74, 144, 226, 0.35);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .discussion h3 {
+      margin: 0 0 10px;
+      color: var(--discussion-blue);
+      font-size: 18px;
+    }
+
+    .prompt {
+      background: #fff;
+      border: 1px solid rgba(74, 144, 226, 0.25);
+      border-left: 6px solid var(--discussion-blue);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .prompt p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .timebox {
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Trigger style 1: pill */
+    .digest-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(72, 187, 120, 0.55);
+      background: rgba(72, 187, 120, 0.10);
+      color: #1f5b3b;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      text-decoration: none;
+    }
+
+    .digest-pill:hover { transform: translateY(-1px); background: rgba(72, 187, 120, 0.16); }
+
+    .digest-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--digest-green);
+      box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.18);
+    }
+
+    /* Trigger style 2: inline link */
+    .digest-inline {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #1f5b3b;
+    }
+
+    .digest-inline a {
+      color: #1f5b3b;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    /* Trigger style 3: side tab */
+    .tab-wrap {
+      position: relative;
+    }
+
+    .digest-tab {
+      position: absolute;
+      right: -10px;
+      top: 18px;
+      transform: translateX(100%);
+      background: var(--digest-green);
+      color: #fff;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      box-shadow: 0 10px 20px rgba(56, 161, 105, 0.30);
+    }
+
+    .digest-tab:hover { background: var(--digest-green-dark); }
+
+    /* Trigger style 4: info icon */
+    .digest-info {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(72, 187, 120, 0.55);
+      background: rgba(72, 187, 120, 0.10);
+      color: #1f5b3b;
+      font-weight: 900;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .digest-info:hover { background: rgba(72, 187, 120, 0.16); }
+
+    /* Modal (from Chapter 11 pattern, simplified) */
+    .digest-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .digest-modal.active { display: flex; }
+
+    .digest-content {
+      background: #f0fff4;
+      border: 3px solid var(--digest-green);
+      border-radius: 16px;
+      max-width: 860px;
+      width: min(860px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 14px 45px rgba(0,0,0,0.35);
+    }
+
+    .digest-content h2 {
+      margin: 0 0 14px;
+      color: var(--digest-green-dark);
+    }
+
+    .digest-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--digest-green);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .digest-close:hover { background: var(--digest-green-dark); }
+
+    .digest-answer,
+    .digest-insights {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 14px 0 0;
+      border-left: 6px solid var(--digest-green);
+    }
+
+    .digest-insights { border-left-color: #68d391; }
+
+    .digest-answer h4,
+    .digest-insights h4 {
+      margin: 0 0 10px;
+      color: var(--digest-green-dark);
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+
+    .digest-insights ul { margin: 0; padding-left: 18px; }
+
+    /* Wrap-up framing examples */
+    .wrap {
+      padding: 16px;
+    }
+
+    .wrap h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--brand-red-accessible);
+    }
+
+    .wrap .sub {
+      margin: 0 0 12px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .wrap .q {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-left: 6px solid var(--brand-red);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .wrap .q p { margin: 0; }
+
+    .footer-note {
+      font-size: 12px;
+      opacity: 0.75;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>UI Examples: Dan’s Digest trigger styles + “end questions” framing</h1>
+    <p>Click any digest trigger to open the modal. Press Esc to close. Use these as style references.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="card-hd">
+        <h2>Digest Trigger Styles (all open the same modal)</h2>
+        <div class="badge">4 variants</div>
+      </div>
+      <div class="slide">
+        <div class="grid2">
+          <!-- Variant 1: pill -->
+          <div class="discussion tab-wrap">
+            <h3>Discussion Slide (Trigger: Pill)</h3>
+            <div class="prompt">
+              <p><strong>Prompt:</strong> What makes a conversation “crucial”?</p>
+              <div class="timebox"><em>Discuss — 6 minutes</em></div>
+              <a class="digest-pill" data-open-digest="1" aria-label="Open Coach’s Notes">
+                <span class="dot" aria-hidden="true"></span>
+                Coach’s Notes
+              </a>
+            </div>
+          </div>
+
+          <!-- Variant 2: inline link -->
+          <div class="discussion">
+            <h3>Discussion Slide (Trigger: Inline link)</h3>
+            <div class="prompt">
+              <p><strong>Prompt:</strong> Where do you see “lag time” right now?</p>
+              <div class="timebox"><em>Discuss — 8 minutes</em></div>
+              <div class="digest-inline">
+                Need a spark? <a data-open-digest="1">Open Coach’s Notes</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Variant 3: side tab -->
+          <div class="discussion tab-wrap">
+            <h3>Discussion Slide (Trigger: Side tab)</h3>
+            <div class="prompt">
+              <p><strong>Prompt:</strong> What’s one way you go silent or violent?</p>
+              <div class="timebox"><em>Discuss — 6 minutes</em></div>
+            </div>
+            <button class="digest-tab" type="button" data-open-digest="1" aria-label="Open Coach’s Notes">Notes</button>
+          </div>
+
+          <!-- Variant 4: info icon -->
+          <div class="discussion">
+            <h3>Discussion Slide (Trigger: Info icon)</h3>
+            <div class="prompt">
+              <p><strong>Prompt:</strong> How does shared meaning help teams choose better?</p>
+              <div class="timebox">
+                <em>Discuss — 8 minutes</em>
+                <button class="digest-info" type="button" data-open-digest="1" aria-label="Open Coach’s Notes">i</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-hd">
+        <h2>End-of-Session Question Framing (the “publisher” questions without saying publisher)</h2>
+        <div class="badge">5 variants</div>
+      </div>
+      <div class="grid2">
+        <div class="wrap">
+          <h3>Optional Deepening Prompts</h3>
+          <p class="sub">If time allows, choose 1–2.</p>
+          <div class="q"><p>What are the three elements that make a conversation crucial?</p></div>
+          <div class="q"><p>What is dialogue, and what is the Pool of Shared Meaning?</p></div>
+          <div class="footer-note">Tone: supportive, optional, curriculum-native.</div>
+        </div>
+
+        <div class="wrap">
+          <h3>Wrap-Up Round</h3>
+          <p class="sub">One minute each — pick one prompt to answer.</p>
+          <div class="q"><p>What’s one crucial conversation you want to handle better?</p></div>
+          <div class="q"><p>What does “lag time” cost you right now?</p></div>
+          <div class="footer-note">Tone: fast-paced close, everyone participates.</div>
+        </div>
+
+        <div class="wrap">
+          <h3>Question Bank (Use as Needed)</h3>
+          <p class="sub">Choose based on your group’s energy and time.</p>
+          <div class="q"><p>How do we typically handle crucial conversations?</p></div>
+          <div class="q"><p>Why are we often on our worst behavior?</p></div>
+          <div class="footer-note">Tone: facilitator toolset, not “official.”</div>
+        </div>
+
+        <div class="wrap">
+          <h3>Bonus Questions (If We Have Time)</h3>
+          <p class="sub">Skip if we’re tight — these are for extra depth.</p>
+          <div class="q"><p>What are some examples of typical crucial conversations?</p></div>
+          <div class="q"><p>What is lag time, and why is it harmful?</p></div>
+          <div class="footer-note">Tone: transparent, permission to skip.</div>
+        </div>
+
+        <div class="wrap">
+          <h3>Look Back / Look Ahead</h3>
+          <p class="sub">Close the loop and tee up next week.</p>
+          <div class="q"><p><strong>Look back:</strong> Which of the three elements shows up most for you?</p></div>
+          <div class="q"><p><strong>Look ahead:</strong> Next chapter we’ll focus on choosing the right topic.</p></div>
+          <div class="footer-note">Tone: cohesive transition into next chapter.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Digest Modal (Example) -->
+  <div class="digest-modal" id="digestModal1" role="dialog" aria-labelledby="digestTitle1" aria-modal="true">
+    <div class="digest-content" role="document">
+      <button class="digest-close" type="button" aria-label="Close">&times;</button>
+      <h2 id="digestTitle1">Coach’s Notes (Dan’s Digest)</h2>
+      <div class="digest-answer">
+        <h4>Quick Rescue</h4>
+        <p>If the group is quiet, ask for a concrete example first (work/home). Then map it to opinions, stakes, emotions.</p>
+      </div>
+      <div class="digest-insights">
+        <h4>What a strong answer includes</h4>
+        <ul>
+          <li>Names the 3 elements clearly (opinions, stakes, emotions)</li>
+          <li>Gives a real example from work or home</li>
+          <li>Notes the tendency toward silence/violence under stress</li>
+          <li>Shifts goal from “win” to “grow the pool”</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('digestModal1');
+    const closeBtn = modal.querySelector('.digest-close');
+
+    function openDigest() {
+      modal.classList.add('active');
+      closeBtn.focus();
+    }
+
+    function closeDigest() {
+      modal.classList.remove('active');
+    }
+
+    document.querySelectorAll('[data-open-digest="1"]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        openDigest();
+      });
+    });
+
+    closeBtn.addEventListener('click', closeDigest);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeDigest();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeDigest();
+      }
+    });
+  </script>
+</body>
+</html>

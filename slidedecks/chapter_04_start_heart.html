@@ -37,7 +37,7 @@
         <div class="slide"><div class="slide-content">
             <h2>Core Message</h2>
             <div class="highlight">
-                <h3>The first principle of dialogue: Start with Heart</h3>
+                <h3>The first principle of dialogue: <span class="term" data-def="Start with Heart: What do I really want for me, for them, and for the relationship?">Start with Heart</span></h3>
                 <p>Work on me first, us second. The most skilled communicators begin by getting their own motives right.</p>
             </div>
             <p style="margin-top:15px;">When conversations get tough, our motives shift from solving the problem to <strong>winning, punishing, or keeping the peace</strong>. We need to notice and correct this shift.</p>
@@ -57,7 +57,7 @@
             </div>
             <div class="highlight" style="margin-top:20px;">
                 <h3>The Third Option</h3>
-                <p>Skilled communicators reject the Fool&#39;s Choice. They ask: <strong>&ldquo;How can I be 100% honest AND 100% respectful?&rdquo;</strong></p>
+                <p>Skilled communicators reject the <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span>. They ask: <strong>&ldquo;How can I be 100% honest AND 100% respectful?&rdquo;</strong></p>
             </div>
         </div></div>
 
@@ -97,7 +97,7 @@
         <div class="slide"><div class="slide-content">
             <h2>The AND Statement</h2>
             <div class="highlight">
-                <h3>Refuse the Fool&#39;s Choice by using AND</h3>
+                <h3>Refuse the <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span> by using AND</h3>
                 <p>&ldquo;I want to be honest about my concerns <strong>AND</strong> I want to be respectful of your perspective.&rdquo;</p>
                 <p style="margin-top:12px;">&ldquo;I want to address this issue <strong>AND</strong> I want to strengthen our relationship.&rdquo;</p>
             </div>
@@ -107,7 +107,7 @@
         <div class="slide discussion-slide"><div class="slide-content">
             <h2>Discussion Break #2</h2>
             <div class="discussion-question">
-                <p>Where in your life are you currently facing a Fool&#39;s Choice&mdash;feeling like you have to choose between honesty and peace? What would your AND statement look like for that situation?</p>
+                <p>Where in your life are you currently facing a <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span>&mdash;feeling like you have to choose between honesty and peace? What would your AND statement look like for that situation?</p>
             </div>
             <button class="digest-pill" type="button" data-digest="2" onclick="openDigest(2)" aria-haspopup="dialog" aria-controls="digestModal2"><span class="dot" aria-hidden="true"></span>Dan&#39;s Digest</button>
         </div></div>
@@ -131,7 +131,7 @@
                 <ul>
                     <li>Why does &ldquo;work on me first&rdquo; matter more than &ldquo;fix the other person&rdquo;?</li>
                     <li>How do you typically notice when your motives have shifted?</li>
-                    <li>What makes the Fool&#39;s Choice feel so convincing in the moment?</li>
+                    <li>What makes the <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span> feel so convincing in the moment?</li>
                     <li>How would your toughest relationship change if you consistently started with heart?</li>
                 </ul>
             </div>
@@ -143,7 +143,7 @@
             <div class="highlight" style="margin-top:10px;"><h3>What we&#39;ll focus on next</h3>
                 <ul>
                     <li><strong>How to stay in dialogue</strong> when you&#39;re angry, scared, or hurt</li>
-                    <li>The <strong>Path to Action:</strong> See/Hear &rarr; Story &rarr; Feel &rarr; Act</li>
+                    <li>The <strong><span class="term" data-def="Path to Action: See/Hear → Tell a Story → Feel → Act. The sequence from observation to behavior.">Path to Action</span>:</strong> See/Hear &rarr; Story &rarr; Feel &rarr; Act</li>
                     <li>Three <strong>clever stories</strong> that justify bad behavior</li>
                 </ul>
             </div>
@@ -171,12 +171,12 @@
             <button class="digest-close" onclick="closeDigest(2)" aria-label="Close">&times;</button>
             <h2 id="digestTitle2">Dan&#39;s Digest</h2>
             <div class="digest-answer"><h4>Answer Key (Discussion Break #2)</h4>
-                <p><strong>The Fool&#39;s Choice:</strong> The belief that you must choose between honesty and peace. Skilled communicators reject this and look for AND&mdash;both honest and respectful.</p>
+                <p><strong>The <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span>:</strong> The belief that you must choose between honesty and peace. Skilled communicators reject this and look for AND&mdash;both honest and respectful.</p>
                 <p style="margin-top:12px;"><strong>AND statements:</strong> Force your brain to search for creative solutions. &ldquo;I want to be honest about my concerns AND respectful of your perspective.&rdquo;</p>
                 <p style="margin-top:12px;"><strong>Why it works:</strong> When you hold both goals simultaneously, you find paths that either/or thinking hides.</p>
             </div>
             <div class="digest-insights"><h4>Key Points</h4><ul>
-                <li>The Fool&#39;s Choice feels convincing because either/or is simpler</li>
+                <li>The <span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span> feels convincing because either/or is simpler</li>
                 <li>AND requires creativity and courage</li>
                 <li>Write your AND statement before the conversation, not during</li>
             </ul></div>
@@ -428,6 +428,47 @@
 
         buildDropdown();
         if (!handleURLParams()) showSlide(0);
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

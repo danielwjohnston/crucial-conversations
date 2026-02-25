@@ -269,7 +269,7 @@
                     <h3>What we&#39;ll focus on next</h3>
                     <ul>
                         <li><strong>What to do</strong> when you notice safety is at risk</li>
-                        <li>The two conditions of safety: <strong>Mutual Purpose</strong> and <strong>Mutual Respect</strong></li>
+                        <li>The two conditions of safety: <strong><span class="term" data-def="Mutual Purpose: Others believe you care about their goals and interests, not just your own">Mutual Purpose</span></strong> and <strong><span class="term" data-def="Mutual Respect: Others believe you respect them as a person, even during disagreement">Mutual Respect</span></strong></li>
                         <li>Skills for <strong>rebuilding safety</strong> so dialogue can resume</li>
                     </ul>
                 </div>
@@ -582,6 +582,47 @@
 
         buildDropdown();
         if (!handleURLParams()) showSlide(0);
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

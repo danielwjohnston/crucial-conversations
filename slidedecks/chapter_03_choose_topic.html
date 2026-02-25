@@ -44,7 +44,7 @@
         </div></div>
 
         <div class="slide"><div class="slide-content">
-            <h2>The CPR Framework</h2>
+            <h2>The <span class="term" data-def="CPR: Content (the specific event), Pattern (it keeps happening), Relationship (trust/respect is affected)">CPR</span> Framework</h2>
             <h3>Three levels of every issue</h3>
             <div class="story-box"><h3><strong>C</strong>ontent</h3><p>The specific, single instance. &ldquo;You were late to the meeting today.&rdquo;</p></div>
             <div class="story-box"><h3><strong>P</strong>attern</h3><p>The recurring behavior over time. &ldquo;You&#39;ve been late to the last three meetings.&rdquo;</p></div>
@@ -126,7 +126,7 @@
             <div class="highlight" style="margin-top:10px;"><h3>What we&#39;ll focus on next</h3>
                 <ul>
                     <li><strong>How to stay focused</strong> on what you really want</li>
-                    <li>The <strong>Fool&#39;s Choice</strong> and how to avoid it</li>
+                    <li>The <strong><span class="term" data-def="Fool’s Choice: The false belief you must choose between honesty and peace. Reject it with AND.">Fool&#39;s Choice</span></strong> and how to avoid it</li>
                     <li>Anchoring on your <strong>true purpose</strong> before you speak</li>
                 </ul>
             </div>
@@ -138,7 +138,7 @@
             <button class="digest-close" onclick="closeDigest(1)" aria-label="Close">&times;</button>
             <h2 id="digestTitle1">Dan&#39;s Digest</h2>
             <div class="digest-answer"><h4>Answer Key (Discussion Break #1)</h4>
-                <p><strong>CPR:</strong> Content is the specific event. Pattern is the recurring behavior. Relationship is the impact on trust and respect. Most people stay at Content when they should escalate.</p>
+                <p><strong><span class="term" data-def="CPR: Content (the specific event), Pattern (it keeps happening), Relationship (trust/respect is affected)">CPR</span>:</strong> Content is the specific event. Pattern is the recurring behavior. Relationship is the impact on trust and respect. Most people stay at Content when they should escalate.</p>
                 <p style="margin-top:12px;"><strong>The biggest mistake:</strong> Choosing the wrong topic. You can have the most skillful conversation in the world, but if you&#39;re addressing the wrong issue, nothing changes.</p>
                 <p style="margin-top:12px;"><strong>Rule of thumb:</strong> If you&#39;ve had the conversation before, you&#39;re probably at the wrong level. Go deeper.</p>
             </div>
@@ -410,6 +410,47 @@
 
         buildDropdown();
         if (!handleURLParams()) showSlide(0);
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

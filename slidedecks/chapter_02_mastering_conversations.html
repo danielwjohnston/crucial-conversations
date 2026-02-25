@@ -74,7 +74,7 @@
             <h2>The Pool of Shared Meaning</h2>
             <p>Each of us enters a conversation with our own opinions, feelings, theories, and experiences.</p>
             <div class="highlight" style="margin-top:20px;">
-                <p>The <strong>Pool of Shared Meaning</strong> is the collection of all the meaning that has been openly shared by everyone involved.</p>
+                <p>The <strong><span class="term" data-def="Pool of Shared Meaning: The collection of all meaning openly shared by everyone in the conversation">Pool of Shared Meaning</span></strong> is the collection of all the meaning that has been openly shared by everyone involved.</p>
             </div>
             <ul style="margin-top:20px;">
                 <li><strong>Bigger pool</strong> = better decisions, stronger commitment, more unified action</li>
@@ -112,14 +112,14 @@
             <h2>The Crucial Conversations Model</h2>
             <div class="highlight">
                 <ul>
-                    <li><strong>Start with Heart</strong> &mdash; anchor on what you really want</li>
-                    <li><strong>Choose Your Topic (CPR)</strong> &mdash; pick the right issue</li>
-                    <li><strong>Learn to Look</strong> &mdash; spot safety problems early</li>
-                    <li><strong>Make It Safe</strong> &mdash; create conditions for dialogue</li>
-                    <li><strong>Master My Stories</strong> &mdash; separate facts from stories</li>
-                    <li><strong>STATE My Path</strong> &mdash; share your view with facts + invite</li>
-                    <li><strong>Explore Others&#39; Paths</strong> &mdash; listen to understand</li>
-                    <li><strong>Move to Action</strong> &mdash; decide and follow through</li>
+                    <li><strong><span class="term" data-def="Start with Heart: What do I really want for me, for them, and for the relationship?">Start with Heart</span></strong> &mdash; anchor on what you really want</li>
+                    <li><strong>Choose Your Topic (<span class="term" data-def="CPR: Content (the specific event), Pattern (it keeps happening), Relationship (trust/respect is affected)">CPR</span>)</strong> &mdash; pick the right issue</li>
+                    <li><strong><span class="term" data-def="Learn to Look: Watch for signs of silence (masking, avoiding, withdrawing) and violence (controlling, labeling, attacking)">Learn to Look</span></strong> &mdash; spot safety problems early</li>
+                    <li><strong><span class="term" data-def="Make It Safe: Restore Mutual Purpose + Mutual Respect. Tools: Contrast, Apologize, or CRIB">Make It Safe</span></strong> &mdash; create conditions for dialogue</li>
+                    <li><strong><span class="term" data-def="Master My Stories: Separate fact from story. Retrace your Path to Action: See/Hear → Story → Feel → Act">Master My Stories</span></strong> &mdash; separate facts from stories</li>
+                    <li><strong><span class="term" data-def="STATE: Share facts, Tell your story, Ask for others’ paths, Talk tentatively, Encourage testing">STATE</span> My Path</strong> &mdash; share your view with facts + invite</li>
+                    <li><strong><span class="term" data-def="Explore Others’ Paths: Use AMPP to help others retrace their Path to Action">Explore Others&#39; Paths</span></strong> &mdash; listen to understand</li>
+                    <li><strong><span class="term" data-def="Move to Action: Decide how to decide (Command, Consult, Vote, Consensus) + document WWWF">Move to Action</span></strong> &mdash; decide and follow through</li>
                 </ul>
             </div>
             <p style="margin-top:15px;"><strong>We&#39;ll learn each of these in the chapters ahead.</strong></p>
@@ -153,7 +153,7 @@
                 <h3>Choose 1&ndash;2 prompts</h3>
                 <ul>
                     <li>What makes dialogue different from debate&mdash;and why does that distinction matter?</li>
-                    <li>How does the &ldquo;Pool of Shared Meaning&rdquo; relate to decision quality?</li>
+                    <li>How does the &ldquo;<span class="term" data-def="Pool of Shared Meaning: The collection of all meaning openly shared by everyone in the conversation">Pool of Shared Meaning</span>&rdquo; relate to decision quality?</li>
                     <li>Why are we at our worst when the stakes are highest&mdash;and what can we do about it?</li>
                     <li>If the skills are learnable, what&#39;s the first one you want to work on?</li>
                 </ul>
@@ -167,7 +167,7 @@
                 <h3>What we&#39;ll focus on next</h3>
                 <ul>
                     <li><strong>How to be sure</strong> you hold the right conversation</li>
-                    <li>The <strong>CPR framework:</strong> Content, Pattern, Relationship</li>
+                    <li>The <strong><span class="term" data-def="CPR: Content (the specific event), Pattern (it keeps happening), Relationship (trust/respect is affected)">CPR</span> framework:</strong> Content, Pattern, Relationship</li>
                     <li>Why we often argue about the <strong>wrong thing</strong></li>
                 </ul>
             </div>
@@ -453,6 +453,47 @@
 
         buildDropdown();
         if (!handleURLParams()) showSlide(0);
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

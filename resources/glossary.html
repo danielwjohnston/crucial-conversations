@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crucial Conversations — Glossary of Terms</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 36px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header h1 {
+            font-size: 2em;
+            color: var(--brand-red-accessible);
+            margin-bottom: 4px;
+        }
+        header p { color: var(--text-light); font-size: 1.05em; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .section { margin-bottom: 32px; }
+        .section h2 {
+            font-size: 1.3em;
+            color: var(--brand-red-accessible);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+        }
+        .term-card {
+            display: flex;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+            align-items: flex-start;
+        }
+        .term-card:last-child { border-bottom: none; }
+        .term-label {
+            flex-shrink: 0;
+            width: 180px;
+            font-weight: 700;
+            font-size: 1.05em;
+            color: var(--text-dark);
+        }
+        .term-label .acronym {
+            display: inline-block;
+            background: var(--brand-red);
+            color: white;
+            font-size: 0.8em;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        .term-def { flex: 1; }
+        .term-def .expansion {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .term-def .description {
+            color: var(--text-light);
+            margin-top: 4px;
+            font-size: 0.95em;
+        }
+        .term-def .chapter-ref {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.82em;
+            color: var(--blue);
+            background: #e8f0fe;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+        .print-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            z-index: 100;
+        }
+        .print-btn:hover { background: var(--brand-red-accessible); }
+
+        @media print {
+            body { padding: 20px; max-width: 100%; font-size: 11pt; }
+            .print-btn, .back-link { display: none; }
+            header { margin-bottom: 20px; padding-bottom: 12px; }
+            .section { break-inside: avoid; margin-bottom: 20px; }
+            .term-card { padding: 8px 0; }
+        }
+        @media (max-width: 600px) {
+            .term-card { flex-direction: column; gap: 4px; }
+            .term-label { width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">🖨 Print Glossary</button>
+    <a class="back-link" href="../index.html">&larr; Back to Home</a>
+    <header>
+        <h1>Crucial Conversations Glossary</h1>
+        <p>Quick-reference definitions for every key term, acronym, and framework</p>
+    </header>
+
+    <div class="section">
+        <h2>Core Acronyms</h2>
+
+        <div class="term-card">
+            <div class="term-label">STATE <span class="acronym">Ch 8</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>S</strong>hare your facts &bull; <strong>T</strong>ell your story &bull; <strong>A</strong>sk for others' paths &bull; <strong>T</strong>alk tentatively &bull; <strong>E</strong>ncourage testing</div>
+                <div class="description">The five skills for speaking persuasively, not abrasively. Start with facts (least controversial), share your story tentatively, then invite the other person's perspective.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">CPR <span class="acronym">Ch 3</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>C</strong>ontent &bull; <strong>P</strong>attern &bull; <strong>R</strong>elationship</div>
+                <div class="description">Three levels of every issue. Content = the specific event. Pattern = it keeps happening. Relationship = trust or respect is affected. Choose the right level before you speak.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">AMPP <span class="acronym">Ch 9</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>A</strong>sk &bull; <strong>M</strong>irror &bull; <strong>P</strong>araphrase &bull; <strong>P</strong>rime</div>
+                <div class="description">Four listening tools to explore others' paths. Ask to express interest, Mirror to acknowledge emotions, Paraphrase to restate and confirm, Prime to guess when they're stuck.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">ABC <span class="acronym">Ch 9</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>A</strong>gree &bull; <strong>B</strong>uild &bull; <strong>C</strong>ompare</div>
+                <div class="description">How to respond after listening. Agree where you genuinely agree, Build by adding what's missing, Compare where your views differ — without suggesting the other person is wrong.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">CRIB <span class="acronym">Ch 7</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>C</strong>ommit to seek mutual purpose &bull; <strong>R</strong>ecognize the purpose behind the strategy &bull; <strong>I</strong>nvent a mutual purpose &bull; <strong>B</strong>rainstorm new strategies</div>
+                <div class="description">Used when you and the other person have different purposes. Step back from strategies to find the underlying goals you share.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">CURE <span class="acronym">Ch 10</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>C</strong>ollect yourself &bull; <strong>U</strong>nderstand &bull; <strong>R</strong>ecover &bull; <strong>E</strong>ngage</div>
+                <div class="description">How to hear tough feedback without losing your pen. Breathe and name your feelings, be curious, ask for time if needed, then find the gold and commit to action.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">WWWF <span class="acronym">Ch 11</span></div>
+            <div class="term-def">
+                <div class="expansion"><strong>W</strong>ho &bull; does <strong>W</strong>hat &bull; by <strong>W</strong>hen &bull; how will you <strong>F</strong>ollow up</div>
+                <div class="description">The assignment framework that turns dialogue into action. Assign a specific person, spell out deliverables, set a deadline, and build in a check-in. Document it.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Key Concepts</h2>
+
+        <div class="term-card">
+            <div class="term-label">Pool of Shared Meaning <span class="acronym">Ch 2</span></div>
+            <div class="term-def">
+                <div class="description">The collection of all meaning openly shared by everyone in a conversation. Bigger pool = better decisions, stronger commitment, more unified action. The goal of dialogue is to get all relevant meaning into the pool.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Path to Action <span class="acronym">Ch 5</span></div>
+            <div class="term-def">
+                <div class="expansion">See/Hear &rarr; Tell a Story &rarr; Feel &rarr; Act</div>
+                <div class="description">The sequence from observation to behavior. We see or hear something, tell ourselves a story about it, generate feelings from that story, and then act. The story is where we have leverage.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Fool's Choice <span class="acronym">Ch 4</span></div>
+            <div class="term-def">
+                <div class="description">The false belief that you must choose between honesty and peace. Skilled communicators reject the either/or and ask: "How can I be 100% honest AND 100% respectful?"</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Mutual Purpose <span class="acronym">Ch 7</span></div>
+            <div class="term-def">
+                <div class="description">The first condition of safety. Others believe you care about their goals and interests, not just your own. Without it, people suspect your motives and resist dialogue.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Mutual Respect <span class="acronym">Ch 7</span></div>
+            <div class="term-def">
+                <div class="description">The second condition of safety. Others believe you respect them as a person, even during disagreement. Without it, conversations become about defending dignity rather than solving problems.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Contrast <span class="acronym">Ch 7</span></div>
+            <div class="term-def">
+                <div class="expansion">"I don't want [negative]. I do want [positive]."</div>
+                <div class="description">A don't/do statement that addresses misunderstood intent. Use it to restore safety when someone has taken what you said the wrong way. The don't addresses their concern; the do clarifies your real purpose.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Retake Your Pen <span class="acronym">Ch 10</span></div>
+            <div class="term-def">
+                <div class="description">Your "pen" is the power to define your worth. When you hold it, others' opinions are information. When you've handed it away, any feedback can feel devastating. Retake it by grounding your worth internally, not in others' approval.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Behavioral Patterns</h2>
+
+        <div class="term-card">
+            <div class="term-label">Silence <span class="acronym">Ch 6</span></div>
+            <div class="term-def">
+                <div class="expansion">Masking &bull; Avoiding &bull; Withdrawing</div>
+                <div class="description">Withholding meaning from the pool. Any act to purposely keep information out of the conversation. Phrases like "It's fine" or "Whatever you think" are signs of silence.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Violence <span class="acronym">Ch 6</span></div>
+            <div class="term-def">
+                <div class="expansion">Controlling &bull; Labeling &bull; Attacking</div>
+                <div class="description">Forcing meaning into the pool. Any act to compel others to accept your point of view. Phrases like "That's ridiculous" or "You always do this" are signs of violence.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Three Clever Stories <span class="acronym">Ch 5</span></div>
+            <div class="term-def">
+                <div class="expansion">Victim &bull; Villain &bull; Helpless</div>
+                <div class="description">Self-justifying stories that let us feel good about behaving badly. Victim: "It's not my fault." Villain: "It's all your fault." Helpless: "There's nothing I can do."</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Lag Time <span class="acronym">Ch 2</span></div>
+            <div class="term-def">
+                <div class="description">The delay between when a problem occurs and when someone talks about it. During the delay, stories and resentment build. Shortening lag time is one of the highest-leverage things you can do.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Decision Methods</h2>
+
+        <div class="term-card">
+            <div class="term-label">Command <span class="acronym">Ch 11</span></div>
+            <div class="term-def">
+                <div class="description">Decisions made without involving others. Use when stakes are low, it's not worth everyone's time, or someone has clear authority.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Consult <span class="acronym">Ch 11</span></div>
+            <div class="term-def">
+                <div class="description">Input is gathered from others, then a subset decides. Use when many are affected, expertise is needed, but not everyone must agree.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Vote <span class="acronym">Ch 11</span></div>
+            <div class="term-def">
+                <div class="description">An agreed-upon percentage swings the decision. Use when efficiency matters and the group can support any outcome.</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">Consensus <span class="acronym">Ch 11</span></div>
+            <div class="term-def">
+                <div class="description">Everyone comes to agreement. Use when high-stakes, everyone must genuinely support the decision. Saves the most commitment but costs the most time.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>The Complete Model</h2>
+
+        <div class="term-card">
+            <div class="term-label">Before You Speak</div>
+            <div class="term-def">
+                <div class="description"><strong>Start with Heart</strong> (Ch 4) &mdash; What do I really want?<br>
+                <strong>Choose Your Topic / CPR</strong> (Ch 3) &mdash; Am I addressing the right issue?</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">During Dialogue</div>
+            <div class="term-def">
+                <div class="description"><strong>Learn to Look</strong> (Ch 6) &mdash; Is it safe? Am I in silence or violence?<br>
+                <strong>Make It Safe</strong> (Ch 7) &mdash; Mutual Purpose + Mutual Respect<br>
+                <strong>Master My Stories</strong> (Ch 5) &mdash; Facts &rarr; Story &rarr; Feeling &rarr; Action<br>
+                <strong>STATE My Path</strong> (Ch 8) &mdash; Share, Tell, Ask, Talk tentatively, Encourage<br>
+                <strong>Explore Others' Paths</strong> (Ch 9) &mdash; AMPP + ABC</div>
+            </div>
+        </div>
+
+        <div class="term-card">
+            <div class="term-label">How to Finish</div>
+            <div class="term-def">
+                <div class="description"><strong>Retake Your Pen</strong> (Ch 10) &mdash; CURE to hear feedback<br>
+                <strong>Move to Action</strong> (Ch 11) &mdash; Decide how to decide + WWWF</div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align:center; color:var(--text-light); font-size:0.85em; margin-top:40px; padding-top:20px; border-top:1px solid var(--border-color);">
+        &copy;2026 Leadership Bookclub &mdash; Crucial Conversations Quick Reference
+    </footer>
+</body>
+</html>

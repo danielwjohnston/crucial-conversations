@@ -75,7 +75,7 @@
         </div></div>
 
         <div class="slide"><div class="slide-content">
-            <h2>The CURE Framework</h2>
+            <h2>The <span class="term" data-def="CURE: Collect yourself (breathe, name feelings), Understand (be curious, ask questions), Recover (take a timeout), Engage (find the gold, commit to action)">CURE</span> Framework</h2>
             <div class="story-box"><h3><strong>C</strong>ollect Yourself</h3><p>Breathe deeply. Name your feelings. Connect with soothing truths: &ldquo;This can&#39;t hurt me. I&#39;m safe.&rdquo;</p></div>
             <div class="story-box"><h3><strong>U</strong>nderstand</h3><p>Be curious. Ask questions and examples. Focus on understanding, not defending.</p></div>
             <div class="story-box"><h3><strong>R</strong>ecover</h3><p>Ask for a timeout. Feelings of control bring feelings of safety. &ldquo;I need time, and I&#39;ll get back to you.&rdquo;</p></div>
@@ -84,7 +84,7 @@
 
         <div class="slide discussion-slide"><div class="slide-content">
             <h2>Discussion Break #2</h2>
-            <div class="discussion-question"><p>Which part of the CURE framework would be most helpful for you to practice? How can you prepare yourself <em>in advance</em> to hear tough feedback without losing your pen?</p></div>
+            <div class="discussion-question"><p>Which part of the <span class="term" data-def="CURE: Collect yourself (breathe, name feelings), Understand (be curious, ask questions), Recover (take a timeout), Engage (find the gold, commit to action)">CURE</span> framework would be most helpful for you to practice? How can you prepare yourself <em>in advance</em> to hear tough feedback without losing your pen?</p></div>
             <button class="digest-pill" type="button" data-digest="2" onclick="openDigest(2)" aria-haspopup="dialog" aria-controls="digestModal2"><span class="dot" aria-hidden="true"></span>Dan&#39;s Digest</button>
         </div></div>
 
@@ -92,7 +92,7 @@
             <h2>This Week&#39;s Challenge</h2>
             <div class="highlight"><h3>Practice retaking your pen:</h3>
                 <ul><li>Write a personal affirmation about your worth (like Marlin&#39;s)</li>
-                <li>Next time you receive feedback, <strong>pause and use CURE</strong></li>
+                <li>Next time you receive feedback, <strong>pause and use <span class="term" data-def="CURE: Collect yourself (breathe, name feelings), Understand (be curious, ask questions), Recover (take a timeout), Engage (find the gold, commit to action)">CURE</span></strong></li>
                 <li>Separate the gold from the crap&mdash;even harsh feedback usually has a kernel of truth</li></ul>
             </div>
             <p style="margin-top:18px;"><strong>Next Meeting:</strong> Share how you practiced hearing feedback without losing your pen</p>
@@ -115,7 +115,7 @@
             <div class="highlight" style="margin-top:10px;"><h3>What we&#39;ll focus on next</h3>
                 <ul><li><strong>How to turn</strong> crucial conversations into action and results</li>
                 <li>The <strong>four methods</strong> of decision making</li>
-                <li><strong>WWWF:</strong> Who does What by When, and how will you Follow up?</li></ul>
+                <li><strong><span class="term" data-def="WWWF: Who does What by When, and how will you Follow up?">WWWF</span>:</strong> Who does What by When, and how will you Follow up?</li></ul>
             </div>
             <p class="subtitle" style="margin-top:18px;"><strong>Optional prep:</strong> Think of a conversation that ended well but nothing changed afterward. Why?</p>
         </div></div>
@@ -141,7 +141,7 @@
             <button class="digest-close" onclick="closeDigest(2)" aria-label="Close">&times;</button>
             <h2 id="digestTitle2">Dan&#39;s Digest</h2>
             <div class="digest-answer"><h4>Answer Key (Discussion Break #2)</h4>
-                <p><strong>CURE is sequential:</strong> You can&#39;t Understand if you haven&#39;t Collected yourself first. Most people struggle with Collect (staying calm) or Engage (looking for truth).</p>
+                <p><strong><span class="term" data-def="CURE: Collect yourself (breathe, name feelings), Understand (be curious, ask questions), Recover (take a timeout), Engage (find the gold, commit to action)">CURE</span> is sequential:</strong> You can&#39;t Understand if you haven&#39;t Collected yourself first. Most people struggle with Collect (staying calm) or Engage (looking for truth).</p>
                 <p style="margin-top:12px;"><strong>Prepare in advance:</strong> Practice affirming truths before you need them. Build your foundation in low-stakes situations first.</p>
                 <p style="margin-top:12px;"><strong>Feedback is a mixture:</strong> Your job isn&#39;t to swallow it whole&mdash;it&#39;s to sort what&#39;s true and discard the rest.</p>
             </div>
@@ -398,6 +398,47 @@
 
         buildDropdown();
         if (!handleURLParams()) showSlide(0);
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

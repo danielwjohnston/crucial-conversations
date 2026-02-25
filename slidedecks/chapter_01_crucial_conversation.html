@@ -288,7 +288,7 @@
                 <ul>
                     <li>The goal isn’t to win—it’s to keep dialogue going.</li>
                     <li>When someone feels unsafe, they stop contributing meaning.</li>
-                    <li>Better outcomes come from a bigger Pool of Shared Meaning.</li>
+                    <li>Better outcomes come from a bigger <span class="term" data-def="Pool of Shared Meaning: The collection of all meaning openly shared by everyone in the conversation">Pool of Shared Meaning</span>.</li>
                 </ul>
             </div>
         </div>
@@ -302,7 +302,7 @@
                 <h4>Answer Key (Discussion Break #2)</h4>
                 <p><strong>Why we’re often on our worst behavior:</strong> Under stress we revert to fight-or-flight. We tell ourselves fast stories, emotions spike, and we choose silence or violence instead of dialogue.</p>
                 <p style="margin-top: 12px;"><strong>Lag time:</strong> The delay between a problem and the conversation about it. During the delay, we build stories, resentment, and workarounds—making the eventual conversation harder and riskier.</p>
-                <p style="margin-top: 12px;"><strong>Dialogue & the Pool:</strong> Dialogue is the free flow of meaning. The Pool of Shared Meaning is what everyone knows, believes, and feels that’s been shared. A bigger pool creates better choices and stronger commitment—even without full agreement.</p>
+                <p style="margin-top: 12px;"><strong>Dialogue & the Pool:</strong> Dialogue is the free flow of meaning. The <span class="term" data-def="Pool of Shared Meaning: The collection of all meaning openly shared by everyone in the conversation">Pool of Shared Meaning</span> is what everyone knows, believes, and feels that’s been shared. A bigger pool creates better choices and stronger commitment—even without full agreement.</p>
             </div>
             <div class="digest-insights">
                 <h4>Key Points</h4>
@@ -725,6 +725,47 @@
         if (!handleURLParams()) {
             showSlide(0);
         }
+
+        /* ---- Term tooltip (fixed-position, escapes overflow) ---- */
+        (function() {
+            let tip = null;
+            function show(e) {
+                const def = e.target.dataset.def;
+                if (!def) return;
+                if (!tip) {
+                    tip = document.createElement('div');
+                    tip.className = 'term-tip';
+                    tip.innerHTML = '<span class="term-tip-arrow"></span><span class="term-tip-text"></span>';
+                    document.body.appendChild(tip);
+                }
+                const arrow = tip.querySelector('.term-tip-arrow');
+                tip.querySelector('.term-tip-text').textContent = def;
+                tip.classList.remove('visible');
+                tip.style.left = '0'; tip.style.top = '0';
+                tip.style.display = 'block';
+                const r = e.target.getBoundingClientRect();
+                const tw = tip.offsetWidth, th = tip.offsetHeight;
+                let left = r.left + r.width / 2 - tw / 2;
+                left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+                const above = r.top - th - 10;
+                if (above > 4) {
+                    tip.style.top = above + 'px';
+                    arrow.className = 'term-tip-arrow above';
+                } else {
+                    tip.style.top = (r.bottom + 10) + 'px';
+                    arrow.className = 'term-tip-arrow below';
+                }
+                tip.style.left = left + 'px';
+                arrow.style.left = (r.left + r.width / 2 - left) + 'px';
+                arrow.style.transform = 'translateX(-50%)';
+                requestAnimationFrame(function(){ tip.classList.add('visible'); });
+            }
+            function hide() { if (tip) { tip.classList.remove('visible'); tip.style.display = 'none'; } }
+            document.addEventListener('mouseover', function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('mouseout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+            document.addEventListener('focusin',   function(e){ if (e.target.classList.contains('term')) show(e); });
+            document.addEventListener('focusout',  function(e){ if (e.target.classList.contains('term')) hide(); });
+        })();
     </script>
 </body>
 </html>

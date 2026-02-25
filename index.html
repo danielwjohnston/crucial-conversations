@@ -208,6 +208,22 @@
             margin-bottom: 40px;
         }
 
+        .part-divider {
+            grid-column: 1 / -1;
+            padding: 10px 0 0;
+        }
+
+        .part-divider h3 {
+            font-size: 0.9em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 6px;
+        }
+
         .chapter-card {
             background: white;
             border: 1px solid var(--border-color);
@@ -257,6 +273,13 @@
         .chapter-description {
             color: var(--text-light);
             margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .chapter-subtitle {
+            color: var(--text-light);
+            margin-bottom: 16px;
+            font-size: 0.95em;
             line-height: 1.5;
         }
 
@@ -620,124 +643,169 @@
             {
                 number: 1,
                 title: "What's a Crucial Conversation",
+                subtitle: "And who cares?",
                 description: "Definition and importance of crucial conversations",
                 file: "slidedecks/chapter_01_crucial_conversation.html",
                 completed: true,
+                part: 1,
                 tags: ["Foundation", "Introduction"]
             },
             {
                 number: 2,
                 title: "Mastering Crucial Conversations",
+                subtitle: "The power of dialogue",
                 description: "The power of dialogue and how skills are learned",
                 file: "slidedecks/chapter_02_mastering_conversations.html",
                 completed: true,
+                part: 1,
                 tags: ["Foundation", "Skills"]
             },
             {
                 number: 3,
                 title: "Choose Your Topic",
+                subtitle: "How to be sure you hold the right conversation",
                 description: "How to be sure you hold the right conversation",
                 file: "slidedecks/chapter_03_choose_topic.html",
                 completed: true,
+                part: 1,
                 tags: ["Preparation", "Strategy"]
             },
             {
                 number: 4,
                 title: "Start with Heart",
+                subtitle: "How to stay focused on what you really want",
                 description: "How to stay focused on what you really want",
                 file: "slidedecks/chapter_04_start_heart.html",
                 completed: true,
+                part: 1,
                 tags: ["Mindset", "Preparation"]
             },
             {
                 number: 5,
                 title: "Master My Stories",
+                subtitle: "How to stay in dialogue when you're angry, scared, or hurt",
                 description: "How to control your emotions and assumptions",
                 file: "slidedecks/chapter_05_master_stories.html",
                 completed: true,
+                part: 2,
                 tags: ["Emotional Control", "Mindset"]
             },
             {
                 number: 6,
                 title: "Learn to Look",
+                subtitle: "How to notice when safety is at risk",
                 description: "How to spot when conversations become crucial",
                 file: "slidedecks/chapter_06_learn_to_look.html",
                 completed: true,
+                part: 2,
                 tags: ["Awareness", "Detection"]
             },
             {
                 number: 7,
                 title: "Make It Safe",
+                subtitle: "How to make it safe to talk about almost anything",
                 description: "How to create conditions for open dialogue",
                 file: "slidedecks/chapter_07_make_safe.html",
                 completed: true,
+                part: 2,
                 tags: ["Safety", "Environment"]
             },
             {
                 number: 8,
                 title: "STATE My Path",
+                subtitle: "How to speak persuasively, not abrasively",
                 description: "How to share your views persuasively",
                 file: "slidedecks/chapter_08_state_path.html",
                 completed: true,
+                part: 2,
                 tags: ["Communication", "Speaking"]
             },
             {
                 number: 9,
                 title: "Explore Others' Paths",
+                subtitle: "How to listen when others blow up or clam up",
                 description: "How to listen with understanding",
                 file: "slidedecks/chapter_09_explore_paths.html",
                 completed: true,
+                part: 2,
                 tags: ["Listening", "Empathy"]
             },
             {
                 number: 10,
                 title: "Retake Your Pen",
+                subtitle: "How to be resilient and hear almost anything",
                 description: "How to move to dialogue and action",
                 file: "slidedecks/chapter_10_retake_pen.html",
                 completed: true,
+                part: 2,
                 tags: ["Action", "Decision"]
             },
             {
                 number: 11,
                 title: "Move to Action",
+                subtitle: "How to turn crucial conversations into action and results",
                 description: "How to turn crucial conversations into results",
                 file: "slidedecks/chapter_11_move_action.html",
                 completed: true,
+                part: 3,
                 tags: ["Action", "Results"]
             },
             {
                 number: 12,
                 title: "Yeah, But",
+                subtitle: "Advice for tough cases",
                 description: "Advice for tough cases and challenging situations",
                 file: "slidedecks/chapter_12_yeah_but.html",
                 completed: true,
+                part: 3,
                 tags: ["Challenges", "Advanced"]
             },
             {
                 number: 13,
                 title: "Putting It All Together",
+                subtitle: "Tools for preparing and learning",
                 description: "Tools for preparing and continuing to learn",
                 file: "slidedecks/chapter_13_putting_together.html",
                 completed: true,
+                part: 3,
                 tags: ["Integration", "Practice"]
             }
         ];
 
+        const PART_LABELS = {
+            1: "Part I — Before You Open Your Mouth",
+            2: "Part II — How to Open Your Mouth",
+            3: "Part III — How to Finish"
+        };
+
         function renderChapters() {
             const grid = document.getElementById('chaptersGrid');
-            grid.innerHTML = chapters.map(chapter => `
-                <div class="chapter-card">
-                    <div class="chapter-number">Chapter ${chapter.number}</div>
-                    <h3 class="chapter-title">${chapter.title}</h3>
-                    <p class="chapter-description">${chapter.description}</p>
-                    <div style="margin-bottom: 15px;">
-                        ${chapter.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            let currentPart = 0;
+            grid.innerHTML = chapters.map(chapter => {
+                const partHeader = chapter.part !== currentPart
+                    ? (currentPart = chapter.part, `
+                        <div class="part-divider">
+                            <h3>${PART_LABELS[chapter.part] ?? ''}</h3>
+                        </div>
+                    `)
+                    : '';
+
+                return `
+                    ${partHeader}
+                    <div class="chapter-card">
+                        <div class="chapter-number">Chapter ${chapter.number}</div>
+                        <h3 class="chapter-title">${chapter.title}</h3>
+                        ${chapter.subtitle ? `<p class="chapter-subtitle">${chapter.subtitle}</p>` : ''}
+                        <p class="chapter-description">${chapter.description}</p>
+                        <div style="margin-bottom: 15px;">
+                            ${chapter.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <a href="${chapter.file}" class="btn" ${!chapter.completed ? 'style="background: #6c757d;"' : ''}>
+                            ${chapter.completed ? 'Start Chapter' : 'Coming Soon'}
+                        </a>
                     </div>
-                    <a href="${chapter.file}" class="btn" ${!chapter.completed ? 'style="background: #6c757d;"' : ''}>
-                        ${chapter.completed ? 'Start Chapter' : 'Coming Soon'}
-                    </a>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function updateProgress() {

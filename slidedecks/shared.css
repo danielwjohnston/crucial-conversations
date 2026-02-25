@@ -1268,18 +1268,14 @@ li {
    Usage: <span class="term" data-def="Definition here">TERM</span>
    ============================================================ */
 .term {
-    position: relative;
     border-bottom: 1.5px dotted var(--discussion-blue);
     cursor: help;
     white-space: nowrap;
 }
 
-.term::after {
-    content: attr(data-def);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
+/* Tooltip bubble — appended to <body> by JS, escapes all overflow contexts */
+.term-tip {
+    position: fixed;
     background: var(--text-dark);
     color: #fff;
     font-size: 0.82rem;
@@ -1287,62 +1283,35 @@ li {
     line-height: 1.45;
     padding: 10px 14px;
     border-radius: 6px;
-    width: max-content;
     max-width: 320px;
     white-space: normal;
     text-align: left;
     pointer-events: none;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.18s ease, visibility 0.18s ease;
-    z-index: 9999;
+    transition: opacity 0.18s ease;
+    z-index: 99999;
     box-shadow: 0 4px 14px rgba(0,0,0,.25);
 }
 
-.term::before {
-    content: "";
+.term-tip.visible { opacity: 1; }
+
+.term-tip-arrow {
     position: absolute;
-    bottom: calc(100% + 2px);
     left: 50%;
     transform: translateX(-50%);
     border: 6px solid transparent;
+}
+
+.term-tip-arrow.above {
+    bottom: -12px;
     border-top-color: var(--text-dark);
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.18s ease, visibility 0.18s ease;
-    z-index: 9999;
 }
 
-.term:hover::after,
-.term:focus::after,
-.term:hover::before,
-.term:focus::before {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Flip tooltip below if near top of viewport (add class via JS or manually) */
-.term.tip-below::after {
-    bottom: auto;
-    top: calc(100% + 8px);
-}
-.term.tip-below::before {
-    bottom: auto;
-    top: calc(100% + 2px);
-    border-top-color: transparent;
+.term-tip-arrow.below {
+    top: -12px;
     border-bottom-color: var(--text-dark);
 }
 
-/* On small screens, anchor tooltips to left edge to prevent overflow */
 @media (max-width: 768px) {
-    .term::after {
-        left: 0;
-        transform: none;
-        max-width: 260px;
-    }
-    .term::before {
-        left: 16px;
-        transform: none;
-    }
+    .term-tip { max-width: 260px; }
 }

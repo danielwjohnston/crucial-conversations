@@ -1262,3 +1262,87 @@ li {
     .highlight, .story-box { padding: 12px; }
     .three-column { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Term Tooltips — hover definitions for book acronyms/terms
+   Usage: <span class="term" data-def="Definition here">TERM</span>
+   ============================================================ */
+.term {
+    position: relative;
+    border-bottom: 1.5px dotted var(--discussion-blue);
+    cursor: help;
+    white-space: nowrap;
+}
+
+.term::after {
+    content: attr(data-def);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-dark);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 400;
+    line-height: 1.45;
+    padding: 10px 14px;
+    border-radius: 6px;
+    width: max-content;
+    max-width: 320px;
+    white-space: normal;
+    text-align: left;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+
+.term::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--text-dark);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    z-index: 9999;
+}
+
+.term:hover::after,
+.term:focus::after,
+.term:hover::before,
+.term:focus::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Flip tooltip below if near top of viewport (add class via JS or manually) */
+.term.tip-below::after {
+    bottom: auto;
+    top: calc(100% + 8px);
+}
+.term.tip-below::before {
+    bottom: auto;
+    top: calc(100% + 2px);
+    border-top-color: transparent;
+    border-bottom-color: var(--text-dark);
+}
+
+/* On small screens, anchor tooltips to left edge to prevent overflow */
+@media (max-width: 768px) {
+    .term::after {
+        left: 0;
+        transform: none;
+        max-width: 260px;
+    }
+    .term::before {
+        left: 16px;
+        transform: none;
+    }
+}

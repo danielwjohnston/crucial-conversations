@@ -1268,9 +1268,10 @@ li {
    Usage: <span class="term" data-def="Definition here">TERM</span>
    ============================================================ */
 .term {
-    border-bottom: 1.5px dotted var(--discussion-blue);
+    border-bottom: 1.5px dotted currentColor;
     cursor: help;
     white-space: nowrap;
+    text-decoration-skip-ink: none;
 }
 
 /* Tooltip bubble — appended to <body> by JS, escapes all overflow contexts */

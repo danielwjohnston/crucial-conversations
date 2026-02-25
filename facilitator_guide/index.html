@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facilitator Guide | Crucial Conversations</title>
+  <style>
+    :root {
+      --brand-red: #e30613;
+      --text-dark: #1a1a2e;
+      --text-mid: #444;
+      --text-light: #666;
+      --bg: #f7f8fb;
+      --card: #fff;
+      --border: #e3e7ee;
+      --accent: #1f8f4d;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(135deg, var(--brand-red) 0%, #c20510 100%);
+      color: white;
+      padding: 32px 20px 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    header h1 { margin: 0 0 6px; letter-spacing: 0.02em; }
+    header p { margin: 0; opacity: 0.9; }
+    main {
+      max-width: 1100px;
+      margin: 30px auto 50px;
+      padding: 0 20px;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .tab-btn {
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--text-dark);
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      box-shadow: 0 6px 16px rgba(31,143,77,0.25);
+    }
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      min-height: 60vh;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      color: var(--text-light);
+      font-size: 0.95em;
+    }
+    .content { color: var(--text-mid); }
+    .content h1, .content h2, .content h3, .content h4 {
+      color: var(--text-dark);
+      margin-top: 22px;
+      margin-bottom: 10px;
+    }
+    .content ul { padding-left: 22px; margin: 10px 0; }
+    .content li { margin-bottom: 6px; }
+    .content strong { color: var(--text-dark); }
+    .content em { color: var(--text-mid); }
+    .content hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #eef7ff;
+      color: #1f60b0;
+      border-radius: 999px;
+      border: 1px solid #d3e5ff;
+      font-weight: 600;
+      font-size: 0.9em;
+      text-decoration: none;
+    }
+    @media (max-width: 768px) {
+      .card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Facilitator Guide</h1>
+    <p>Presentation notes and session timings for Crucial Conversations</p>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <button class="tab-btn active" data-target="notes">Presentation Notes</button>
+      <button class="tab-btn" data-target="timings">Session Timings</button>
+      <a class="pill" href="../index.html">← Back to Chapter Select</a>
+    </div>
+
+    <div class="card">
+      <div class="meta">
+        <span id="status">Loading…</span>
+        <span id="source"></span>
+      </div>
+      <div id="content" class="content"></div>
+    </div>
+  </main>
+
+  <script>
+    const files = {
+      notes: 'presentation_notes.md',
+      timings: 'session_timings.md'
+    };
+    const statusEl = document.getElementById('status');
+    const sourceEl = document.getElementById('source');
+    const contentEl = document.getElementById('content');
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    function markdownToHtml(md) {
+      // Basic, safe-ish renderer for headings, lists, bold/italics, hr, paragraphs.
+      const esc = (s) => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+      const lines = md.split(/\n/);
+      let html = '';
+      let inList = false;
+      for (let line of lines) {
+        if (/^\s*$/.test(line)) { if (inList) { html += '</ul>'; inList = false; } continue; }
+        const hr = /^-{3,}$/.test(line.trim());
+        if (hr) { if (inList) { html += '</ul>'; inList = false; } html += '<hr>'; continue; }
+        const h = line.match(/^(#{1,4})\s+(.*)$/);
+        if (h) {
+          if (inList) { html += '</ul>'; inList = false; }
+          const lvl = h[1].length; const text = esc(h[2]);
+          html += `<h${lvl}>${text}</h${lvl}>`;
+          continue;
+        }
+        const li = line.match(/^[-*]\s+(.*)$/);
+        if (li) {
+          if (!inList) { html += '<ul>'; inList = true; }
+          html += `<li>${inline(li[1])}</li>`;
+          continue;
+        }
+        // Paragraph
+        if (inList) { html += '</ul>'; inList = false; }
+        html += `<p>${inline(line)}</p>`;
+      }
+      if (inList) html += '</ul>';
+      return html;
+
+      function inline(text) {
+        let t = esc(text);
+        t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        t = t.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        t = t.replace(/`(.+?)`/g, '<code>$1</code>');
+        return t;
+      }
+    }
+
+    async function load(target) {
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.target === target));
+      statusEl.textContent = 'Loading…';
+      sourceEl.textContent = '';
+      contentEl.innerHTML = '';
+      try {
+        const resp = await fetch(files[target]);
+        if (!resp.ok) throw new Error('Network error');
+        const text = await resp.text();
+        contentEl.innerHTML = markdownToHtml(text);
+        statusEl.textContent = target === 'notes' ? 'Presentation Notes' : 'Session Timings';
+        sourceEl.textContent = files[target];
+      } catch (e) {
+        statusEl.textContent = 'Unable to load file';
+        contentEl.innerHTML = `<p>Please open <a href="${files[target]}">${files[target]}</a> directly.</p>`;
+      }
+    }
+
+    buttons.forEach(btn => btn.addEventListener('click', () => load(btn.dataset.target)));
+    load('notes');
+  </script>
+</body>
+</html>

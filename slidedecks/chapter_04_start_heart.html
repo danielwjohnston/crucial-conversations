@@ -3,1083 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadership Bookclub - Start with Heart</title>
-    <style>
-            :root {
-        --brand-red: #e30613;
-        --brand-red-accessible: #c20510;
-        --text-dark: #333;
-        --text-light: #666;
-        --bg-light: #f8f9fa;
-        --border-color: #ddd;
-        --discussion-blue: #4a90e2;
-        --digest-green: #48bb78;
-        --digest-green-dark: #38a169;
-    }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: white;
-            color: #333;
-            overflow: hidden;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            .timer-progress {
-                transition: none !important;
-            }
-        }
-
-        .skip-link {
-            position: absolute;
-            left: -9999px;
-            top: auto;
-            z-index: 9999;
-        }
-
-        .skip-link:focus {
-            left: 16px;
-            top: 16px;
-            background: #000;
-            color: #fff;
-            padding: 12px 16px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        *:focus-visible {
-            outline: 3px solid #000;
-            outline-offset: 2px;
-        }
-
-        .nav-btn:focus-visible,
-        .auto-advance-toggle:focus-visible {
-            outline: 3px solid #fff;
-            outline-offset: 2px;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .slideshow-container {
-            padding-top: 120px;
-            padding-bottom: 100px;
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .persistent-header {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
-            color: white;
-            padding: 12px 30px;
-            z-index: 500;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            opacity: 0;
-            transform: translateY(-100%);
-            transition: all 0.4s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-
-        .persistent-header.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .persistent-header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            min-width: 0;
-        }
-
-        .persistent-header-title {
-            font-size: 1em;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            white-space: nowrap;
-        }
-
-        .persistent-header-subtitle {
-            font-size: 0.8em;
-            opacity: 0.85;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* === Chapter Dropdown === */
-        .chapter-dropdown-wrapper { position: relative; }
-
-        .chapter-dropdown-btn {
-            background: rgba(255,255,255,0.15);
-            border: 1.5px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .chapter-dropdown-btn:hover {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.6);
-        }
-
-        .chapter-dropdown-btn .arrow { font-size: 10px; transition: transform 0.2s ease; }
-        .chapter-dropdown-btn.open .arrow { transform: rotate(180deg); }
-
-        .chapter-dropdown-menu {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            min-width: 340px;
-            max-height: 70vh;
-            overflow-y: auto;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-8px);
-            transition: all 0.2s ease;
-            z-index: 1100;
-            border: 1px solid #ddd;
-        }
-
-        .chapter-dropdown-menu.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-section-label {
-            padding: 10px 16px 4px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #666;
-        }
-
-        .dropdown-divider { height: 1px; background: #ddd; margin: 4px 0; }
-
-        .chapter-dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background 0.15s ease;
-            text-decoration: none;
-            color: #333;
-        }
-
-        .chapter-dropdown-item:hover { background: #f8f9fa; }
-        .chapter-dropdown-item.active { background: #fef2f2; }
-        .chapter-dropdown-item.active .ch-num { background: #e30613; color: white; }
-
-        .ch-num {
-            width: 28px; height: 28px; border-radius: 50%;
-            background: #f8f9fa; color: #444;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700; flex-shrink: 0;
-            border: 1.5px solid #ddd;
-        }
-
-        .ch-info { min-width: 0; }
-
-        .ch-title {
-            font-size: 13px; font-weight: 600; color: #333;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
-        }
-
-        .ch-subtitle {
-            font-size: 11px; color: #666;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
-        }
-
-        .slide {
-            display: none;
-            padding: 40px 60px;
-            text-align: center;
-            max-width: 1400px;
-            width: 95%;
-            margin-top: 0;
-        }
-
-        @media (min-width: 1920px) {
-            .slide {
-                max-width: 1600px;
-                padding: 40px 80px;
-            }
-
-            h1 {
-                font-size: 4em;
-            }
-
-            h2 {
-                font-size: 3.2em;
-            }
-
-            h3 {
-                font-size: 2em;
-            }
-
-            p, li {
-                font-size: 1.3em;
-            }
-        }
-
-        @media (min-width: 2560px) {
-            .slide {
-                max-width: 2000px;
-                padding: 60px 100px;
-            }
-
-            h1 {
-                font-size: 4.5em;
-            }
-
-            h2 {
-                font-size: 3.6em;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .slide {
-                padding: 30px 40px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .slide {
-                padding: 20px 30px;
-                width: 90%;
-            }
-        }
-
-        .slide.with-header {
-            margin-top: 180px;
-        }
-
-        .slide.with-header .slide-content {
-            margin-top: 0;
-        }
-
-        .discussion-slide.with-header .slide-content {
-            padding-top: 40px;
-        }
-
-        .slide.active {
-            display: block;
-        }
-
-        @media (prefers-reduced-motion: no-preference) {
-            .slide.active {
-                animation: fadeIn 0.5s;
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 0 30px;
-            height: 52px;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-            color: #666;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-brand {
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-
-        .header-slide-counter {
-            background: #333;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #e30613;
-            color: white;
-            padding: 15px 30px;
-            text-align: right;
-            font-size: 14px;
-            z-index: 1000;
-        }
-
-        h1 {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-            color: var(--brand-red-accessible);
-            font-weight: bold;
-        }
-
-        @media (max-width: 1024px) {
-            h1 {
-                font-size: 3em;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-        }
-
-        h2 {
-            font-size: 2.8em;
-            margin-bottom: 30px;
-            color: var(--brand-red-accessible);
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 1024px) {
-            h2 {
-                font-size: 2.3em;
-            }
-        }
-
-        @media (max-width: 768px) {
-            h2 {
-                font-size: 2em;
-                margin-bottom: 20px;
-            }
-        }
-
-        h3 {
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        p, li {
-            font-size: 1.2em;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        ul {
-            text-align: left;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        li {
-            margin-bottom: 12px;
-            padding-left: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            color: #666;
-            margin-bottom: 10px;
-            font-style: italic;
-        }
-
-        .highlight {
-            background: #f8f8f8;
-            padding: 25px;
-            border-radius: 5px;
-            margin: 25px auto;
-            border-left: 5px solid #e30613;
-            max-width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .highlight {
-                padding: 20px;
-                margin: 20px auto;
-            }
-        }
-
-        .story-box {
-            background: #f8f8f8;
-            padding: 30px;
-            border-radius: 5px;
-            margin: 25px auto;
-            border: 2px solid #ddd;
-            text-align: left;
-            max-width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .story-box {
-                padding: 20px;
-                margin: 20px auto;
-            }
-        }
-
-        .story-box h3 {
-            color: var(--brand-red-accessible);
-            margin-bottom: 10px;
-        }
-
-        .navigation {
-            position: fixed;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        @media (max-width: 768px) {
-            .navigation {
-                bottom: 70px;
-                padding: 0 20px;
-                gap: 10px;
-            }
-        }
-
-        .nav-btn {
-            background: #e30613;
-            border: none;
-            color: white;
-            padding: 12px 0;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            width: 120px;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .nav-btn {
-                width: 100px;
-                font-size: 14px;
-                padding: 10px 0;
-            }
-        }
-
-        .nav-btn:hover {
-            background: #c20510;
-            transform: translateY(-2px);
-        }
-
-        .auto-advance-toggle {
-            background: #333;
-            color: white;
-            border: 2px solid #e30613;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .auto-advance-toggle:hover {
-            background: #444;
-        }
-
-        .auto-advance-toggle.active {
-            background: #e30613;
-            border-color: #e30613;
-        }
-
-        .timer-container {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            border: 2px solid #e30613;
-        }
-
-        .timer-container.active {
-            display: flex;
-        }
-
-        .circular-timer {
-            width: 60px;
-            height: 60px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .circular-timer svg {
-            transform: rotate(-90deg);
-            display: block;
-        }
-
-        .timer-background {
-            fill: none;
-            stroke: #ddd;
-            stroke-width: 4;
-        }
-
-        .timer-progress {
-            fill: none;
-            stroke: #e30613;
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-dasharray: 163.36;
-            stroke-dashoffset: 0;
-            transition: stroke-dashoffset 0.1s linear;
-        }
-
-        .timer-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 12px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .discussion-slide {
-            background: #f0f8ff;
-            border: 3px solid #4a90e2;
-        }
-
-        .discussion-slide h2 {
-            color: #4a90e2;
-        }
-
-        .discussion-question {
-            font-size: 1.5em;
-            color: #4a90e2;
-            font-weight: bold;
-            margin: 30px 0;
-            padding: 30px;
-            background: white;
-            border-radius: 10px;
-            border-left: 5px solid #4a90e2;
-            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.1);
-        }
-
-        .discussion-question p {
-            color: #333;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-        }
-
-        .dans-digest-slide {
-            background: #f0fff4;
-            border: 3px solid #48bb78;
-        }
-
-        .dans-digest-slide h2 {
-            color: #48bb78;
-        }
-
-        .digest-answer {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            border-left: 5px solid #48bb78;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .digest-answer h4 {
-            color: #48bb78;
-            font-size: 1.3em;
-            margin-bottom: 15px;
-        }
-
-        .digest-insights {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            border-left: 5px solid #68d391;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .digest-insights h4 {
-            color: #48bb78;
-            font-size: 1.3em;
-            margin-bottom: 15px;
-        }
-
-        .digest-insights ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .digest-insights li {
-            padding-left: 25px;
-            position: relative;
-            margin-bottom: 10px;
-        }
-
-        .digest-insights li:before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: #48bb78;
-            font-weight: bold;
-        }
-
-        .quote-box {
-            background: #f8f8f8;
-            border-left: 5px solid #4a90e2;
-            padding: 25px;
-            margin: 30px 0;
-            font-style: italic;
-            font-size: 1.3em;
-        }
-
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .two-column {
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .two-column {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        .column-box {
-            background: #f8f8f8;
-            padding: 20px;
-            border-radius: 5px;
-            border: 2px solid #e30613;
-            text-align: left;
-        }
-
-        .column-box h4 {
-            color: var(--brand-red-accessible);
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .title-slide {
-            background: linear-gradient(135deg, #e30613 0%, #c20510 100%);
-            color: white;
-        }
-
-        .title-slide .slide-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: calc(100vh - 140px);
-            margin: 0;
-        }
-
-        .title-slide h1, .title-slide h2 {
-            color: white;
-        }
-
-        .title-slide .subtitle {
-            color: #f0f0f0;
-        }
-
-        .brand-logo {
-            background: #e30613;
-            color: white;
-            padding: 10px 20px;
-            margin-bottom: 30px;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .slide-content {
-            margin-top: 120px;
-            margin-bottom: 100px;
-            padding: 0 20px;
-        }
-
-        @media (max-width: 768px) {
-            .slide-content {
-                margin-top: 80px;
-                margin-bottom: 80px;
-                padding: 0 10px;
-            }
-        }
-
-        .number-box {
-            background: #e30613;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50%;
-            display: inline-block;
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .step-box {
-            background: white;
-            border: 3px solid #e30613;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-
-        .step-box h4 {
-            color: var(--brand-red-accessible);
-            margin-bottom: 10px;
-        }
-
-        .bridge-box {
-            background: linear-gradient(135deg, #e30613 10%, #c20510 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 10px;
-            margin: 25px 0;
-        }
-
-        .bridge-box h3,
-        .bridge-box p,
-        .bridge-box li,
-        .bridge-box ul {
-            color: white;
-        }
-
-        .emphasis-box {
-            background: #fff3cd;
-            border: 3px solid #ffc107;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .four-boxes {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        @media (max-width: 1024px) {
-            .four-boxes {
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .four-boxes {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        .cure-box {
-            background: white;
-            border: 3px solid #e30613;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: left;
-        }
-
-        .cure-box h4 {
-            color: var(--brand-red-accessible);
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .cure-box .letter {
-            color: #e30613;
-            font-size: 3em;
-            font-weight: bold;
-            float: left;
-            margin-right: 15px;
-            line-height: 1;
-        }
-
-        /* === Chapter Nav Buttons === */
-        .nav-btn.chapter-nav-btn {
-            background: #333;
-            font-size: 12px;
-            padding: 10px 14px;
-            width: auto;
-            min-width: auto;
-        }
-
-        .nav-btn.chapter-nav-btn:hover:not(:disabled) { background: #444; }
-
-        .nav-btn.chapter-nav-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 768px) {
-            .persistent-header { padding: 8px 12px; }
-            .persistent-header-title { font-size: 0.8em; }
-            .persistent-header-subtitle { display: none; }
-            .chapter-dropdown-btn { padding: 4px 10px; font-size: 12px; }
-            .chapter-dropdown-menu { min-width: 280px; right: -10px; }
-            .nav-btn.chapter-nav-btn { display: none; }
-        }
-    </style>
+    <title>Leadership Bookclub - START WITH HEART</title>
+    <link rel="stylesheet" href="shared.css">
     <link rel="prefetch" href="chapter_03_choose_topic.html">
     <link rel="prefetch" href="chapter_05_master_stories.html">
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-
     <header class="header" role="banner">
         <span class="header-brand">CrucialLearning.com | 800.449.5989</span>
-        <span class="header-slide-counter" id="slideCounter">
-            <span id="slideNumber">1</span> / <span id="totalSlides">0</span>
-        </span>
+        <span class="header-slide-counter" id="slideCounter"><span id="slideNumber">1</span> / <span id="totalSlides">0</span></span>
     </header>
-
-    <footer class="footer" role="contentinfo">
-        ©2026 Leadership Development. All rights reserved.
-    </footer>
-
+    <footer class="footer" role="contentinfo">&copy;2026 Leadership Development. All rights reserved.</footer>
     <main id="main-content" class="slideshow-container" aria-label="Slideshow presentation">
-        <div class="slide title-slide">
-<span id="currentSlide">1</span> / <span id="totalSlides">9</span>
-        </div>
-        <div>Leadership Bookclub - Start with Heart</div>
-        <button class="auto-advance-toggle" id="autoAdvanceToggle" aria-label="Toggle auto-advance">
-            Auto-advance: OFF
-        </button>
-    </header>
-
-    <div class="persistent-header" id="chapterHeader">
+        <div id="timerAria" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+        <div class="persistent-header" id="chapterHeader">
             <div class="persistent-header-left">
                 <span class="persistent-header-title" id="headerTitle">Ch. 4: START WITH HEART</span>
                 <span class="persistent-header-subtitle" id="headerSubtitle">How to stay focused on what you really want</span>
             </div>
             <div class="chapter-dropdown-wrapper">
-                <button class="chapter-dropdown-btn" id="dropdownBtn" aria-expanded="false" aria-haspopup="true">
-                    Chapters <span class="arrow">▼</span>
-                </button>
-                <div class="chapter-dropdown-menu" id="dropdownMenu" role="menu">
+                <button class="chapter-dropdown-btn" id="dropdownBtn" aria-expanded="false" aria-haspopup="true">Chapters <span class="arrow">&#9660;</span></button>
+                <div class="chapter-dropdown-menu" id="dropdownMenu" role="menu"></div>
+            </div>
+        </div>
+        <div class="slide active title-slide"><div class="slide-content">
+            <div class="brand-logo">Leadership Bookclub</div>
+            <h1>CHAPTER 4</h1>
+            <h2>Start with Heart</h2>
+            <p class="subtitle">How to stay focused on what you really want</p>
+        </div></div>
+
+        <div class="slide"><div class="slide-content">
+            <h2>Core Message</h2>
+            <div class="highlight">
+                <h3>The first principle of dialogue: Start with Heart</h3>
+                <p>Work on me first, us second. The most skilled communicators begin by getting their own motives right.</p>
+            </div>
+            <p style="margin-top:15px;">When conversations get tough, our motives shift from solving the problem to <strong>winning, punishing, or keeping the peace</strong>. We need to notice and correct this shift.</p>
+        </div></div>
+
+        <div class="slide"><div class="slide-content">
+            <h2>The Fool&#39;s Choice</h2>
+            <div class="two-column">
+                <div class="column-box">
+                    <h4>Option A: Be Honest</h4>
+                    <p>&ldquo;If I speak up, I&#39;ll damage the relationship.&rdquo;</p>
+                </div>
+                <div class="column-box">
+                    <h4>Option B: Keep the Peace</h4>
+                    <p>&ldquo;If I stay quiet, the problem continues.&rdquo;</p>
                 </div>
             </div>
-        </div>
-
-    <main class="slideshow-container" id="main-content">
-        <div class="slide active">
-            <h1>Start with Heart</h1>
-            <h2>How to Stay Focused on What You Really Want</h2>
-            <div class="quote">
-                "Speak when you are angry and you will make the best speech you will ever regret."<br>
-                — Ambrose Bierce
+            <div class="highlight" style="margin-top:20px;">
+                <h3>The Third Option</h3>
+                <p>Skilled communicators reject the Fool&#39;s Choice. They ask: <strong>&ldquo;How can I be 100% honest AND 100% respectful?&rdquo;</strong></p>
             </div>
-        </div>
+        </div></div>
 
-        <div class="slide">
-<h2>The Challenge of Dialogue</h2>
-            <p>Now that you know what you want to talk about, it's time to turn to the <strong>how</strong> of dialogue.</p>
-            <p>How do you encourage the flow of meaning when you're:</p>
-            <ul>
-                <li>In the thrall of strong emotions</li>
-                <li>Talking about things that matter deeply to you</li>
-                <li>With those who disagree vehemently</li>
-            </ul>
-            <div class="warning">
-                <p class="key-point">Given that most people's style is based on long-standing habits, it'll require a lot of effort.</p>
-            </div>
-        </div>
+        <div class="slide"><div class="slide-content">
+            <h2>What Do I Really Want?</h2>
+            <h3>Three critical questions to ask yourself:</h3>
+            <div class="step-box"><h4>For me?</h4><p>What do I want for myself from this conversation?</p></div>
+            <div class="step-box"><h4>For them?</h4><p>What do I want for the other person?</p></div>
+            <div class="step-box"><h4>For the relationship?</h4><p>What do I want for the relationship between us?</p></div>
+            <div class="highlight" style="margin-top:15px;"><p><strong>Then ask:</strong> How would I behave if I really wanted these results?</p></div>
+        </div></div>
 
-        <div class="slide">
-<h2>People Can Change</h2>
-            <p>The truth is, people can change.</p>
-            <div class="principle">
-                <h3>We've taught these conversation skills to millions around the world and have seen dramatic improvements in results and relationships.</h3>
+        <div class="slide"><div class="slide-content">
+            <h2>How Motives Shift</h2>
+            <p>Under stress, our motives shift without us noticing:</p>
+            <div class="two-column">
+                <div class="column-box">
+                    <h4>What We Start Wanting</h4>
+                    <ul><li>To solve the problem</li><li>To understand each other</li><li>To strengthen the relationship</li></ul>
+                </div>
+                <div class="column-box" style="border-color:#e30613;">
+                    <h4>What We Shift To</h4>
+                    <ul><li>To <strong>win</strong> the argument</li><li>To <strong>punish</strong> the other person</li><li>To <strong>avoid</strong> conflict at all costs</li></ul>
+                </div>
             </div>
-            <p>But it requires work. You can't simply highlight an inspiring paragraph in a book and expect to behave differently the next day.</p>
+            <p style="margin-top:15px;"><strong>The shift happens fast.</strong> Notice it, name it, and return to your real purpose.</p>
+        </div></div>
+
+        <div class="slide discussion-slide"><div class="slide-content">
+            <h2>Discussion Break #1</h2>
+            <div class="discussion-question">
+                <p>Think of a conversation where your motives shifted&mdash;where you started wanting to solve a problem but ended up wanting to win, punish, or avoid. What triggered the shift, and how did it change the outcome?</p>
+            </div>
+            <button class="digest-pill" type="button" data-digest="1" onclick="openDigest(1)" aria-haspopup="dialog" aria-controls="digestModal1"><span class="dot" aria-hidden="true"></span>Dan&#39;s Digest</button>
+        </div></div>
+
+        <div class="slide"><div class="slide-content">
+            <h2>The AND Statement</h2>
             <div class="highlight">
-                <p class="key-point">Change requires deliberate practice and conscious effort.</p>
+                <h3>Refuse the Fool&#39;s Choice by using AND</h3>
+                <p>&ldquo;I want to be honest about my concerns <strong>AND</strong> I want to be respectful of your perspective.&rdquo;</p>
+                <p style="margin-top:12px;">&ldquo;I want to address this issue <strong>AND</strong> I want to strengthen our relationship.&rdquo;</p>
             </div>
+            <p style="margin-top:15px;">The AND statement forces your brain to search for creative solutions instead of settling for either/or tradeoffs.</p>
+        </div></div>
+
+        <div class="slide discussion-slide"><div class="slide-content">
+            <h2>Discussion Break #2</h2>
+            <div class="discussion-question">
+                <p>Where in your life are you currently facing a Fool&#39;s Choice&mdash;feeling like you have to choose between honesty and peace? What would your AND statement look like for that situation?</p>
+            </div>
+            <button class="digest-pill" type="button" data-digest="2" onclick="openDigest(2)" aria-haspopup="dialog" aria-controls="digestModal2"><span class="dot" aria-hidden="true"></span>Dan&#39;s Digest</button>
+        </div></div>
+
+        <div class="slide"><div class="slide-content">
+            <h2>This Week&#39;s Challenge</h2>
+            <div class="highlight"><h3>Before your next crucial conversation:</h3>
+                <ul>
+                    <li>Ask the three questions: What do I want for me, for them, for the relationship?</li>
+                    <li>Write your <strong>AND statement</strong></li>
+                    <li>Watch for the moment your motives shift&mdash;and correct back to your real purpose</li>
+                </ul>
+            </div>
+            <p style="margin-top:18px;"><strong>Next Meeting:</strong> Share your AND statement and what happened</p>
+        </div></div>
+
+        <div class="slide"><div class="slide-content">
+            <h2>More to Ponder</h2>
+            <p class="subtitle">Use these as a quick review of key takeaways.</p>
+            <div class="story-box"><h3>Choose 1&ndash;2 prompts</h3>
+                <ul>
+                    <li>Why does &ldquo;work on me first&rdquo; matter more than &ldquo;fix the other person&rdquo;?</li>
+                    <li>How do you typically notice when your motives have shifted?</li>
+                    <li>What makes the Fool&#39;s Choice feel so convincing in the moment?</li>
+                    <li>How would your toughest relationship change if you consistently started with heart?</li>
+                </ul>
+            </div>
+        </div></div>
+
+        <div class="slide look-ahead-slide"><div class="slide-content">
+            <h1>Look Ahead</h1>
+            <h2>Chapter 5: Master My Stories</h2>
+            <div class="highlight" style="margin-top:10px;"><h3>What we&#39;ll focus on next</h3>
+                <ul>
+                    <li><strong>How to stay in dialogue</strong> when you&#39;re angry, scared, or hurt</li>
+                    <li>The <strong>Path to Action:</strong> See/Hear &rarr; Story &rarr; Feel &rarr; Act</li>
+                    <li>Three <strong>clever stories</strong> that justify bad behavior</li>
+                </ul>
+            </div>
+            <p class="subtitle" style="margin-top:18px;"><strong>Optional prep:</strong> Notice a moment this week when you felt a strong negative emotion. What story were you telling yourself?</p>
+        </div></div>
+    </main>
+    <div class="digest-modal" id="digestModal1" role="dialog" aria-labelledby="digestTitle1" aria-modal="true">
+        <div class="digest-content">
+            <button class="digest-close" onclick="closeDigest(1)" aria-label="Close">&times;</button>
+            <h2 id="digestTitle1">Dan&#39;s Digest</h2>
+            <div class="digest-answer"><h4>Answer Key (Discussion Break #1)</h4>
+                <p><strong>Motive shifts:</strong> Under stress, we shift from &ldquo;solve the problem&rdquo; to &ldquo;win the argument,&rdquo; &ldquo;punish them,&rdquo; or &ldquo;keep the peace at all costs.&rdquo; The shift is fast and unconscious.</p>
+                <p style="margin-top:12px;"><strong>The three questions:</strong> What do I want for me? For them? For the relationship? These re-anchor you on your real purpose.</p>
+                <p style="margin-top:12px;"><strong>Work on me first:</strong> You can&#39;t control others, but you can control your own motives and behavior. That&#39;s where dialogue begins.</p>
+            </div>
+            <div class="digest-insights"><h4>Key Points</h4><ul>
+                <li>The shift from &ldquo;solve&rdquo; to &ldquo;win&rdquo; happens in seconds</li>
+                <li>Notice it, name it, return to purpose</li>
+                <li>The best at dialogue check their motives constantly</li>
+            </ul></div>
         </div>
-
-        <div class="slide">
-<h2>Start with Heart: The First Skill</h2>
-            <p>This is where it all begins. Before you open your mouth, you must know what you really want.</p>
-            <div class="principle">
-                <h3>The Core Principle:</h3>
-                <p><strong>Focus on what you really want.</strong></p>
+    </div>
+    <div class="digest-modal" id="digestModal2" role="dialog" aria-labelledby="digestTitle2" aria-modal="true">
+        <div class="digest-content">
+            <button class="digest-close" onclick="closeDigest(2)" aria-label="Close">&times;</button>
+            <h2 id="digestTitle2">Dan&#39;s Digest</h2>
+            <div class="digest-answer"><h4>Answer Key (Discussion Break #2)</h4>
+                <p><strong>The Fool&#39;s Choice:</strong> The belief that you must choose between honesty and peace. Skilled communicators reject this and look for AND&mdash;both honest and respectful.</p>
+                <p style="margin-top:12px;"><strong>AND statements:</strong> Force your brain to search for creative solutions. &ldquo;I want to be honest about my concerns AND respectful of your perspective.&rdquo;</p>
+                <p style="margin-top:12px;"><strong>Why it works:</strong> When you hold both goals simultaneously, you find paths that either/or thinking hides.</p>
             </div>
-            <p>When you're in the middle of a crucial conversation, it's easy to lose sight of your goals.</p>
-            <ul>
-                <li>Emotions take over</li>
-                <li>Ego gets involved</li>
-                <li>Winning becomes more important than resolving</li>
-            </ul>
+            <div class="digest-insights"><h4>Key Points</h4><ul>
+                <li>The Fool&#39;s Choice feels convincing because either/or is simpler</li>
+                <li>AND requires creativity and courage</li>
+                <li>Write your AND statement before the conversation, not during</li>
+            </ul></div>
         </div>
-
-        <div class="slide">
-<h2>The Three Questions</h2>
-            <p>Before and during any crucial conversation, ask yourself:</p>
-            <div class="principle">
-                <h3>1. What do I really want for myself?</h3>
-                <p>What are my real goals and objectives?</p>
-            </div>
-            <div class="principle">
-                <h3>2. What do I really want for others?</h3>
-                <p>What outcomes would benefit the other person?</p>
-            </div>
-            <div class="principle">
-                <h3>3. What do I really want for the relationship?</h3>
-                <p>How can I strengthen our connection?</p>
-            </div>
-        </div>
-
-        <div class="slide">
-<h2>Return to Purpose</h2>
-            <p>When you find yourself drifting away from what you really want:</p>
-            <ol>
-                <li><strong>Stop and step back</strong> - Take a mental pause</li>
-                <li><strong>Ask the three questions</strong> - Reconnect with your true goals</li>
-                <li><strong>Clarify your purpose</strong> - Get specific about what you want</li>
-                <li><strong>Choose your response</strong> - Act in alignment with your goals</li>
-            </ol>
-            <div class="exercise">
-                <h3>Practice Exercise:</h3>
-                <p>Think of a recent difficult conversation. What did you want for yourself? For others? For the relationship? Did you stay focused on these goals?</p>
-            </div>
-        </div>
-
-        <div class="slide">
-<h2>Common Traps That Derail Us</h2>
-            <div class="warning">
-                <h3>Trap 1: Wanting to Win</h3>
-                <p>We shift from dialogue to debate, from seeking truth to seeking victory.</p>
-            </div>
-            <div class="warning">
-                <h3>Trap 2: Seeking Revenge</h3>
-                <p>We want to punish or hurt the other person for past wrongs.</p>
-            </div>
-            <div class="warning">
-                <h3>Trap 3: Wanting to Be Safe</h3>
-                <p>We avoid the real issues to prevent conflict or discomfort.</p>
-            </div>
-            <p class="key-point">When you catch yourself in these traps, return to your purpose.</p>
-        </div>
-
-        <div class="slide">
-<h2>The Power of Clarity</h2>
-            <p>When you're clear about what you really want:</p>
-            <ul>
-                <li>Your emotions become more manageable</li>
-                <li>Your choices become more deliberate</li>
-                <li>Your communication becomes more effective</li>
-                <li>Your relationships become stronger</li>
-            </ul>
-            <div class="highlight">
-                <h3>The Transformation:</h3>
-                <p>From reactive and emotional to purposeful and constructive.</p>
-            </div>
-            <div class="exercise">
-                <h3>Self-Reflection:</h3>
-                <p>What crucial conversation are you facing? What do you really want for yourself, others, and the relationship?</p>
-            </div>
-        </div>
-
-</main>
-
+    </div>
     <nav class="navigation" role="navigation" aria-label="Slide navigation">
-        <button class="nav-btn chapter-nav-btn" id="prevChapterBtn" onclick="goToPrevChapter()" aria-label="Previous chapter">◄ Prev Ch.</button>
-        <button class="nav-btn" onclick="previousSlide()" aria-label="Previous slide">← Back</button>
-        <div class="timer-container" id="timerContainer">
-            <div class="circular-timer">
-                <svg width="60" height="60">
-                    <circle class="timer-background" cx="30" cy="30" r="26"/>
-                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26"/>
-                </svg>
-                <div class="timer-text" id="timerText">0:00</div>
-            </div>
-        </div>
-        <button class="auto-advance-toggle" onclick="toggleAutoAdvance()" aria-pressed="false">
-            <span aria-hidden="true">▶</span> Auto-Advance: OFF
-        </button>
-        <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next →</button>
-        <button class="nav-btn chapter-nav-btn" id="nextChapterBtn" onclick="goToNextChapter()" aria-label="Next chapter">Next Ch. ►</button>
+        <button class="nav-btn" onclick="previousSlide()" aria-label="Previous slide">&larr; Back</button>
+        <div class="timer-container" id="timerContainer"><div class="circular-timer"><svg width="60" height="60"><circle class="timer-background" cx="30" cy="30" r="26"/><circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26"/></svg><div class="timer-text" id="timerText">0:00</div></div></div>
+        <button class="auto-advance-toggle" onclick="toggleAutoAdvance()" aria-pressed="false"><span aria-hidden="true">&#9654;</span> Auto-Advance: OFF</button>
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next &rarr;</button>
     </nav>
-
     <script>
-        // ============================================================
-        // CHAPTER DATA — single source of truth
-        // ============================================================
         const CHAPTERS = [
             { num: 1,  file: "chapter_01_crucial_conversation.html",  title: "What\u2019s a Crucial Conversation", subtitle: "And who cares?", part: 1 },
             { num: 2,  file: "chapter_02_mastering_conversations.html", title: "Mastering Crucial Conversations", subtitle: "The power of dialogue", part: 1 },
@@ -1102,132 +211,12 @@
             3: "Part III \u2014 How to Finish"
         };
 
-        const CURRENT_CHAPTER_INDEX = 3; // Chapter 4
+        const CURRENT_CHAPTER_INDEX = 3;
 
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = 8;
-        const chapterHeader = document.getElementById('chapterHeader');
-        const timerContainer = document.getElementById('timerContainer');
-        const timerText = document.getElementById('timerText');
-        const timerCircle = document.getElementById('timerCircle');
-        const autoAdvanceToggle = document.querySelector('.auto-advance-toggle');
-        const timerAria = document.getElementById('timerAria');
-        
-        let autoAdvanceEnabled = false;
-        let countdownInterval = null;
-        let remainingTime = 0;
-        let totalDuration = 0;
-        let lastAnnouncement = -1;
-        
-        document.getElementById('totalSlides').textContent = totalSlides;
-        
-        // Timings for Chapter 4 content (in seconds)
-                const DURATIONS_SECONDS = [
-            30,   // 1 Title
-            90,   // 2 Content
-            90,   // 3 Content
-            90,   // 4 Content
-            90,   // 5 Content
-            120,   // 6 Exercise
-            90,   // 7 Content
-            120,   // 8 Exercise
-        ];
-        
-
-        // Digest stub functions (no digest modals in this chapter)
-        function openDigest(n) {}
-        function closeDigest(n) {}
-        function closeAllDigests() {}
-
-        function getSlideDuration() {
-            return DURATIONS_SECONDS[currentSlide] ?? 60;
-        }
-        
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        function updateTimerCircle() {
-            const circumference = 163.36;
-            const progress = remainingTime / totalDuration;
-            const offset = circumference * (1 - progress);
-            timerCircle.style.strokeDashoffset = offset;
-        }
-        
-        function announceTimer(msg) {
-            if (timerAria) {
-                timerAria.textContent = msg;
-            }
-        }
-        
-        function startTimer() {
-            if (!autoAdvanceEnabled) return;
-            
-            stopTimer();
-            
-            totalDuration = getSlideDuration();
-            remainingTime = totalDuration;
-            lastAnnouncement = -1;
-            
-            timerText.textContent = formatTime(remainingTime);
-            updateTimerCircle();
-            
-            countdownInterval = setInterval(() => {
-                remainingTime--;
-                timerText.textContent = formatTime(remainingTime);
-                updateTimerCircle();
-                
-                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
-                    if (remainingTime !== lastAnnouncement) {
-                        announceTimer(`${formatTime(remainingTime)} remaining`);
-                        lastAnnouncement = remainingTime;
-                    }
-                }
-                
-                if (remainingTime <= 0) {
-                    stopTimer();
-                    nextSlide();
-                }
-            }, 1000);
-        }
-        
-        function stopTimer() {
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
-        }
-        
-        function toggleAutoAdvance() {
-            autoAdvanceEnabled = !autoAdvanceEnabled;
-            
-            if (autoAdvanceEnabled) {
-                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">⏸</span> Auto-Advance: ON';
-                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
-                autoAdvanceToggle.classList.add('active');
-                timerContainer.classList.add('active');
-                startTimer();
-            } else {
-                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">▶</span> Auto-Advance: OFF';
-                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
-                autoAdvanceToggle.classList.remove('active');
-                timerContainer.classList.remove('active');
-                stopTimer();
-            }
-        }
-
-
-        // ============================================================
-        // CHAPTER DROPDOWN
-        // ============================================================
         function buildDropdown() {
             const menu = document.getElementById('dropdownMenu');
             menu.innerHTML = '';
             let currentPart = 0;
-
             CHAPTERS.forEach((ch, idx) => {
                 if (ch.part !== currentPart) {
                     currentPart = ch.part;
@@ -1241,38 +230,15 @@
                     label.textContent = PART_LABELS[currentPart];
                     menu.appendChild(label);
                 }
-
                 const item = document.createElement('div');
                 item.className = 'chapter-dropdown-item' + (idx === CURRENT_CHAPTER_INDEX ? ' active' : '');
                 item.setAttribute('role', 'menuitem');
                 item.setAttribute('tabindex', '0');
-                item.innerHTML = `
-                    <span class="ch-num">${ch.num}</span>
-                    <span class="ch-info">
-                        <span class="ch-title">${ch.title}</span>
-                        <span class="ch-subtitle">${ch.subtitle}</span>
-                    </span>
-                `;
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closeDropdown();
-                    if (idx !== CURRENT_CHAPTER_INDEX) {
-                        window.location.href = ch.file;
-                    }
-                });
-                item.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        closeDropdown();
-                        if (idx !== CURRENT_CHAPTER_INDEX) {
-                            window.location.href = ch.file;
-                        }
-                    }
-                });
+                item.innerHTML = '<span class="ch-num">' + ch.num + '</span><span class="ch-info"><span class="ch-title">' + ch.title + '</span><span class="ch-subtitle">' + ch.subtitle + '</span></span>';
+                item.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeDropdown(); if (idx !== CURRENT_CHAPTER_INDEX) window.location.href = ch.file; });
+                item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeDropdown(); if (idx !== CURRENT_CHAPTER_INDEX) window.location.href = ch.file; } });
                 menu.appendChild(item);
             });
-
             const divider = document.createElement('div');
             divider.className = 'dropdown-divider';
             menu.appendChild(divider);
@@ -1280,10 +246,7 @@
             backItem.className = 'chapter-dropdown-item';
             backItem.setAttribute('role', 'menuitem');
             backItem.setAttribute('tabindex', '0');
-            backItem.innerHTML = `
-                <span class="ch-num" style="background:#333;color:white;border-color:#333;">\u2630</span>
-                <span class="ch-info"><span class="ch-title">Back to Chapter Select</span></span>
-            `;
+            backItem.innerHTML = '<span class="ch-num" style="background:#333;color:white;border-color:#333;">\u2630</span><span class="ch-info"><span class="ch-title">Back to Chapter Select</span></span>';
             backItem.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = '../index.html'; });
             backItem.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = '../index.html'; } });
             menu.appendChild(backItem);
@@ -1292,147 +255,179 @@
         const dropdownBtn = document.getElementById('dropdownBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
 
-        function toggleDropdown() {
-            const isOpen = dropdownMenu.classList.contains('open');
-            if (isOpen) closeDropdown(); else openDropdown();
-        }
-
-        function openDropdown() {
-            dropdownMenu.classList.add('open');
-            dropdownBtn.classList.add('open');
-            dropdownBtn.setAttribute('aria-expanded', 'true');
-        }
-
-        function closeDropdown() {
-            dropdownMenu.classList.remove('open');
-            dropdownBtn.classList.remove('open');
-            dropdownBtn.setAttribute('aria-expanded', 'false');
-        }
-
+        function toggleDropdown() { const isOpen = dropdownMenu.classList.contains('open'); if (isOpen) closeDropdown(); else openDropdown(); }
+        function openDropdown() { dropdownMenu.classList.add('open'); dropdownBtn.classList.add('open'); dropdownBtn.setAttribute('aria-expanded', 'true'); }
+        function closeDropdown() { dropdownMenu.classList.remove('open'); dropdownBtn.classList.remove('open'); dropdownBtn.setAttribute('aria-expanded', 'false'); }
         dropdownBtn.addEventListener('click', toggleDropdown);
+        document.addEventListener('click', (e) => { if (!e.target.closest('.chapter-dropdown-wrapper')) closeDropdown(); });
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.chapter-dropdown-wrapper')) closeDropdown();
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const chapterHeader = document.getElementById('chapterHeader');
+        const timerContainer = document.getElementById('timerContainer');
+        const timerText = document.getElementById('timerText');
+        const timerCircle = document.getElementById('timerCircle');
+        const autoAdvanceToggle = document.querySelector('.auto-advance-toggle');
+        const timerAria = document.getElementById('timerAria');
+
+        let autoAdvanceEnabled = false;
+        let countdownInterval = null;
+        let remainingTime = 0;
+        let totalDuration = 0;
+        let lastAnnouncement = -1;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        // 11 slides
+        const DURATIONS_SECONDS = [
+            30,   // 1  Title
+            90,   // 2  Core Message
+            120,  // 3  Fool's Choice
+            120,  // 4  What Do I Really Want
+            120,  // 5  How Motives Shift
+            300,  // 6  Discussion Break #1
+            120,  // 7  The AND Statement
+            300,  // 8  Discussion Break #2
+            90,   // 9  This Week's Challenge
+            120,  // 10 More to Ponder
+            60,   // 11 Look Ahead
+        ];
+
+        function openDigest(n) {
+            const modal = document.getElementById('digestModal' + n);
+            if (!modal) return;
+            modal.classList.add('active');
+            const closeBtn = modal.querySelector('.digest-close');
+            if (closeBtn) closeBtn.focus();
+        }
+
+        function closeDigest(n) {
+            const modal = document.getElementById('digestModal' + n);
+            if (!modal) return;
+            modal.classList.remove('active');
+        }
+
+        function closeAllDigests() {
+            document.querySelectorAll('.digest-modal.active').forEach((modal) => modal.classList.remove('active'));
+        }
+
+        document.querySelectorAll('.digest-modal').forEach((modal) => {
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
         });
 
-        // ============================================================
-        // CROSS-CHAPTER NAVIGATION
-        // ============================================================
-        function goToNextChapter() {
-            if (CURRENT_CHAPTER_INDEX < CHAPTERS.length - 1) {
-                window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX + 1].file;
-            }
+        function getSlideDuration() { return DURATIONS_SECONDS[currentSlide] ?? 60; }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return mins + ':' + secs.toString().padStart(2, '0');
         }
 
-        function goToPrevChapter() {
-            if (CURRENT_CHAPTER_INDEX > 0) {
-                window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX - 1].file + '?slide=last';
+        function updateTimerCircle() {
+            const circumference = 163.36;
+            const progress = remainingTime / totalDuration;
+            const offset = circumference * (1 - progress);
+            timerCircle.style.strokeDashoffset = offset;
+        }
+
+        function announceTimer(msg) { if (timerAria) timerAria.textContent = msg; }
+
+        function startTimer() {
+            if (!autoAdvanceEnabled) return;
+            stopTimer();
+            totalDuration = getSlideDuration();
+            remainingTime = totalDuration;
+            lastAnnouncement = -1;
+            timerText.textContent = formatTime(remainingTime);
+            updateTimerCircle();
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                timerText.textContent = formatTime(remainingTime);
+                updateTimerCircle();
+                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
+                    if (remainingTime !== lastAnnouncement) { announceTimer(formatTime(remainingTime) + ' remaining'); lastAnnouncement = remainingTime; }
+                }
+                if (remainingTime <= 0) { stopTimer(); nextSlide(); }
+            }, 1000);
+        }
+
+        function stopTimer() { if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; } }
+
+        function toggleAutoAdvance() {
+            autoAdvanceEnabled = !autoAdvanceEnabled;
+            if (autoAdvanceEnabled) {
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">\u23F8</span> Auto-Advance: ON';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
+                autoAdvanceToggle.classList.add('active');
+                timerContainer.classList.add('active');
+                startTimer();
             } else {
-                window.location.href = '../index.html';
+                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">\u25B6</span> Auto-Advance: OFF';
+                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
+                autoAdvanceToggle.classList.remove('active');
+                timerContainer.classList.remove('active');
+                stopTimer();
             }
-        }
-
-        function updateChapterNavButtons() {
-            const prevBtn = document.getElementById('prevChapterBtn');
-            const nextBtn = document.getElementById('nextChapterBtn');
-            if (prevBtn) prevBtn.disabled = CURRENT_CHAPTER_INDEX === 0;
-            if (nextBtn) nextBtn.disabled = CURRENT_CHAPTER_INDEX === CHAPTERS.length - 1;
         }
 
         function showSlide(n) {
             slides[currentSlide].classList.remove('active');
             slides[currentSlide].classList.remove('with-header');
             slides[currentSlide].removeAttribute('tabindex');
-            
             currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
             slides[currentSlide].classList.add('active');
-            
-            if (currentSlide === 0) {
-                chapterHeader.classList.remove('show');
-            } else {
-                chapterHeader.classList.add('show');
-                slides[currentSlide].classList.add('with-header');
-            }
-            
+            if (currentSlide === 0) { chapterHeader.classList.remove('show'); }
+            else { chapterHeader.classList.add('show'); slides[currentSlide].classList.add('with-header'); }
             document.getElementById('slideNumber').textContent = currentSlide + 1;
-            
             slides[currentSlide].setAttribute('tabindex', '-1');
             slides[currentSlide].focus();
-            
-            if (autoAdvanceEnabled) {
-                startTimer();
-            }
+            if (autoAdvanceEnabled) startTimer();
         }
 
         function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
-                showSlide(currentSlide + 1);
-            } else if (CURRENT_CHAPTER_INDEX < CHAPTERS.length - 1) {
-                window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX + 1].file;
-            }
+            closeAllDigests();
+            if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); }
+            else if (CURRENT_CHAPTER_INDEX < CHAPTERS.length - 1) { window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX + 1].file; }
         }
 
         function previousSlide() {
-            if (currentSlide > 0) {
-                showSlide(currentSlide - 1);
-            } else if (CURRENT_CHAPTER_INDEX > 0) {
-                window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX - 1].file + '?slide=last';
-            }
+            closeAllDigests();
+            if (currentSlide > 0) { showSlide(currentSlide - 1); }
+            else if (CURRENT_CHAPTER_INDEX > 0) { window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX - 1].file + '?slide=last'; }
         }
 
         document.addEventListener('keydown', function(event) {
             if (event.target.closest('.chapter-dropdown-menu')) return;
-
             const anyDigestOpen = !!document.querySelector('.digest-modal.active');
-
-            if (event.key === 'Escape') {
-                if (anyDigestOpen) { closeAllDigests(); } else { closeDropdown(); }
-                return;
+            if (event.key === 'Escape') { if (anyDigestOpen) closeAllDigests(); else closeDropdown(); return; }
+            if (event.key === 'ArrowLeft') { previousSlide(); }
+            else if (event.key === 'ArrowRight') { nextSlide(); }
+            else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                if (anyDigestOpen) { closeAllDigests(); return; }
+                const activeSlide = document.querySelector('.slide.active');
+                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
+                if (digestBtn) { const id = digestBtn.getAttribute('data-digest'); if (id) openDigest(Number(id)); }
             }
-
-            if (event.key === 'ArrowLeft') {
-                if (anyDigestOpen) closeAllDigests();
-                previousSlide();
-            } else if (event.key === 'ArrowRight') {
-                if (anyDigestOpen) closeAllDigests();
-                nextSlide();
-            } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            else if (event.key === 'a' || event.key === 'A') { toggleAutoAdvance(); }
+            else if (event.key === 'd' || event.key === 'D') {
                 if (anyDigestOpen) { closeAllDigests(); return; }
                 const activeSlide = document.querySelector('.slide.active');
                 const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
-                const digestId = digestBtn?.getAttribute('data-digest');
-                if (digestId) { openDigest(Number(digestId)); }
-            } else if (event.key === 'a' || event.key === 'A') {
-                toggleAutoAdvance();
-            } else if (event.key === 'd' || event.key === 'D') {
-                if (anyDigestOpen) { closeAllDigests(); return; }
-                const activeSlide = document.querySelector('.slide.active');
-                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
-                const digestId = digestBtn?.getAttribute('data-digest');
-                if (digestId) { openDigest(Number(digestId)); }
+                if (digestBtn) { const id = digestBtn.getAttribute('data-digest'); if (id) openDigest(Number(id)); }
             }
         });
 
-        // ============================================================
-        // DEEP LINKING
-        // ============================================================
         function handleURLParams() {
             const params = new URLSearchParams(window.location.search);
             const sl = params.get('slide');
             if (sl === 'last') { showSlide(totalSlides - 1); return true; }
-            else if (sl) {
-                const slideIdx = parseInt(sl) - 1;
-                if (slideIdx >= 0 && slideIdx < totalSlides) { showSlide(slideIdx); return true; }
-            }
+            else if (sl) { const idx = parseInt(sl) - 1; if (idx >= 0 && idx < totalSlides) { showSlide(idx); return true; } }
             return false;
         }
 
-        // ============================================================
-        // INIT
-        // ============================================================
         buildDropdown();
-        updateChapterNavButtons();
-        if (!handleURLParams()) { showSlide(0); }
+        if (!handleURLParams()) showSlide(0);
     </script>
 </body>
 </html>

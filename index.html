@@ -385,11 +385,13 @@
         }
 
         .facilitator-section {
-            background: var(--success-green);
-            color: white;
+            background: linear-gradient(135deg, #e9f6ef, #d5f0e2);
+            color: var(--text-dark);
             padding: 40px;
             border-radius: 12px;
             text-align: center;
+            border: 1.5px solid #c5e6d4;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
         }
 
         .features-grid {
@@ -618,7 +620,7 @@
                     Everything you need to lead effective Crucial Conversations training sessions.
                 </p>
                 <div style="margin-top: 30px;">
-                    <a href="facilitator_guide/" class="btn" style="background: white; color: var(--success-green);">
+                    <a href="facilitator_guide/index.html" class="btn" style="background: #1f8f4d; color: white; box-shadow: 0 4px 14px rgba(31,143,77,0.25);">
                         Access Facilitator Guide
                     </a>
                 </div>
@@ -634,7 +636,7 @@
                 <a href="#">License</a>
                 <a href="https://github.com/danielwjohnston/crucial-conversations" target="_blank">GitHub</a>
             </div>
-            <p>&copy; 2024 Crucial Conversations Leadership Training. Based on "Crucial Conversations" by McGraw-Hill Education.</p>
+            <p>&copy; 2026 Crucial Conversations Leadership Training. Based on "Crucial Conversations" by McGraw-Hill Education.</p>
         </div>
     </footer>
 
@@ -646,7 +648,6 @@
                 subtitle: "And who cares?",
                 description: "Definition and importance of crucial conversations",
                 file: "slidedecks/chapter_01_crucial_conversation.html",
-                completed: true,
                 part: 1,
                 tags: ["Foundation", "Introduction"]
             },
@@ -656,7 +657,6 @@
                 subtitle: "The power of dialogue",
                 description: "The power of dialogue and how skills are learned",
                 file: "slidedecks/chapter_02_mastering_conversations.html",
-                completed: true,
                 part: 1,
                 tags: ["Foundation", "Skills"]
             },
@@ -666,7 +666,6 @@
                 subtitle: "How to be sure you hold the right conversation",
                 description: "How to be sure you hold the right conversation",
                 file: "slidedecks/chapter_03_choose_topic.html",
-                completed: true,
                 part: 1,
                 tags: ["Preparation", "Strategy"]
             },
@@ -676,7 +675,6 @@
                 subtitle: "How to stay focused on what you really want",
                 description: "How to stay focused on what you really want",
                 file: "slidedecks/chapter_04_start_heart.html",
-                completed: true,
                 part: 1,
                 tags: ["Mindset", "Preparation"]
             },
@@ -686,7 +684,6 @@
                 subtitle: "How to stay in dialogue when you're angry, scared, or hurt",
                 description: "How to control your emotions and assumptions",
                 file: "slidedecks/chapter_05_master_stories.html",
-                completed: true,
                 part: 2,
                 tags: ["Emotional Control", "Mindset"]
             },
@@ -696,7 +693,6 @@
                 subtitle: "How to notice when safety is at risk",
                 description: "How to spot when conversations become crucial",
                 file: "slidedecks/chapter_06_learn_to_look.html",
-                completed: true,
                 part: 2,
                 tags: ["Awareness", "Detection"]
             },
@@ -706,7 +702,6 @@
                 subtitle: "How to make it safe to talk about almost anything",
                 description: "How to create conditions for open dialogue",
                 file: "slidedecks/chapter_07_make_safe.html",
-                completed: true,
                 part: 2,
                 tags: ["Safety", "Environment"]
             },
@@ -716,7 +711,6 @@
                 subtitle: "How to speak persuasively, not abrasively",
                 description: "How to share your views persuasively",
                 file: "slidedecks/chapter_08_state_path.html",
-                completed: true,
                 part: 2,
                 tags: ["Communication", "Speaking"]
             },
@@ -726,7 +720,6 @@
                 subtitle: "How to listen when others blow up or clam up",
                 description: "How to listen with understanding",
                 file: "slidedecks/chapter_09_explore_paths.html",
-                completed: true,
                 part: 2,
                 tags: ["Listening", "Empathy"]
             },
@@ -736,7 +729,6 @@
                 subtitle: "How to be resilient and hear almost anything",
                 description: "How to move to dialogue and action",
                 file: "slidedecks/chapter_10_retake_pen.html",
-                completed: true,
                 part: 2,
                 tags: ["Action", "Decision"]
             },
@@ -746,7 +738,6 @@
                 subtitle: "How to turn crucial conversations into action and results",
                 description: "How to turn crucial conversations into results",
                 file: "slidedecks/chapter_11_move_action.html",
-                completed: true,
                 part: 3,
                 tags: ["Action", "Results"]
             },
@@ -756,7 +747,6 @@
                 subtitle: "Advice for tough cases",
                 description: "Advice for tough cases and challenging situations",
                 file: "slidedecks/chapter_12_yeah_but.html",
-                completed: true,
                 part: 3,
                 tags: ["Challenges", "Advanced"]
             },
@@ -766,7 +756,6 @@
                 subtitle: "Tools for preparing and learning",
                 description: "Tools for preparing and continuing to learn",
                 file: "slidedecks/chapter_13_putting_together.html",
-                completed: true,
                 part: 3,
                 tags: ["Integration", "Practice"]
             }
@@ -778,10 +767,25 @@
             3: "Part III — How to Finish"
         };
 
+        function getSavedProgress() {
+            try {
+                const raw = localStorage.getItem('crucial-conversations-progress');
+                return raw ? new Set(JSON.parse(raw)) : new Set();
+            } catch (e) {
+                return new Set();
+            }
+        }
+
+        function saveProgress(set) {
+            try { localStorage.setItem('crucial-conversations-progress', JSON.stringify(Array.from(set))); } catch (e) {}
+        }
+
         function renderChapters() {
+            const saved = getSavedProgress();
             const grid = document.getElementById('chaptersGrid');
             let currentPart = 0;
             grid.innerHTML = chapters.map(chapter => {
+                const isComplete = saved.has(chapter.number);
                 const partHeader = chapter.part !== currentPart
                     ? (currentPart = chapter.part, `
                         <div class="part-divider">
@@ -800,16 +804,29 @@
                         <div style="margin-bottom: 15px;">
                             ${chapter.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
-                        <a href="${chapter.file}" class="btn" ${!chapter.completed ? 'style="background: #6c757d;"' : ''}>
-                            ${chapter.completed ? 'Start Chapter' : 'Coming Soon'}
+                        <a href="${chapter.file}" class="btn">
+                            Start Chapter
                         </a>
+                        <button class="btn" data-number="${chapter.number}" style="background: ${isComplete ? '#198754' : '#6c757d'}; margin-left: 10px;">${isComplete ? 'Completed' : 'Mark Complete'}</button>
                     </div>
                 `;
             }).join('');
+
+            document.querySelectorAll('[data-number]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const num = Number(btn.getAttribute('data-number'));
+                    const savedSet = getSavedProgress();
+                    if (savedSet.has(num)) savedSet.delete(num); else savedSet.add(num);
+                    saveProgress(savedSet);
+                    renderChapters();
+                    updateProgress();
+                });
+            });
         }
 
         function updateProgress() {
-            const completed = chapters.filter(ch => ch.completed).length;
+            const saved = getSavedProgress();
+            const completed = saved.size;
             const total = chapters.length;
             const percentage = Math.round((completed / total) * 100);
             
@@ -828,6 +845,7 @@
         function resetProgress() {
             if (confirm('Are you sure you want to reset your progress?')) {
                 localStorage.removeItem('crucial-conversations-progress');
+                renderChapters();
                 updateProgress();
             }
         }

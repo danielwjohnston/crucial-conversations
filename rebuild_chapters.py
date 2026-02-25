@@ -1,12 +1,64 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Rebuild chapters 8-13 to match best practices."""
+
+import pathlib
+
+ROOT = pathlib.Path('/Users/dwjohnston/Library/CloudStorage/OneDrive-TEGNA/Desktop/Crucial Conversations/slidedecks')
+
+# Read Ch6 JS as template
+ch6 = (ROOT / 'chapter_06_learn_to_look.html').read_text()
+JS_START = ch6.find('<script>') + 8
+JS_END = ch6.find('</script>')
+BASE_JS = ch6[JS_START:JS_END]
+
+def make_js(chapter_index, durations_str):
+    js = BASE_JS.replace(
+        'const CURRENT_CHAPTER_INDEX = 5;',
+        f'const CURRENT_CHAPTER_INDEX = {chapter_index};'
+    )
+    old_start = js.find('// 14 slides')
+    old_end = js.find('];', js.find('DURATIONS_SECONDS')) + 2
+    old_dur = js[old_start:old_end]
+    js = js.replace(old_dur, durations_str)
+    return js
+
+NAV_HTML = """    <nav class="navigation" role="navigation" aria-label="Slide navigation">
+        <button class="nav-btn" onclick="previousSlide()" aria-label="Previous slide">&larr; Back</button>
+        <div class="timer-container" id="timerContainer">
+            <div class="circular-timer">
+                <svg width="60" height="60">
+                    <circle class="timer-background" cx="30" cy="30" r="26"/>
+                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26"/>
+                </svg>
+                <div class="timer-text" id="timerText">0:00</div>
+            </div>
+        </div>
+        <button class="auto-advance-toggle" onclick="toggleAutoAdvance()" aria-pressed="false">
+            <span aria-hidden="true">&#9654;</span> Auto-Advance: OFF
+        </button>
+        <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next &rarr;</button>
+    </nav>"""
+
+def build(filename, title_short, ch_num, subtitle, prev_file, next_file, 
+          header_title, header_subtitle, slides, modals, chapter_index, durations):
+    head_links = ""
+    if prev_file:
+        head_links += f'    <link rel="prefetch" href="{prev_file}">\n'
+    if next_file:
+        head_links += f'    <link rel="prefetch" href="{next_file}">'
+    
+    js = make_js(chapter_index, durations)
+    
+    slides_html = "\n\n".join(f"        {s}" for s in slides)
+    
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadership Bookclub - STATE My Path</title>
+    <title>Leadership Bookclub - {title_short}</title>
     <link rel="stylesheet" href="shared.css">
-    <link rel="prefetch" href="chapter_07_make_safe.html">
-    <link rel="prefetch" href="chapter_09_explore_paths.html">
+{head_links}
 </head>
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -27,8 +79,8 @@
 
         <div class="persistent-header" id="chapterHeader">
             <div class="persistent-header-left">
-                <span class="persistent-header-title" id="headerTitle">Ch. 8: STATE MY PATH</span>
-                <span class="persistent-header-subtitle" id="headerSubtitle">How to speak persuasively, not abrasively</span>
+                <span class="persistent-header-title" id="headerTitle">{header_title}</span>
+                <span class="persistent-header-subtitle" id="headerSubtitle">{header_subtitle}</span>
             </div>
             <div class="chapter-dropdown-wrapper">
                 <button class="chapter-dropdown-btn" id="dropdownBtn" aria-expanded="false" aria-haspopup="true">
@@ -39,7 +91,32 @@
             </div>
         </div>
 
-        <!-- Slide 1: Title -->
+{slides_html}
+
+    </main>
+
+    <!-- Digest Modals -->
+{modals}
+
+{NAV_HTML}
+
+    <script>{js}</script>
+</body>
+</html>"""
+    
+    path = ROOT / filename
+    path.write_text(html)
+    print(f"  {filename}: {len(html):,} chars, {len(slides)} slides")
+    return html
+
+
+# ============================================================
+# CHAPTER 8: STATE My Path
+# ============================================================
+def build_ch8():
+    slides = [
+        # 1: Title
+        """<!-- Slide 1: Title -->
         <div class="slide active title-slide">
             <div class="slide-content">
                 <div class="brand-logo">Leadership Bookclub</div>
@@ -47,9 +124,10 @@
                 <h2>STATE My Path</h2>
                 <p class="subtitle">How to speak persuasively, not abrasively</p>
             </div>
-        </div>
-
-        <!-- Slide 2: Core Message -->
+        </div>""",
+        
+        # 2: Core Message
+        """<!-- Slide 2: Core Message -->
         <div class="slide">
             <div class="slide-content">
                 <h2>Core Message</h2>
@@ -64,9 +142,10 @@
                     <li><strong>Sugar-coating</strong> so much the message loses impact</li>
                 </ul>
             </div>
-        </div>
-
-        <!-- Slide 3: The STATE Model -->
+        </div>""",
+        
+        # 3: The STATE Model
+        """<!-- Slide 3: The STATE Model -->
         <div class="slide">
             <div class="slide-content">
                 <h2>The STATE Model</h2>
@@ -76,9 +155,10 @@
                 <div class="story-box"><h3><strong>T</strong> &ndash; Talk tentatively</h3><p>State your story as a story, not as fact</p></div>
                 <div class="story-box"><h3><strong>E</strong> &ndash; Encourage testing</h3><p>Make it safe to express differing views</p></div>
             </div>
-        </div>
-
-        <!-- Slide 4: Share Facts + Tell Story -->
+        </div>""",
+        
+        # 4: Share Facts + Tell Story
+        """<!-- Slide 4: Share Facts + Tell Story -->
         <div class="slide">
             <div class="slide-content">
                 <h2>Share Facts &amp; Tell Your Story</h2>
@@ -95,9 +175,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 5: Ask, Talk Tentatively, Encourage Testing -->
+        </div>""",
+        
+        # 5: Ask, Talk Tentatively, Encourage Testing
+        """<!-- Slide 5: Ask, Talk Tentatively, Encourage Testing -->
         <div class="slide">
             <div class="slide-content">
                 <h2>Ask, Talk Tentatively, Encourage Testing</h2>
@@ -115,9 +196,10 @@
                     <p><em>&ldquo;Does anyone see it differently?&rdquo;</em></p>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 6: Discussion Break #1 -->
+        </div>""",
+        
+        # 6: Discussion Break #1
+        """<!-- Slide 6: Discussion Break #1 -->
         <div class="slide discussion-slide">
             <div class="slide-content">
                 <h2>Discussion Break #1</h2>
@@ -129,9 +211,10 @@
                     Dan&#39;s Digest
                 </button>
             </div>
-        </div>
-
-        <!-- Slide 7: The Goldilocks Test -->
+        </div>""",
+        
+        # 7: The Goldilocks Test
+        """<!-- Slide 7: The Goldilocks Test -->
         <div class="slide">
             <div class="slide-content">
                 <h2>The Goldilocks Test</h2>
@@ -154,9 +237,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 8: STATE in Action - The Missing Money -->
+        </div>""",
+        
+        # 8: STATE in Action
+        """<!-- Slide 8: STATE in Action - The Missing Money -->
         <div class="slide">
             <div class="slide-content">
                 <h2>STATE in Action: The Missing Money</h2>
@@ -172,9 +256,10 @@
                     <strong>Result:</strong> Amber admitted she took it, planning to put it back. They talked honestly. There were consequences&mdash;but also connection.
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 9: The Irony of Dialogue -->
+        </div>""",
+        
+        # 9: The Irony of Dialogue
+        """<!-- Slide 9: The Irony of Dialogue -->
         <div class="slide">
             <div class="slide-content">
                 <h2>The Irony of Dialogue</h2>
@@ -185,9 +270,10 @@
                     <p style="margin-top: 20px;">The converse: <strong>the more tentatively you speak, the more open people become</strong> to your opinions.</p>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 10: Discussion Break #2 -->
+        </div>""",
+        
+        # 10: Discussion Break #2
+        """<!-- Slide 10: Discussion Break #2 -->
         <div class="slide discussion-slide">
             <div class="slide-content">
                 <h2>Discussion Break #2</h2>
@@ -199,9 +285,10 @@
                     Dan&#39;s Digest
                 </button>
             </div>
-        </div>
-
-        <!-- Slide 11: This Week's Challenge -->
+        </div>""",
+        
+        # 11: This Week's Challenge
+        """<!-- Slide 11: This Week's Challenge -->
         <div class="slide">
             <div class="slide-content">
                 <h2>This Week&#39;s Challenge</h2>
@@ -216,9 +303,10 @@
                 </div>
                 <p style="margin-top: 18px;"><strong>Next Meeting:</strong> Share how using STATE changed a conversation</p>
             </div>
-        </div>
-
-        <!-- Slide 12: More to Ponder -->
+        </div>""",
+        
+        # 12: More to Ponder
+        """<!-- Slide 12: More to Ponder -->
         <div class="slide">
             <div class="slide-content">
                 <h2>More to Ponder</h2>
@@ -233,9 +321,10 @@
                     </ul>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 13: Look Ahead -->
+        </div>""",
+        
+        # 13: Look Ahead
+        """<!-- Slide 13: Look Ahead -->
         <div class="slide look-ahead-slide">
             <div class="slide-content">
                 <h1>Look Ahead</h1>
@@ -250,12 +339,10 @@
                 </div>
                 <p class="subtitle" style="margin-top: 18px;"><strong>Optional prep:</strong> Notice a conversation this week where someone shut down or exploded. What happened?</p>
             </div>
-        </div>
-
-    </main>
-
-    <!-- Digest Modals -->
-    <div class="digest-modal" id="digestModal1" role="dialog" aria-labelledby="digestTitle1" aria-modal="true">
+        </div>""",
+    ]
+    
+    modals = """    <div class="digest-modal" id="digestModal1" role="dialog" aria-labelledby="digestTitle1" aria-modal="true">
         <div class="digest-content">
             <button class="digest-close" onclick="closeDigest(1)" aria-label="Close">&times;</button>
             <h2 id="digestTitle1">Dan&#39;s Digest</h2>
@@ -295,117 +382,9 @@
                 </ul>
             </div>
         </div>
-    </div>
-
-    <nav class="navigation" role="navigation" aria-label="Slide navigation">
-        <button class="nav-btn" onclick="previousSlide()" aria-label="Previous slide">&larr; Back</button>
-        <div class="timer-container" id="timerContainer">
-            <div class="circular-timer">
-                <svg width="60" height="60">
-                    <circle class="timer-background" cx="30" cy="30" r="26"/>
-                    <circle class="timer-progress" id="timerCircle" cx="30" cy="30" r="26"/>
-                </svg>
-                <div class="timer-text" id="timerText">0:00</div>
-            </div>
-        </div>
-        <button class="auto-advance-toggle" onclick="toggleAutoAdvance()" aria-pressed="false">
-            <span aria-hidden="true">&#9654;</span> Auto-Advance: OFF
-        </button>
-        <button class="nav-btn" onclick="nextSlide()" aria-label="Next slide">Next &rarr;</button>
-    </nav>
-
-    <script>
-        const CHAPTERS = [
-            { num: 1,  file: "chapter_01_crucial_conversation.html",  title: "What\u2019s a Crucial Conversation", subtitle: "And who cares?", part: 1 },
-            { num: 2,  file: "chapter_02_mastering_conversations.html", title: "Mastering Crucial Conversations", subtitle: "The power of dialogue", part: 1 },
-            { num: 3,  file: "chapter_03_choose_topic.html",          title: "Choose Your Topic", subtitle: "How to be sure you hold the right conversation", part: 1 },
-            { num: 4,  file: "chapter_04_start_heart.html",           title: "Start with Heart", subtitle: "How to stay focused on what you really want", part: 1 },
-            { num: 5,  file: "chapter_05_master_stories.html",        title: "Master My Stories", subtitle: "How to stay in dialogue when you\u2019re angry, scared, or hurt", part: 2 },
-            { num: 6,  file: "chapter_06_learn_to_look.html",         title: "Learn to Look", subtitle: "How to notice when safety is at risk", part: 2 },
-            { num: 7,  file: "chapter_07_make_safe.html",             title: "Make It Safe", subtitle: "How to make it safe to talk about almost anything", part: 2 },
-            { num: 8,  file: "chapter_08_state_path.html",            title: "STATE My Path", subtitle: "How to speak persuasively, not abrasively", part: 2 },
-            { num: 9,  file: "chapter_09_explore_paths.html",         title: "Explore Others\u2019 Paths", subtitle: "How to listen when others blow up or clam up", part: 2 },
-            { num: 10, file: "chapter_10_retake_pen.html",            title: "Retake Your Pen", subtitle: "How to be resilient and hear almost anything", part: 2 },
-            { num: 11, file: "chapter_11_move_action.html",           title: "Move to Action", subtitle: "How to turn crucial conversations into action and results", part: 3 },
-            { num: 12, file: "chapter_12_yeah_but.html",              title: "Yeah, But", subtitle: "Advice for tough cases", part: 3 },
-            { num: 13, file: "chapter_13_putting_together.html",      title: "Putting It All Together", subtitle: "Tools for preparing and learning", part: 3 },
-        ];
-
-        const PART_LABELS = {
-            1: "Part I \u2014 Before You Open Your Mouth",
-            2: "Part II \u2014 How to Open Your Mouth",
-            3: "Part III \u2014 How to Finish"
-        };
-
-        const CURRENT_CHAPTER_INDEX = 7;
-
-        function buildDropdown() {
-            const menu = document.getElementById('dropdownMenu');
-            menu.innerHTML = '';
-            let currentPart = 0;
-            CHAPTERS.forEach((ch, idx) => {
-                if (ch.part !== currentPart) {
-                    currentPart = ch.part;
-                    if (idx > 0) {
-                        const divider = document.createElement('div');
-                        divider.className = 'dropdown-divider';
-                        menu.appendChild(divider);
-                    }
-                    const label = document.createElement('div');
-                    label.className = 'dropdown-section-label';
-                    label.textContent = PART_LABELS[currentPart];
-                    menu.appendChild(label);
-                }
-                const item = document.createElement('div');
-                item.className = 'chapter-dropdown-item' + (idx === CURRENT_CHAPTER_INDEX ? ' active' : '');
-                item.setAttribute('role', 'menuitem');
-                item.setAttribute('tabindex', '0');
-                item.innerHTML = '<span class="ch-num">' + ch.num + '</span><span class="ch-info"><span class="ch-title">' + ch.title + '</span><span class="ch-subtitle">' + ch.subtitle + '</span></span>';
-                item.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeDropdown(); if (idx !== CURRENT_CHAPTER_INDEX) window.location.href = ch.file; });
-                item.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeDropdown(); if (idx !== CURRENT_CHAPTER_INDEX) window.location.href = ch.file; } });
-                menu.appendChild(item);
-            });
-            const divider = document.createElement('div');
-            divider.className = 'dropdown-divider';
-            menu.appendChild(divider);
-            const backItem = document.createElement('div');
-            backItem.className = 'chapter-dropdown-item';
-            backItem.setAttribute('role', 'menuitem');
-            backItem.setAttribute('tabindex', '0');
-            backItem.innerHTML = '<span class="ch-num" style="background:#333;color:white;border-color:#333;">\u2630</span><span class="ch-info"><span class="ch-title">Back to Chapter Select</span></span>';
-            backItem.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = '../index.html'; });
-            backItem.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = '../index.html'; } });
-            menu.appendChild(backItem);
-        }
-
-        const dropdownBtn = document.getElementById('dropdownBtn');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        function toggleDropdown() { const isOpen = dropdownMenu.classList.contains('open'); if (isOpen) closeDropdown(); else openDropdown(); }
-        function openDropdown() { dropdownMenu.classList.add('open'); dropdownBtn.classList.add('open'); dropdownBtn.setAttribute('aria-expanded', 'true'); }
-        function closeDropdown() { dropdownMenu.classList.remove('open'); dropdownBtn.classList.remove('open'); dropdownBtn.setAttribute('aria-expanded', 'false'); }
-        dropdownBtn.addEventListener('click', toggleDropdown);
-        document.addEventListener('click', (e) => { if (!e.target.closest('.chapter-dropdown-wrapper')) closeDropdown(); });
-
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        const chapterHeader = document.getElementById('chapterHeader');
-        const timerContainer = document.getElementById('timerContainer');
-        const timerText = document.getElementById('timerText');
-        const timerCircle = document.getElementById('timerCircle');
-        const autoAdvanceToggle = document.querySelector('.auto-advance-toggle');
-        const timerAria = document.getElementById('timerAria');
-
-        let autoAdvanceEnabled = false;
-        let countdownInterval = null;
-        let remainingTime = 0;
-        let totalDuration = 0;
-        let lastAnnouncement = -1;
-
-        document.getElementById('totalSlides').textContent = totalSlides;
-
-        // 13 slides
+    </div>"""
+    
+    durations = """// 13 slides
         const DURATIONS_SECONDS = [
             30,   // 1  Title
             90,   // 2  Core Message
@@ -420,142 +399,15 @@
             90,   // 11 This Week's Challenge
             120,  // 12 More to Ponder
             60,   // 13 Look Ahead
-        ];
+        ];"""
+    
+    build("chapter_08_state_path.html", "STATE My Path", 8, 
+          "How to speak persuasively, not abrasively",
+          "chapter_07_make_safe.html", "chapter_09_explore_paths.html",
+          "Ch. 8: STATE MY PATH", "How to speak persuasively, not abrasively",
+          slides, modals, 7, durations)
 
-        function openDigest(n) {
-            const modal = document.getElementById('digestModal' + n);
-            if (!modal) return;
-            modal.classList.add('active');
-            const closeBtn = modal.querySelector('.digest-close');
-            if (closeBtn) closeBtn.focus();
-        }
-
-        function closeDigest(n) {
-            const modal = document.getElementById('digestModal' + n);
-            if (!modal) return;
-            modal.classList.remove('active');
-        }
-
-        function closeAllDigests() {
-            document.querySelectorAll('.digest-modal.active').forEach((modal) => modal.classList.remove('active'));
-        }
-
-        document.querySelectorAll('.digest-modal').forEach((modal) => {
-            modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-        });
-
-        function getSlideDuration() { return DURATIONS_SECONDS[currentSlide] ?? 60; }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return mins + ':' + secs.toString().padStart(2, '0');
-        }
-
-        function updateTimerCircle() {
-            const circumference = 163.36;
-            const progress = remainingTime / totalDuration;
-            const offset = circumference * (1 - progress);
-            timerCircle.style.strokeDashoffset = offset;
-        }
-
-        function announceTimer(msg) { if (timerAria) timerAria.textContent = msg; }
-
-        function startTimer() {
-            if (!autoAdvanceEnabled) return;
-            stopTimer();
-            totalDuration = getSlideDuration();
-            remainingTime = totalDuration;
-            lastAnnouncement = -1;
-            timerText.textContent = formatTime(remainingTime);
-            updateTimerCircle();
-            countdownInterval = setInterval(() => {
-                remainingTime--;
-                timerText.textContent = formatTime(remainingTime);
-                updateTimerCircle();
-                if (remainingTime % 60 === 0 || (remainingTime < 60 && remainingTime % 10 === 0)) {
-                    if (remainingTime !== lastAnnouncement) { announceTimer(formatTime(remainingTime) + ' remaining'); lastAnnouncement = remainingTime; }
-                }
-                if (remainingTime <= 0) { stopTimer(); nextSlide(); }
-            }, 1000);
-        }
-
-        function stopTimer() { if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; } }
-
-        function toggleAutoAdvance() {
-            autoAdvanceEnabled = !autoAdvanceEnabled;
-            if (autoAdvanceEnabled) {
-                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">\u23F8</span> Auto-Advance: ON';
-                autoAdvanceToggle.setAttribute('aria-pressed', 'true');
-                autoAdvanceToggle.classList.add('active');
-                timerContainer.classList.add('active');
-                startTimer();
-            } else {
-                autoAdvanceToggle.innerHTML = '<span aria-hidden="true">\u25B6</span> Auto-Advance: OFF';
-                autoAdvanceToggle.setAttribute('aria-pressed', 'false');
-                autoAdvanceToggle.classList.remove('active');
-                timerContainer.classList.remove('active');
-                stopTimer();
-            }
-        }
-
-        function showSlide(n) {
-            slides[currentSlide].classList.remove('active');
-            slides[currentSlide].classList.remove('with-header');
-            slides[currentSlide].removeAttribute('tabindex');
-            currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
-            slides[currentSlide].classList.add('active');
-            if (currentSlide === 0) { chapterHeader.classList.remove('show'); }
-            else { chapterHeader.classList.add('show'); slides[currentSlide].classList.add('with-header'); }
-            document.getElementById('slideNumber').textContent = currentSlide + 1;
-            slides[currentSlide].setAttribute('tabindex', '-1');
-            slides[currentSlide].focus();
-            if (autoAdvanceEnabled) startTimer();
-        }
-
-        function nextSlide() {
-            closeAllDigests();
-            if (currentSlide < totalSlides - 1) { showSlide(currentSlide + 1); }
-            else if (CURRENT_CHAPTER_INDEX < CHAPTERS.length - 1) { window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX + 1].file; }
-        }
-
-        function previousSlide() {
-            closeAllDigests();
-            if (currentSlide > 0) { showSlide(currentSlide - 1); }
-            else if (CURRENT_CHAPTER_INDEX > 0) { window.location.href = CHAPTERS[CURRENT_CHAPTER_INDEX - 1].file + '?slide=last'; }
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.target.closest('.chapter-dropdown-menu')) return;
-            const anyDigestOpen = !!document.querySelector('.digest-modal.active');
-            if (event.key === 'Escape') { if (anyDigestOpen) closeAllDigests(); else closeDropdown(); return; }
-            if (event.key === 'ArrowLeft') { previousSlide(); }
-            else if (event.key === 'ArrowRight') { nextSlide(); }
-            else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-                if (anyDigestOpen) { closeAllDigests(); return; }
-                const activeSlide = document.querySelector('.slide.active');
-                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
-                if (digestBtn) { const id = digestBtn.getAttribute('data-digest'); if (id) openDigest(Number(id)); }
-            }
-            else if (event.key === 'a' || event.key === 'A') { toggleAutoAdvance(); }
-            else if (event.key === 'd' || event.key === 'D') {
-                if (anyDigestOpen) { closeAllDigests(); return; }
-                const activeSlide = document.querySelector('.slide.active');
-                const digestBtn = activeSlide?.querySelector('.digest-pill[data-digest]');
-                if (digestBtn) { const id = digestBtn.getAttribute('data-digest'); if (id) openDigest(Number(id)); }
-            }
-        });
-
-        function handleURLParams() {
-            const params = new URLSearchParams(window.location.search);
-            const sl = params.get('slide');
-            if (sl === 'last') { showSlide(totalSlides - 1); return true; }
-            else if (sl) { const idx = parseInt(sl) - 1; if (idx >= 0 && idx < totalSlides) { showSlide(idx); return true; } }
-            return false;
-        }
-
-        buildDropdown();
-        if (!handleURLParams()) showSlide(0);
-    </script>
-</body>
-</html>
+# Run
+print("Building Ch8...")
+build_ch8()
+print("Done!")

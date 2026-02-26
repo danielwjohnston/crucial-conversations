@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Credits — Audio Transcript</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.8;
+            background: white;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header .chapter-num {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        header h1 {
+            font-size: 2rem;
+            color: var(--brand-red-accessible);
+            margin: 8px 0 4px;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .meta {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+        article p {
+            margin-bottom: 18px;
+            text-align: justify;
+            hyphens: auto;
+        }
+        article p:first-of-type::first-letter {
+            font-size: 2.4em;
+            float: left;
+            line-height: 1;
+            padding-right: 8px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .nav-footer a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-footer a:hover { text-decoration: underline; }
+        .print-btn {
+            display: inline-block;
+            margin-left: 16px;
+            padding: 6px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .print-btn:hover { background: var(--border-color); }
+        @media print {
+            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            body { padding: 20px; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">&larr; All Transcripts</a>
+    <button class="print-btn" onclick="window.print()">&#x1f5a8; Print</button>
+    <header>
+        <div class="chapter-num">Audio Transcript</div>
+        <h1>Opening Credits</h1>
+        
+    </header>
+    <div class="meta">31 words &middot; ~1 min read &middot; Audiobook transcription</div>
+    <article>
+        <p>This is audible. McGraw Hill ascent audio presents Crucial Conversations. Third Edition by Joseph grenny, Carrie Patterson, Ron McMillon, Al switzler and Emily Gregory, narrated by Joseph grenny and Emily Gregory.</p>
+    </article>
+    <nav class="nav-footer">
+        <span></span>
+        <a href="../index.html">All Transcripts</a>
+        <a href="audio_publisher.html">Publisher's Note &rarr;</a>
+    </nav>
+</body>
+</html>

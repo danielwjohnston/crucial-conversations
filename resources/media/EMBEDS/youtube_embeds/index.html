@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crucial Conversations — YouTube Video Library</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: white;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 36px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header h1 { color: var(--brand-red-accessible); font-size: 2rem; margin-bottom: 6px; }
+        header p { color: var(--text-light); font-size: 1.05rem; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .section-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--brand-red-accessible);
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .video-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--bg-light);
+            transition: box-shadow 0.2s;
+        }
+        .video-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .video-thumb {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+        }
+        .video-thumb img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .video-thumb .play-icon {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px; height: 60px;
+            background: rgba(227,6,19,0.85);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        .play-icon::after {
+            content: '';
+            display: block;
+            width: 0; height: 0;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 20px solid white;
+            margin-left: 4px;
+        }
+        .video-body { padding: 16px; }
+        .video-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: var(--text-dark); }
+        .video-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px; }
+        .video-meta { font-size: 0.8rem; color: #999; }
+        .video-meta span { margin-right: 12px; }
+        .video-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .video-link:hover { text-decoration: underline; }
+        .chapter-tag {
+            display: inline-block;
+            background: var(--brand-red);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .note-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+        @media (max-width: 600px) {
+            .video-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../../../../index.html" class="back-link">← Back to Chapter Select</a>
+    <header>
+        <h1>📹 YouTube Video Library</h1>
+        <p>Curated videos from Crucial Learning and related content for each chapter</p>
+    </header>
+
+    <div class="note-box">
+        <strong>Note:</strong> These videos are hosted on YouTube by Crucial Learning (formerly VitalSmarts) and related educators. They are linked here for training reference — not downloaded or redistributed. Open any video to watch on YouTube.
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="section-label">Overview & Introduction</h2>
+    <div class="video-grid">
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=LrYJrW-czWI" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/LrYJrW-czWI/hqdefault.jpg" alt="What to Expect in Crucial Conversations">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">What to Expect in Crucial Conversations</div>
+                <div class="video-desc">Official Crucial Learning overview of the course structure and what participants will learn.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Crucial Learning (Official)</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=LrYJrW-czWI" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=k2QuG-HLYR4" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/k2QuG-HLYR4/hqdefault.jpg" alt="Crucial Conversations for Mastering Dialogue: What to Expect">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations for Mastering Dialogue: What to Expect</div>
+                <div class="video-desc">Updated course introduction covering the Mastering Dialogue curriculum and outcomes.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Crucial Learning (Official)</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=k2QuG-HLYR4" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=Us7jS1TAQ_0" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/Us7jS1TAQ_0/hqdefault.jpg" alt="Crucial Conversations On Demand Demo">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations On Demand Demo</div>
+                <div class="video-desc">Demo walkthrough of the Crucial Conversations on-demand learning platform.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Crucial Learning (Official)</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=Us7jS1TAQ_0" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="section-label">Keynotes & Deep Dives — Joseph Grenny</h2>
+    <div class="video-grid">
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=uc3ARpccRwQ" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/uc3ARpccRwQ/hqdefault.jpg" alt="Mastering The Art of Crucial Conversations | Joseph Grenny">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Mastering The Art of Crucial Conversations | Joseph Grenny</div>
+                <div class="video-desc">Keynote speech at the 2015 VitalSmarts REACH conference. Covers the full framework with real examples.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 1–2</span>
+                    <span>VitalSmarts / Crucial Learning</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=uc3ARpccRwQ" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=PuJgqTs-G44" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/PuJgqTs-G44/hqdefault.jpg" alt="Crucial Conversations | Joseph Grenny">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations | Joseph Grenny</div>
+                <div class="video-desc">Joseph Grenny presents core principles of crucial conversations and the power of dialogue.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 1–2</span>
+                    <span>VitalSmarts / Crucial Learning</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=PuJgqTs-G44" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=agbPqlYytOQ" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/agbPqlYytOQ/hqdefault.jpg" alt="Crucial Conversations with Joseph Grenny on Skillshare">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations with Joseph Grenny (Skillshare Series)</div>
+                <div class="video-desc">Mini-series introduction covering essential crucial conversation skills. Links to full series on Skillshare.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>VitalSmarts / Skillshare</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=agbPqlYytOQ" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="section-label">Chapter-Specific Topics</h2>
+    <div class="video-grid">
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=ELtyRtxWNws" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/ELtyRtxWNws/hqdefault.jpg" alt="The Pool of Shared Meaning">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">The Pool of Shared Meaning</div>
+                <div class="video-desc">Explains the core concept: how shared meaning greases the wheels for constructive dialogue.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 2</span>
+                    <span>Mastering Conversations</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=ELtyRtxWNws" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=smT-xntomgU" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/smT-xntomgU/hqdefault.jpg" alt="Master My Stories: Don't Believe Everything You Think">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Master My Stories: Don't Believe Everything You Think</div>
+                <div class="video-desc">Official Crucial Learning video on the Path to Action and how stories create emotions.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 5</span>
+                    <span>Crucial Learning (Official)</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=smT-xntomgU" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=nrfjYwY5SSE" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/nrfjYwY5SSE/hqdefault.jpg" alt="How to Make It Safe to Talk About Almost Anything">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">How to Make It Safe to Talk About Almost Anything</div>
+                <div class="video-desc">Book summary and explanation of the Make It Safe principle — mutual purpose and mutual respect.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 7</span>
+                    <span>Make It Safe</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=nrfjYwY5SSE" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=UZlQPcCsIRE" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/UZlQPcCsIRE/hqdefault.jpg" alt="STATE My Path: Speak Honestly Without Being a Jerk">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">STATE My Path: Speak Honestly Without Being a Jerk</div>
+                <div class="video-desc">Walks through the STATE framework — Share facts, Tell your story, Ask, Talk tentatively, Encourage testing.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">Ch 8</span>
+                    <span>STATE My Path</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=UZlQPcCsIRE" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <h2 class="section-label">Book Summaries & Animated Reviews</h2>
+    <div class="video-grid">
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=Q2yG142cyNg" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/Q2yG142cyNg/hqdefault.jpg" alt="Crucial Conversations Summary & Review (Animated)">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations Summary & Review (Animated)</div>
+                <div class="video-desc">Animated summary covering the key concepts from the book in a concise, visual format.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Summary / Review</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=Q2yG142cyNg" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=UX-ArZJJJ1U" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/UX-ArZJJJ1U/hqdefault.jpg" alt="A Three Minute Summary of Crucial Conversations Training">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">A Three Minute Summary of Crucial Conversations Training</div>
+                <div class="video-desc">Quick 3-minute overview of the full training program — perfect for pre-session prep or refreshers.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Quick Summary</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=UX-ArZJJJ1U" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <a href="https://www.youtube.com/watch?v=wYUNhYaBLOY" target="_blank" rel="noopener">
+                <div class="video-thumb">
+                    <img src="https://img.youtube.com/vi/wYUNhYaBLOY/hqdefault.jpg" alt="Crucial Conversations for Mastering Dialogue">
+                    <div class="play-icon"></div>
+                </div>
+            </a>
+            <div class="video-body">
+                <div class="video-title">Crucial Conversations for Mastering Dialogue</div>
+                <div class="video-desc">Overview of the Mastering Dialogue course framework and skills taught.</div>
+                <div class="video-meta">
+                    <span class="chapter-tag">All Chapters</span>
+                    <span>Crucial Learning (Official)</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=wYUNhYaBLOY" target="_blank" rel="noopener" class="video-link">Watch on YouTube →</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

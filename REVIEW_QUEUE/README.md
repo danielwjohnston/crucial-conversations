@@ -7,6 +7,7 @@ This folder is designed for dropping new or existing materials that need to be r
 ## 🔄 How It Works
 
 ### Step 1: Drop Materials
+
 - Place any new content (documents, PDFs, presentations, audio files, etc.) in this folder
 - Materials can be:
   - New chapter content
@@ -15,15 +16,16 @@ This folder is designed for dropping new or existing materials that need to be r
   - Feedback or evaluations
   - Additional training materials
 
-### Step 2: Automated Analysis
-- The system will automatically detect new files
-- Content will be analyzed for:
+### Step 2: Manual Review
+
+- New files are reviewed by the training team for:
   - File type and format
   - Content categorization
   - Integration opportunities
   - Processing requirements
 
 ### Step 3: Review & Processing
+
 - Materials are reviewed by the training team
 - Decisions are made on:
   - Integration into existing chapters
@@ -34,6 +36,7 @@ This folder is designed for dropping new or existing materials that need to be r
 ## 📂 Supported File Types
 
 ### **Content Files**
+
 - `.txt` - Text documents and transcriptions
 - `.pdf` - Handouts, guides, presentations
 - `.docx` - Word documents
@@ -43,28 +46,33 @@ This folder is designed for dropping new or existing materials that need to be r
 - `.md` - Markdown files
 
 ### **Media Files**
+
 - `.mp3` - Audio files
 - `.mp4` - Video files
 - `.wav` - Audio recordings
 - `.png/.jpg/.gif` - Images and graphics
 
 ### **Archive Files**
+
 - `.zip` - Compressed collections
 - `.rar` - Archive files
 
 ## 📋 Processing Workflow
 
-### **Automatic Detection**
-- Files are automatically scanned when added
+### **Detection & Triage**
+
+- New files placed in the root are reviewed during processing cycles
 - Basic metadata extraction and categorization
 - Duplicate detection and version control
 
 ### **Content Analysis**
+
 - Topic identification and chapter mapping
 - Quality assessment and formatting needs
 - Integration opportunities identification
 
 ### **Integration Options**
+
 1. **Direct Integration** - Add to existing chapters
 2. **New Chapter Creation** - Build new slidedecks
 3. **Resource Enhancement** - Update supporting materials
@@ -73,31 +81,35 @@ This folder is designed for dropping new or existing materials that need to be r
 
 ## 🏗️ Folder Structure
 
-```
+```text
 REVIEW_QUEUE/
-├── 📥 INCOMING/           # New materials awaiting review
-├── 📋 PROCESSING/         # Currently being analyzed
 ├── ✅ COMPLETED/          # Processed materials
 ├── 📚 ARCHIVED/           # Historical materials
 ├── 🔄 DUPLICATES/         # Duplicate versions
+├── 📋 PROCESSING_SCRIPT.md # Processing workflow reference
 └── 📋 README.md           # This file
 ```
+
+> **Note:** Drop new materials directly into the `REVIEW_QUEUE/` root folder. They will be sorted into the appropriate subfolder during review.
 
 ## 🎯 Processing Priorities
 
 ### **High Priority**
+
 - Chapter content updates
 - Critical feedback or corrections
 - Time-sensitive materials
 - Leadership requests
 
 ### **Medium Priority**
+
 - Supporting resources
 - Enhancement materials
 - Participant feedback
 - Additional examples
 
 ### **Low Priority**
+
 - Archive materials
 - Duplicate content
 - Reference documents
@@ -106,18 +118,21 @@ REVIEW_QUEUE/
 ## 📝 Submission Guidelines
 
 ### **File Naming**
+
 - Use descriptive names (e.g., "Chapter4_Updated_Handout.pdf")
 - Include date if versioned (e.g., "Meeting_Notes_2024-02-10.txt")
 - Avoid special characters in filenames
 - Use underscores instead of spaces
 
 ### **Content Context**
+
 - Include brief description of content purpose
 - Note target audience or use case
 - Specify any processing requirements
 - Indicate urgency if time-sensitive
 
-### **Quality Standards**
+### **Submission Quality Standards**
+
 - Ensure content is relevant to Crucial Conversations
 - Verify appropriate language and tone
 - Check for copyright or usage restrictions
@@ -126,18 +141,21 @@ REVIEW_QUEUE/
 ## 🔍 Review Criteria
 
 ### **Content Relevance**
+
 - Alignment with Crucial Conversations principles
 - Appropriate for leadership training context
 - Supports learning objectives
 - Adds value to existing materials
 
-### **Quality Standards**
+### **Review Quality Standards**
+
 - Clear and well-structured content
 - Professional presentation
 - Accurate information
 - Appropriate length and depth
 
 ### **Technical Requirements**
+
 - Readable file formats
 - Reasonable file sizes
 - Compatible with existing systems
@@ -146,16 +164,19 @@ REVIEW_QUEUE/
 ## 📞 Contact & Support
 
 ### **Questions About Processing**
+
 - Contact the training facilitator team
 - Use the project's communication channels
 - Check the facilitator guide for procedures
 
 ### **Technical Issues**
+
 - Report file format problems
 - Note system compatibility issues
 - Request assistance with large files
 
 ### **Content Questions**
+
 - Clarify integration preferences
 - Discuss customization options
 - Address specific requirements
@@ -163,12 +184,14 @@ REVIEW_QUEUE/
 ## 📊 Tracking & Reporting
 
 ### **Processing Status**
+
 - All materials tracked through the workflow
 - Regular status updates provided
 - Completion notifications sent
 - Archive maintained for reference
 
 ### **Impact Assessment**
+
 - Integration effectiveness measured
 - User feedback collected
 - Usage statistics tracked
@@ -178,6 +201,6 @@ REVIEW_QUEUE/
 
 ## 🚀 Ready to Get Started?
 
-Drop your materials in the `📥 INCOMING` folder and the review process will begin automatically. For urgent materials or special requirements, contact the training team directly.
+Drop your materials in the `REVIEW_QUEUE/` root folder and the training team will pick them up during the next review cycle. For urgent materials or special requirements, contact the training team directly.
 
 **Note:** This system is designed to streamline content integration while maintaining the high quality and consistency of the Crucial Conversations training program.

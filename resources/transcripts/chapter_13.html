@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 13 Transcript — Putting It All Together</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.7;
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header .chapter-num {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        header h1 {
+            font-size: 2rem;
+            color: var(--brand-red-accessible);
+            margin: 8px 0 4px;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .section {
+            margin-bottom: 36px;
+            page-break-inside: avoid;
+        }
+        .section h2 {
+            font-size: 1.4rem;
+            color: var(--brand-red-accessible);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section h3 {
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            margin: 16px 0 8px;
+            font-weight: 700;
+        }
+        .section h4 {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin: 12px 0 6px;
+            font-weight: 700;
+        }
+        .section p {
+            margin-bottom: 10px;
+        }
+        .section ul, .section ol {
+            margin: 10px 0 10px 24px;
+        }
+        .section li {
+            margin-bottom: 6px;
+        }
+        .callout {
+            background: var(--bg-light);
+            border-left: 4px solid var(--brand-red);
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .callout.discussion {
+            border-left-color: var(--blue);
+            background: #eef4fb;
+        }
+        .callout.exercise {
+            border-left-color: #48bb78;
+            background: #f0faf4;
+        }
+        .callout.digest {
+            border-left-color: #48bb78;
+            background: #f7fdf9;
+        }
+        .callout h3 {
+            margin-top: 0;
+        }
+        .quote {
+            text-align: center;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin: 20px 0;
+            padding: 16px;
+        }
+        .quote .attribution {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .nav-footer a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-footer a:hover { text-decoration: underline; }
+        .print-btn {
+            display: inline-block;
+            margin-left: 16px;
+            padding: 6px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .print-btn:hover { background: var(--border-color); }
+        @media print {
+            .back-link, .nav-footer, .print-btn { display: none; }
+            body { padding: 20px; max-width: 100%; }
+            .section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← All Transcripts</a>
+    <button class="print-btn" onclick="window.print()">🖨 Print</button>
+    <header>
+        <div class="chapter-num">Chapter 13</div>
+        <h1>Putting It All Together</h1>
+        <div class="subtitle">Tools for preparing and learning</div>
+    </header>
+    <article>
+        <div class="section">
+            <h2>The Complete Model</h2><h3>Before You Open Your Mouth</h3><ul><li><strong><span>Start with Heart </span></strong>— What do I really want?</li><li><strong>Choose Your Topic (<span>CPR </span>)</strong>— Am I addressing the right issue?</li></ul><h3>How to Open Your Mouth</h3><ul><li><strong>Learn to Look </strong>— Is it safe? Am I in silence or violence?</li><li><strong><span>Make It Safe </span></strong>— Mutual Purpose + Mutual Respect</li><li><strong><span>Master My Stories </span></strong>— Facts → Story → Feeling → Action</li><li><strong><span>STATE My Path </span></strong>— Share facts, Tell story, Ask, Talk tentatively, Encourage testing</li><li><strong><span>Explore Others' Paths </span></strong>— Ask, Mirror, Paraphrase, Prime</li></ul><h3>How to Finish</h3><ul><li><strong><span>Move to Action </span></strong>— Decide how to decide +<span>WWWF </span></li></ul>
+        </div>
+
+        <div class="section">
+            <h2>Coaching Table</h2><h3>When you notice this… try this</h3><h4>You're avoiding</h4><p><span>Start with Heart </span>: What do I really want?</p><h4>Others go silent/violent</h4><p><span>Make It Safe </span>: Step out, rebuild, step back in</p><h4>You feel strong emotions</h4><p><span>Master My Stories </span>: Separate fact from story</p><h4>Others won't share</h4><p>Explore Paths: <span>AMPP </span> to get them talking</p><h4>Nothing changes after</h4><p>Move to Action: <span>WWWF </span></p><h4>Feedback rocks you</h4><p>Retake Your Pen: <span>CURE </span></p>
+        </div>
+
+        <div class="section">
+            <div class="callout discussion">
+            <h3>Discussion Break</h3>
+            <h2>Discussion Break #1</h2><p>Looking at the complete model, which skill has been the biggest “aha” for you during this bookclub? Which one do you still find hardest to apply in the moment?</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>How to Keep Improving</h2><h3>Skill development requires practice and accountability: </h3><ul><li><strong>Pick one skill </strong> to focus on for the next 30 days</li><li><strong>Find a practice partner </strong>—someone who will give you honest feedback</li><li><strong>Debrief conversations: </strong> What went well? What would you do differently?</li><li><strong>Re-read </strong> the chapter that addresses your biggest gap</li><li><strong>Be patient: </strong> You're building new neural pathways. It takes time.</li></ul>
+        </div>
+
+        <div class="section">
+            <h2>The Preparation Tool</h2><h3>Before any crucial conversation, write down: </h3><h4>1. What do I really want? (for me, for them, for the relationship)</h4><h4>2. What are the facts? (observable, verifiable)</h4><h4>3. What's my story? (the meaning I'm adding)</h4><h4>4. How will I make it safe? (contrasting statement, good intent)</h4><h4>5. How will I move to action? (<span>WWWF </span>)</h4>
+        </div>
+
+        <div class="section">
+            <div class="callout discussion">
+            <h3>Discussion Break</h3>
+            <h2>Discussion Break #2</h2><p>What conversation are you going to have in the next week using what you've learned? Walk through your preparation: What do you want, what are the facts, what's your story, and how will you make it safe?</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>This Week's Challenge</h2><h3>Your final assignment: </h3><ul><li><strong>Have the conversation </strong> you prepared for in Discussion Break #2</li><li><strong>Use the preparation tool </strong> to plan it out</li><li><strong>Debrief with someone: </strong> What worked? What surprised you?</li><li><strong>Commit to one skill </strong> to keep practicing over the next 30 days</li></ul>
+        </div>
+
+        <div class="section">
+            <h2>More to Ponder</h2><p>Use these as a quick review of key takeaways.</p><h3>Choose 1–2 prompts</h3><ul><li>Which conversation from the past year would you handle differently now—and how?</li><li>What's the most important thing you learned that you didn't know before this bookclub?</li><li>How will you hold yourself accountable to keep practicing these skills?</li><li>If you could give one piece of advice from this book to someone you care about, what would it be?</li></ul>
+        </div>
+
+        <div class="section">
+            <div class="callout">
+            <h1>Thank You</h1><h2>Leadership Bookclub Complete</h2><h3>Keep the conversation going</h3><ul><li>Re-read chapters that address your biggest gaps</li><li>Practice one skill at a time—don't try to do everything at once</li><li>Remember: <strong>dialogue is the free flow of meaning </strong></li></ul><p><em>“The single biggest problem in communication is the illusion that it has taken place.”</em>— George Bernard Shaw</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="callout digest">
+            <h3>Dan's Digest #1</h3>
+            <h2 id="digestTitle1">Dan&#39;s Digest</h2>
+            <div class="digest-answer"><h4>Answer Key (Discussion Break #1)</h4>
+                <p><strong>Common &ldquo;aha&rdquo; moments:</strong> Many people are surprised by Master My Stories (realizing they make themselves angry) or Make It Safe (safety is about intent, not content). Others find AMPP listening skills transformative.</p>
+                <p style="margin-top:12px;"><strong>Hardest to apply:</strong> Most people struggle with skills that go against their natural tendencies&mdash;the silent types struggle with <span class="term" data-def="STATE: Share facts, Tell your story, Ask for others&rsquo; paths, Talk tentatively, Encourage testing">STATE</span>, the forceful types with listening.</p>
+            </div>
+            <div class="digest-insights"><h4>Key Points</h4><ul>
+                <li>The complete model is a toolkit, not a script&mdash;use what you need</li>
+                <li>Start with the skill that addresses your biggest gap</li>
+                <li>Awareness is the first step&mdash;you can&#39;t fix what you don&#39;t see</li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="callout digest">
+            <h3>Dan's Digest #2</h3>
+            <h2 id="digestTitle2">Dan&#39;s Digest</h2>
+            <div class="digest-answer"><h4>Answer Key (Discussion Break #2)</h4>
+                <p><strong>Preparation is power:</strong> The five-step prep tool (Want, Facts, Story, Safety, Action) takes 5 minutes and dramatically improves outcomes.</p>
+                <p style="margin-top:12px;"><strong>Start small:</strong> Don&#39;t pick your hardest conversation first. Build confidence with medium-stakes situations, then work up.</p>
+                <p style="margin-top:12px;"><strong>Debrief is essential:</strong> Every conversation is practice. Debrief what worked and what you&#39;d change. Skill comes from reflection, not just repetition.</p>
+            </div>
+            <div class="digest-insights"><h4>Key Points</h4><ul>
+                <li>Write it down&mdash;preparation on paper beats preparation in your head</li>
+                <li>One skill at a time for 30 days builds lasting habits</li>
+                <li>You&#39;re building new neural pathways&mdash;be patient with yourself</li>
+            </ul>
+            </div>
+        </div>
+
+    </article>
+    <nav class="nav-footer">
+        <a href="chapter_12.html">← Chapter 12</a>
+        <a href="index.html">All Transcripts</a>
+        <span></span>
+    </nav>
+</body>
+</html>

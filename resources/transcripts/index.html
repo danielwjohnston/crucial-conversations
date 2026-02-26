@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crucial Conversations — Audio Transcripts</title>
+    <title>Crucial Conversations — Chapter Transcripts</title>
     <style>
         :root {
             --brand-red: #e30613;
@@ -40,28 +40,89 @@
             font-weight: 600;
         }
         .back-link:hover { text-decoration: underline; }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--bg-light);
-            border-radius: 12px;
-            border: 2px dashed var(--border-color);
+        .part-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--brand-red);
+            font-weight: 700;
+            margin: 28px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--bg-light);
         }
-        .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
-        .empty-state h2 { color: var(--text-dark); font-size: 1.4rem; margin-bottom: 10px; }
-        .empty-state p { color: var(--text-light); max-width: 500px; margin: 0 auto; }
+        .part-label:first-of-type { margin-top: 0; }
+        .chapter-list { list-style: none; }
+        .chapter-list li {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .chapter-list li:hover {
+            border-color: var(--blue);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .chapter-list a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        .ch-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--brand-red);
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .ch-info { flex: 1; }
+        .ch-title { font-weight: 700; display: block; }
+        .ch-subtitle { font-size: 0.9rem; color: var(--text-light); }
+        .ch-badge {
+            font-size: 0.75rem;
+            color: var(--blue);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="back-link">← Back to Chapter Select</a>
     <header>
-        <h1>🎧 Audio Transcripts</h1>
-        <p>Complete audiobook transcriptions for reference and review</p>
+        <h1>📖 Chapter Transcripts</h1>
+        <p>Readable, printable versions of every chapter presentation — all key concepts, discussion questions, and Dan's Digest notes</p>
     </header>
-    <div class="empty-state">
-        <div class="icon">🎧</div>
-        <h2>Transcripts Coming Soon</h2>
-        <p>Audio transcriptions for each chapter are in development. These will provide searchable text versions of all audiobook content.</p>
-    </div>
+
+    <div class="part-label">Part I — Before You Open Your Mouth</div>
+    <ul class="chapter-list">
+        <li><a href="chapter_01.html"><span class="ch-num">1</span><span class="ch-info"><span class="ch-title">What's a Crucial Conversation</span><span class="ch-subtitle">And who cares?</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_02.html"><span class="ch-num">2</span><span class="ch-info"><span class="ch-title">Mastering Crucial Conversations</span><span class="ch-subtitle">The power of dialogue</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_03.html"><span class="ch-num">3</span><span class="ch-info"><span class="ch-title">Choose Your Topic</span><span class="ch-subtitle">How to be sure you hold the right conversation</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_04.html"><span class="ch-num">4</span><span class="ch-info"><span class="ch-title">Start with Heart</span><span class="ch-subtitle">How to stay focused on what you really want</span></span><span class="ch-badge">Read →</span></a></li>
+    </ul>
+
+    <div class="part-label">Part II — How to Open Your Mouth</div>
+    <ul class="chapter-list">
+        <li><a href="chapter_05.html"><span class="ch-num">5</span><span class="ch-info"><span class="ch-title">Master My Stories</span><span class="ch-subtitle">How to stay in dialogue when you're angry, scared, or hurt</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_06.html"><span class="ch-num">6</span><span class="ch-info"><span class="ch-title">Learn to Look</span><span class="ch-subtitle">How to notice when safety is at risk</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_07.html"><span class="ch-num">7</span><span class="ch-info"><span class="ch-title">Make It Safe</span><span class="ch-subtitle">How to make it safe to talk about almost anything</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_08.html"><span class="ch-num">8</span><span class="ch-info"><span class="ch-title">STATE My Path</span><span class="ch-subtitle">How to speak persuasively, not abrasively</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_09.html"><span class="ch-num">9</span><span class="ch-info"><span class="ch-title">Explore Others' Paths</span><span class="ch-subtitle">How to listen when others blow up or clam up</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_10.html"><span class="ch-num">10</span><span class="ch-info"><span class="ch-title">Retake Your Pen</span><span class="ch-subtitle">How to be resilient and hear almost anything</span></span><span class="ch-badge">Read →</span></a></li>
+    </ul>
+
+    <div class="part-label">Part III — How to Finish</div>
+    <ul class="chapter-list">
+        <li><a href="chapter_11.html"><span class="ch-num">11</span><span class="ch-info"><span class="ch-title">Move to Action</span><span class="ch-subtitle">How to turn crucial conversations into action and results</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_12.html"><span class="ch-num">12</span><span class="ch-info"><span class="ch-title">Yeah, But</span><span class="ch-subtitle">Advice for tough cases</span></span><span class="ch-badge">Read →</span></a></li>
+        <li><a href="chapter_13.html"><span class="ch-num">13</span><span class="ch-info"><span class="ch-title">Putting It All Together</span><span class="ch-subtitle">Tools for preparing and learning</span></span><span class="ch-badge">Read →</span></a></li>
+    </ul>
 </body>
 </html>

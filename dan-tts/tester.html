@@ -5,135 +5,343 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dan's TTS Tester</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; }
-    textarea { width: 100%; min-height: 140px; }
-    label { display: block; margin-top: 12px; font-weight: 600; }
-    select, input[type="text"], textarea { font-size: 15px; padding: 8px; }
-    button { margin-top: 16px; padding: 10px 16px; font-size: 15px; cursor: pointer; }
+    :root {
+      --bg: #ffffff; --bg2: #f7f7f8; --fg: #111; --fg2: #555; --border: #e2e2e2;
+      --primary: #4f46e5; --primary-hover: #4338ca; --primary-fg: #fff;
+      --card-bg: #fff; --card-shadow: rgba(0,0,0,0.06);
+      --avatar-f: linear-gradient(135deg, #a855f7, #ec4899);
+      --avatar-m: linear-gradient(135deg, #3b82f6, #14b8a6);
+      --input-bg: #fff;
+    }
+    html.dark {
+      --bg: #0f0f0f; --bg2: #1a1a1a; --fg: #e8e8e8; --fg2: #999; --border: #333;
+      --primary: #6366f1; --primary-hover: #818cf8; --primary-fg: #fff;
+      --card-bg: #1e1e1e; --card-shadow: rgba(0,0,0,0.3);
+      --input-bg: #1e1e1e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 780px; margin: 0 auto; padding: 0 16px 96px; background: var(--bg); color: var(--fg); transition: background .2s, color .2s; }
+
+    /* Top bar */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 8px; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+    .topbar h1 { font-size: 1.4rem; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
+    .icon-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 14px; cursor: pointer; color: var(--fg); }
+    .icon-btn:hover { background: var(--bg2); }
+
+    /* Controls area */
+    .controls { position: sticky; top: 52px; background: var(--bg); z-index: 9; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    label { display: block; margin-top: 10px; font-weight: 600; font-size: 14px; color: var(--fg); }
+    select, input[type="text"], textarea { font-size: 14px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--input-bg); color: var(--fg); width: 100%; }
+    textarea { min-height: 110px; resize: vertical; }
+    .text-wrap { position: relative; }
+    .text-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--fg2); margin-top: 3px; }
+    .clear-btn { position: absolute; top: 6px; right: 8px; background: none; border: none; font-size: 16px; color: var(--fg2); cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+    .clear-btn:hover { background: var(--bg2); color: var(--fg); }
     .row { display: flex; gap: 12px; flex-wrap: wrap; }
     .row > div { flex: 1 1 200px; }
-    audio { width: 100%; margin-top: 16px; }
-    .log { margin-top: 12px; color: #444; font-size: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
-    .card { border: 1px solid #e2e2e2; border-radius: 10px; padding: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); background: #fff; display: flex; flex-direction: column; gap: 6px; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #14b8a6); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; letter-spacing: 0.3px; }
-    .card-name { font-weight: 700; font-size: 15px; margin-top: 4px; }
-    .card-meta { color: #555; font-size: 13px; }
-    .card button { margin-top: 6px; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .btn { padding: 8px 16px; font-size: 14px; border-radius: 6px; cursor: pointer; border: none; transition: background .15s; }
+    .btn-primary { background: var(--primary); color: var(--primary-fg); }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--fg); }
+    .btn-secondary:hover:not(:disabled) { background: var(--bg2); }
+    .btn-secondary:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* Player & log */
+    audio { width: 100%; margin-top: 12px; }
+    .log { margin-top: 8px; color: var(--fg2); font-size: 13px; min-height: 20px; }
+
+    /* Loading animation */
+    .loading-bar { height: 3px; background: var(--bg2); border-radius: 2px; margin-top: 8px; overflow: hidden; display: none; }
+    .loading-bar.active { display: block; }
+    .loading-bar .bar { height: 100%; width: 30%; background: var(--primary); border-radius: 2px; animation: slide 1.2s ease-in-out infinite; }
+    @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+
+    /* Advanced toggle */
+    .advanced-toggle { font-size: 13px; color: var(--fg2); cursor: pointer; margin-top: 8px; display: inline-block; }
+    .advanced-toggle:hover { color: var(--fg); }
+    .advanced-content { display: none; margin-top: 4px; }
+    .advanced-content.open { display: block; }
+
+    /* Filter tabs */
+    .filter-tabs { display: flex; gap: 6px; margin: 12px 0 8px; }
+    .filter-tab { padding: 5px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--fg); }
+    .filter-tab.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+
+    /* Voice grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 8px; }
+    .card { border: 1px solid var(--border); border-radius: 10px; padding: 12px; box-shadow: 0 1px 2px var(--card-shadow); background: var(--card-bg); display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .card:hover { border-color: var(--primary); }
+    .card.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; letter-spacing: 0.3px; }
+    .avatar.female { background: var(--avatar-f); }
+    .avatar.male { background: var(--avatar-m); }
+    .card-name { font-weight: 700; font-size: 14px; }
+    .card-full { font-size: 11px; color: var(--fg2); }
+    .card-meta { color: var(--fg2); font-size: 12px; }
+    .card .btn { margin-top: 4px; font-size: 12px; padding: 5px 10px; }
+
+    /* History */
+    .history { margin-top: 20px; }
+    .history h3 { font-size: 1rem; margin-bottom: 8px; }
+    .history-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .history-item .hi-text { flex: 1; color: var(--fg2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .history-item .hi-voice { font-weight: 600; min-width: 80px; }
+    .history-item .btn { font-size: 11px; padding: 3px 8px; margin-top: 0; }
   </style>
 </head>
 <body>
-  <h1>Dan's TTS Tester</h1>
-  <label>API Base URL</label>
-  <input id="api" type="text" value="http://localhost:8000" />
 
-  <label>Text</label>
-  <textarea id="text">Hello world from Dan's TTS Project.</textarea>
-
-  <div class="row">
-    <div>
-      <label>Voice (en-US only) <span id="voice-count" style="font-weight:400;font-size:13px;color:#666;"></span></label>
-      <select id="voice"></select>
-      <button id="refresh">Refresh voices</button>
-      <button id="preview" type="button">Preview voice</button>
-    </div>
-    <div>
-      <label>Format</label>
-      <select id="format">
-        <option value="mp3">mp3</option>
-        <option value="m4a">m4a</option>
-        <option value="ogg">ogg</option>
-        <option value="flac">flac</option>
-      </select>
+  <!-- Top bar -->
+  <div class="topbar">
+    <h1>Dan's TTS</h1>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="theme-toggle" title="Toggle dark mode">Dark</button>
     </div>
   </div>
 
-  <button id="go">Synthesize</button>
-  <button id="download" disabled>Download last audio</button>
-  <audio id="player" controls></audio>
-  <div class="log" id="log"></div>
+  <!-- Sticky controls -->
+  <div class="controls">
+    <label>Text</label>
+    <div class="text-wrap">
+      <textarea id="text">Hello world from Dan's TTS Project.</textarea>
+      <button class="clear-btn" id="clear-text" title="Clear text">&times;</button>
+    </div>
+    <div class="text-meta">
+      <span id="text-count">6 words &middot; 35 chars</span>
+      <span style="font-size:11px;color:var(--fg2);">Ctrl+Enter to synthesize</span>
+    </div>
 
-  <h2>Voices (click play for sample)</h2>
-  <div id="voices-grid" class="grid"></div>
+    <div class="row">
+      <div>
+        <label>Voice <span id="voice-count" style="font-weight:400;font-size:12px;color:var(--fg2);"></span></label>
+        <select id="voice"></select>
+      </div>
+      <div>
+        <label>Format</label>
+        <select id="format">
+          <option value="mp3">mp3</option>
+          <option value="m4a">m4a</option>
+          <option value="ogg">ogg</option>
+          <option value="flac">flac</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="go">Synthesize</button>
+      <button class="btn btn-primary" id="download" disabled>Download</button>
+      <button class="btn btn-secondary" id="preview">Preview voice</button>
+      <button class="btn btn-secondary" id="refresh">Refresh voices</button>
+    </div>
+
+    <div class="loading-bar" id="loading"><div class="bar"></div></div>
+    <audio id="player" controls style="display:none;"></audio>
+    <div class="log" id="log"></div>
+
+    <span class="advanced-toggle" id="adv-toggle">Advanced &darr;</span>
+    <div class="advanced-content" id="adv-content">
+      <label>API Base URL</label>
+      <input id="api" type="text" value="http://localhost:8000" />
+    </div>
+  </div>
+
+  <!-- History -->
+  <div class="history" id="history-section" style="display:none;">
+    <h3>History</h3>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- Voice grid -->
+  <div style="margin-top:16px;">
+    <h2 style="font-size:1.1rem;">Voices <span style="font-weight:400;font-size:13px;color:var(--fg2);">(click to select, play to preview)</span></h2>
+    <div class="filter-tabs" id="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="Female">Female</button>
+      <button class="filter-tab" data-filter="Male">Male</button>
+    </div>
+    <div id="voices-grid" class="grid"></div>
+  </div>
 
   <script>
+    /* ---- Elements ---- */
     const btn = document.getElementById('go');
     const downloadBtn = document.getElementById('download');
     const logEl = document.getElementById('log');
     const voiceSelect = document.getElementById('voice');
-    const voiceCount = document.getElementById('voice-count');
+    const voiceCountEl = document.getElementById('voice-count');
     const refreshBtn = document.getElementById('refresh');
     const previewBtn = document.getElementById('preview');
     const grid = document.getElementById('voices-grid');
     const textArea = document.getElementById('text');
+    const textCount = document.getElementById('text-count');
+    const clearBtn = document.getElementById('clear-text');
+    const loadingBar = document.getElementById('loading');
+    const playerEl = document.getElementById('player');
+    const themeBtn = document.getElementById('theme-toggle');
+    const advToggle = document.getElementById('adv-toggle');
+    const advContent = document.getElementById('adv-content');
+    const historySection = document.getElementById('history-section');
+    const historyList = document.getElementById('history-list');
+    const filterTabs = document.getElementById('filter-tabs');
 
-    async function loadVoices(refresh=false) {
+    let allVoices = [];
+    let lastBlob = null;
+    let lastExt = 'mp3';
+    let lastText = '';
+    let lastVoice = '';
+    let isSynthesizing = false;
+    let selectedVoiceName = '';
+    let currentFilter = 'all';
+    const history = [];
+
+    /* ---- Dark mode ---- */
+    function setTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      themeBtn.textContent = dark ? 'Light' : 'Dark';
+      localStorage.setItem('tts-theme', dark ? 'dark' : 'light');
+    }
+    themeBtn.onclick = () => setTheme(!document.documentElement.classList.contains('dark'));
+    if (localStorage.getItem('tts-theme') === 'dark' || (!localStorage.getItem('tts-theme') && matchMedia('(prefers-color-scheme:dark)').matches)) setTheme(true);
+
+    /* ---- Advanced toggle ---- */
+    advToggle.onclick = () => {
+      advContent.classList.toggle('open');
+      advToggle.innerHTML = advContent.classList.contains('open') ? 'Advanced &uarr;' : 'Advanced &darr;';
+    };
+
+    /* ---- Text count ---- */
+    function updateCount() {
+      const t = textArea.value;
+      const words = t.trim() ? t.trim().split(/\s+/).length : 0;
+      textCount.textContent = `${words} word${words !== 1 ? 's' : ''} \u00b7 ${t.length} chars`;
+    }
+    textArea.addEventListener('input', updateCount);
+    updateCount();
+
+    /* ---- Clear text ---- */
+    clearBtn.onclick = () => { textArea.value = ''; updateCount(); textArea.focus(); };
+
+    /* ---- Keyboard shortcut ---- */
+    textArea.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); btn.click(); }
+    });
+
+    /* ---- Friendly name ---- */
+    function friendlyName(shortName) {
+      return (shortName || '').replace(/^en-US-/, '').replace(/Neural$/, '').replace(/Multilingual$/, ' ML');
+    }
+
+    /* ---- Load voices ---- */
+    async function loadVoices(refresh = false) {
       const api = document.getElementById('api').value.trim().replace(/\/$/, '');
       logEl.textContent = refresh ? 'Refreshing voices...' : 'Loading voices...';
       try {
         const res = await fetch(`${api}/voices${refresh ? '?refresh=1' : ''}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const voices = await res.json();
+        allVoices = await res.json();
         voiceSelect.innerHTML = '';
-        grid.innerHTML = '';
-        voices.forEach(v => {
+        allVoices.forEach(v => {
           const opt = document.createElement('option');
           opt.value = v.shortName || v.name;
-          opt.textContent = `${v.shortName || v.name} — ${v.localeName || v.locale || ''} (${v.gender || ''})`;
+          opt.textContent = `${friendlyName(v.shortName)} (${v.gender || ''})`;
           voiceSelect.appendChild(opt);
-
-          // card
-          const card = document.createElement('div');
-          card.className = 'card';
-          const avatar = document.createElement('div');
-          avatar.className = 'avatar';
-          avatar.textContent = (v.shortName || v.name || '?').slice(3,5).toUpperCase();
-          const name = document.createElement('div');
-          name.className = 'card-name';
-          name.textContent = v.shortName || v.name;
-          const meta = document.createElement('div');
-          meta.className = 'card-meta';
-          meta.textContent = `${v.localeName || v.locale || ''} · ${v.gender || ''}`;
-          const play = document.createElement('button');
-          play.textContent = '▶ Play sample';
-          play.onclick = async () => {
-            if (!v.sampleUrl) return;
-            const src = `${api}${v.sampleUrl}`;
-            try {
-              logEl.textContent = `Loading sample for ${v.shortName}...`;
-              const res = await fetch(src);
-              if (!res.ok) throw new Error(`HTTP ${res.status}`);
-              const blob = await res.blob();
-              const url = URL.createObjectURL(blob);
-              const player = document.getElementById('player');
-              player.src = url;
-              await player.play();
-              logEl.textContent = `Played sample (${v.shortName}).`;
-            } catch (err) {
-              console.error(err);
-              logEl.textContent = 'Error: ' + err.message;
-            }
-          };
-          card.appendChild(avatar);
-          card.appendChild(name);
-          card.appendChild(meta);
-          card.appendChild(play);
-          grid.appendChild(card);
         });
-        voiceCount.textContent = voices.length ? `(${voices.length} voices)` : '(no voices)';
-        logEl.textContent = voices.length ? 'Voices loaded.' : 'No voices returned.';
+        if (!selectedVoiceName && allVoices.length) selectedVoiceName = allVoices[0].shortName || allVoices[0].name;
+        voiceSelect.value = selectedVoiceName;
+        voiceCountEl.textContent = allVoices.length ? `(${allVoices.length})` : '';
+        renderGrid();
+        logEl.textContent = allVoices.length ? 'Voices loaded.' : 'No voices returned.';
       } catch (err) {
         console.error(err);
         logEl.textContent = 'Error loading voices: ' + err.message;
       }
     }
 
-    let lastBlob = null;
-    let lastExt = "mp3";
-
-    async function synthesize(text, voice, format) {
+    /* ---- Render grid ---- */
+    function renderGrid() {
       const api = document.getElementById('api').value.trim().replace(/\/$/, '');
-      logEl.textContent = 'Requesting...';
+      grid.innerHTML = '';
+      const filtered = currentFilter === 'all' ? allVoices : allVoices.filter(v => v.gender === currentFilter);
+      filtered.forEach(v => {
+        const sn = v.shortName || v.name;
+        const card = document.createElement('div');
+        card.className = 'card' + (sn === selectedVoiceName ? ' selected' : '');
+        card.onclick = (e) => {
+          if (e.target.tagName === 'BUTTON') return;
+          selectedVoiceName = sn;
+          voiceSelect.value = sn;
+          document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+        };
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar ' + (v.gender === 'Female' ? 'female' : 'male');
+        avatar.textContent = friendlyName(sn).slice(0, 2).toUpperCase();
+
+        const nameEl = document.createElement('div');
+        nameEl.className = 'card-name';
+        nameEl.textContent = friendlyName(sn);
+
+        const fullEl = document.createElement('div');
+        fullEl.className = 'card-full';
+        fullEl.textContent = sn;
+
+        const meta = document.createElement('div');
+        meta.className = 'card-meta';
+        meta.textContent = v.gender || '';
+
+        const play = document.createElement('button');
+        play.className = 'btn btn-secondary';
+        play.textContent = '\u25b6 Play sample';
+        play.onclick = async () => {
+          if (!v.sampleUrl) return;
+          try {
+            logEl.textContent = `Loading sample for ${friendlyName(sn)}...`;
+            const res = await fetch(`${api}${v.sampleUrl}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const blob = await res.blob();
+            playerEl.src = URL.createObjectURL(blob);
+            playerEl.style.display = '';
+            await playerEl.play();
+            logEl.textContent = `Sample: ${friendlyName(sn)}`;
+          } catch (err) {
+            console.error(err);
+            logEl.textContent = 'Error: ' + err.message;
+          }
+        };
+
+        card.append(avatar, nameEl, fullEl, meta, play);
+        grid.appendChild(card);
+      });
+    }
+
+    /* ---- Filter tabs ---- */
+    filterTabs.addEventListener('click', e => {
+      if (!e.target.matches('.filter-tab')) return;
+      currentFilter = e.target.dataset.filter;
+      filterTabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+      renderGrid();
+    });
+
+    /* ---- Voice dropdown sync ---- */
+    voiceSelect.addEventListener('change', () => {
+      selectedVoiceName = voiceSelect.value;
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('.card').forEach(c => {
+        const full = c.querySelector('.card-full');
+        if (full && full.textContent === selectedVoiceName) c.classList.add('selected');
+      });
+    });
+
+    /* ---- Synthesize ---- */
+    async function doSynthesize(text, voice, format) {
+      const api = document.getElementById('api').value.trim().replace(/\/$/, '');
       const res = await fetch(`${api}/synthesize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,53 +351,121 @@
         const msg = await res.text();
         throw new Error(`HTTP ${res.status}: ${msg}`);
       }
-      const blob = await res.blob();
-      lastBlob = blob;
-      lastExt = format;
-      downloadBtn.disabled = false;
-      const url = URL.createObjectURL(blob);
-      const player = document.getElementById('player');
-      player.src = url;
-      await player.play();
-      logEl.textContent = `Done (${format}, ${blob.size} bytes).`;
+      return await res.blob();
+    }
+
+    function setLoading(on) {
+      isSynthesizing = on;
+      btn.disabled = on;
+      btn.textContent = on ? 'Generating...' : 'Synthesize';
+      loadingBar.classList.toggle('active', on);
+    }
+
+    function smartFilename(text, voice, ext) {
+      const slug = text.trim().split(/\s+/).slice(0, 5).join('-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+      const vName = friendlyName(voice).replace(/\s+/g, '');
+      return `${slug || 'tts'}-${vName}.${ext}`;
     }
 
     btn.onclick = async () => {
-      const text = document.getElementById('text').value;
+      if (isSynthesizing) return;
+      const text = textArea.value;
+      if (!text.trim()) { logEl.textContent = 'Enter some text first.'; return; }
       const voice = voiceSelect.value || 'en-US-AriaNeural';
       const format = document.getElementById('format').value;
+      setLoading(true);
+      logEl.textContent = 'Requesting...';
       try {
-        await synthesize(text, voice, format);
+        const blob = await doSynthesize(text, voice, format);
+        lastBlob = blob; lastExt = format; lastText = text; lastVoice = voice;
+        downloadBtn.disabled = false;
+        playerEl.src = URL.createObjectURL(blob);
+        playerEl.style.display = '';
+        await playerEl.play();
+        playerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        logEl.textContent = `Done (${format}, ${(blob.size / 1024).toFixed(1)} KB).`;
+        addHistory(text, voice, format, blob);
       } catch (err) {
         console.error(err);
         logEl.textContent = 'Error: ' + err.message;
+      } finally {
+        setLoading(false);
       }
     };
 
     previewBtn.onclick = async () => {
+      if (isSynthesizing) return;
       const voice = voiceSelect.value || 'en-US-AriaNeural';
+      setLoading(true);
+      logEl.textContent = 'Previewing...';
       try {
-        await synthesize('This is a sample of the selected voice.', voice, 'mp3');
+        const blob = await doSynthesize('This is a sample of the selected voice.', voice, 'mp3');
+        playerEl.src = URL.createObjectURL(blob);
+        playerEl.style.display = '';
+        await playerEl.play();
+        logEl.textContent = `Preview: ${friendlyName(voice)}`;
       } catch (err) {
         console.error(err);
         logEl.textContent = 'Error: ' + err.message;
+      } finally {
+        setLoading(false);
       }
     };
 
     refreshBtn.onclick = () => loadVoices(true);
 
+    /* ---- Download ---- */
     downloadBtn.onclick = () => {
       if (!lastBlob) return;
       const url = URL.createObjectURL(lastBlob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `tts.${lastExt}`;
+      a.download = smartFilename(lastText, lastVoice, lastExt);
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
     };
 
+    /* ---- History ---- */
+    function addHistory(text, voice, format, blob) {
+      history.unshift({ text: text.slice(0, 80), voice, format, blob, ts: Date.now() });
+      if (history.length > 10) history.pop();
+      renderHistory();
+    }
+    function renderHistory() {
+      if (!history.length) { historySection.style.display = 'none'; return; }
+      historySection.style.display = '';
+      historyList.innerHTML = '';
+      history.forEach((h, i) => {
+        const row = document.createElement('div');
+        row.className = 'history-item';
+        row.innerHTML = `<span class="hi-voice">${friendlyName(h.voice)}</span><span class="hi-text">${h.text}</span>`;
+        const playBtn = document.createElement('button');
+        playBtn.className = 'btn btn-secondary';
+        playBtn.textContent = '\u25b6';
+        playBtn.onclick = () => {
+          playerEl.src = URL.createObjectURL(h.blob);
+          playerEl.style.display = '';
+          playerEl.play();
+        };
+        const dlBtn = document.createElement('button');
+        dlBtn.className = 'btn btn-secondary';
+        dlBtn.textContent = '\u2193';
+        dlBtn.onclick = () => {
+          const url = URL.createObjectURL(h.blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = smartFilename(h.text, h.voice, h.format);
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+        };
+        row.append(playBtn, dlBtn);
+        historyList.appendChild(row);
+      });
+    }
+
+    /* ---- Init ---- */
     loadVoices();
   </script>
 </body>

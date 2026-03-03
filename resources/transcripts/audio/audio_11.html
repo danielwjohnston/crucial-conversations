@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">4,062 words &middot; ~16 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/17%2011%20Move%20to%20Action.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>11 move to action. How to Turn crucial conversations into action and results to do nothing is in every man's power. Samuel Johnson, up until this point, we've suggested that getting more meaning into the pool helps with dialog. In order to encourage this free flow of meaning. We've shared the skills we've learned by watching people who are gifted at dialog by now, if you've followed some or all of this advice, you're walking around with full pools. People who walk near you should hear the sloshing. It's time we add two final skills, having more meaning in the pool, even jointly owning it doesn't guarantee that we all agree on what we're going to do with the meaning. We often fail to convert the ideas into action for two reasons. First, we have unclear expectations about how decisions will be made, and second, we do a poor job of acting on the decisions we do make. This can be dangerous. In fact, when people move from adding meaning to the pool to moving to action, it's a prime time for new challenges to arise. Dialog is not decision making. The two riskiest times in Crucial Conversations tend to be at the beginning and at the end. The beginning is risky, because you have to find a way to create safety or else things go awry. The end is dicey, because if you aren't careful about how you clarify the conclusions and decisions flowing from your pool of shared meaning, you can run into violated expectations later on. This can happen in two ways. How are decisions going to be made? First? People may not understand how decisions are going to be made. For example, Kara is miffed.</p>
         <p>Renee just forwarded a confirmation email to her for a three day cruise. The Email thanks him for the reservation and the $500 deposit he has paid to secure an upgrade to an outside suite. A week ago, they had a crucial conversation about vacation plans. Both expressed their views and preferences respectfully and candidly. It wasn't easy, but at the end, they decided a cruise suited both quite well and yet now Kara is upset. Renee is bewildered. He thought Kara would be ecstatic. Kara agreed in principle about a cruise. She didn't agree to this particular cruise. Renee thought that any cruise would be fine, and made a decision on his own. Have fun on that cruise, Renee. Are we ever going to decide the second problem with decision making occurs when no decision gets made. Crucial Conversations are tough. By the time we navigate successfully to the end of one we are often so incredibly relieved that we made it through that we simply and quickly end with a heartfelt expression of gratitude. Thanks. I'm really glad we could have this conversation. We walk away feeling better because, hey, no one cried and no one yelled. Chalk one up in the win column. But because we haven't clarified our understanding or solidified decisions, ideas slip away and dissipate, or people can't figure out what to do with them. Decide how to decide. We can solve both these problems if before making a decision, the people involved decide how to decide. Don't allow people to assume that dialog is decision making. Dialog is a process for getting all relevant meaning into a shared pool. That process, of course, involves everyone.</p>
         <p>However, allowing even encouraging people to share their meaning, doesn't mean they are then guaranteed to take part in making all the decisions to avoid violated expectations. Separate dialog from decision making, make it clear how decisions will be made, who will be involved and why. When the line of authority is clear, when you're in a position of authority, you decide which method of decision making you'll use. Managers and parents, for example, decide how to decide. It's part of their responsibility as leaders. For instance, VPS don't ask hourly employees to decide on pricing changes or product lines. That's the leader's job. Parents don't ask small children to pick their home security device or to set their own bedtime. That's the job of the parent. Of course, both leaders and parents turn more decisions over to their direct reports and children when they warrant the responsibility, but it's still the authority figure who decides what method of decision making to employ. Deciding what decisions to turn over and when to do it is part of their stewardship when the line of authority isn't. Clear when there is no clear line of authority, deciding how to decide can be quite difficult. For instance, consider a conversation you had with your daughter's school teacher. The teacher suggested that you should hold your child back. You're not sure, but whose choice is this anyway? Who decides whose choice it is. Does everyone have a say? Then a vote? Is it the school officials responsibility? So they choose, since parents have ultimate responsibility, should they consult with the appropriate experts and then decide, Is there even a clear answer to this tough question?</p>

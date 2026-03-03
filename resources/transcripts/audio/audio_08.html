@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">7,237 words &middot; ~29 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/13%208%20STATE%20My%20Path.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>In chapter eight, state, my path how to speak persuasively, not abrasively, outspoken, by whom? Dorothy Parker when told she was very outspoken. So far, we've gone to great pains to prepare ourselves to step up to and master Crucial Conversations. Here's what we've learned. Our hearts need to be in the right place and our heads need to be focused on the right topic. We need to let go of the clever stories that are keeping us stuck. We need to learn to look closely at how people are engaging in the dialog, particularly when people are feeling unsafe, so that we can restore safety when necessary. So let's say that we are well prepared. We're ready to open our mouths and start sharing our point of view. That's right, we're actually going to express our opinion. Now, what most of the time we walk into a discussion and slide into autopilot. Hi, how are the kids? What's going on at work? What could be easier than talking. We know 1000s of words and generally weave them into sentences that suit our needs most of the time. However, when both the stakes and our emotions rise, well, that's when we open our mouths and don't do so well. In fact, as we suggested earlier, the more important the discussion, the less likely we are to be on our best behavior. Sadly, as we'll see, we express our views in a way that is perfectly designed to provoke defensiveness to help us improve our advocacy skills. We'll examine five skills that solve our two main problems, defensiveness and resistance. First, we'll look at how the five skills help you design your message in a way that helps others to hear it.</p>
         <p>And second, we'll explore how these same skills help you be more persuasive at times when your own certainty is your worst enemy, sharing risky meaning, adding information to the pool of meaning can be quite difficult when the ideas we're about to pour into the collective consciousness contain delicate, unattractive or controversial opinions, as in Marta, people simply don't like working with you. I'm cutting you from the Special Projects team. It's one thing to argue that your company needs to shift from green to red packaging. It's quite another to tell a person that he or she is offensive or unlikable when the topic turns from things to people, it's always more difficult. To nobody's surprise, some people are better at approaching these conversations than others when it comes to sharing touchy information, the worst alternate between bluntly dumping their ideas into the pool of meaning and saying nothing at all. Either they start with, you're not going to like this, but hey, somebody has to be honest, a classic fool's choice, or they simply stay quiet. Those who are good at dialog say some of what's on their minds, but they understate their views out of fear of hurting others. They talk all right, but they carefully sugar coat their message, for example, rather than being honest that they think your marketing piece will be an embarrassment to the company, they say, Ah, well, I like the graphics a lot, but I think we can spice up the text a little here and there. The best at dialog speak their minds completely and do it in a way that makes it safe for others to hear what they have to say and respond to it as well. They are both totally candid and completely respectful.</p>
         <p>If they think the marketing piece is bad, they make sure, when they are done, that, you know, they think the marketing piece is bad, but they do so in a way that is 100% respectful as well. How, by finding a way to maintain safety without compromising candor. Maintain safety in order to speak honestly when honesty could easily offend others, we have to find a way to maintain safety. That's a bit like telling someone to smash another person in the nose, but you know, don't hurt him. How can we speak the unspeakable and still maintain respect? It can be done if you know how to carefully blend three ingredients, confidence, humility and skill. Confidence. Most people simply won't hold delicate conversations well, at least not with the right person. For instance, your colleague, Brian goes home at night and tells his wife that his boss, Fernando is micromanaging him to within an inch of his life. He says the same thing over lunch when talking with his pals, everyone knows what Brian thinks about Fernando, except, of course, Fernando, people who are skilled at dialog have the confidence to say what needs to be said to the person who needs to hear it. They are confident that their opinions deserve to be placed in the pool of meaning. They are also confident that they can speak openly without brutalizing others or causing undue offense. Humility, confidence does not equate to arrogance. Or pig headedness. Skilled people are confident that they have something to say, but also realize that others have valuable input. They realize that they don't have a monopoly on the truth. They are curious about information and perspectives. Others have their opinions provide a starting point, but not the final word.</p>

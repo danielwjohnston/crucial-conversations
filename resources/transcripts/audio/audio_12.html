@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">2,111 words &middot; ~8 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/18%2012%20Yeah,%20But.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Chapter 12, yeah, but advice for tough cases, good words are worth much and cost little. George Herbert, as we meet with Crucial Conversations trainers around the world, they report that at the end of a class, there is inevitably someone who raises a hand and says something in the form of Yeah, but, for example, yeah, but my boss would never respond like that, or Yeah, but my teenager could ignore a tsunami. Another common one is Yeah, but what if I'm not carrying my training manual with me when the crucial moment hits? In short, people can think of a dozen reasons why the skills we've been talking about don't apply to the challenges they face. In truth, the dialog skills we've shared apply to just about any problem you can imagine. However, since some situations are more difficult than others, we've chosen a few tough cases with which to illustrate the robustness of what you now know, we'll take a moment to share a thought or two on each sexual or other harassment. Yeah, but what if someone isn't blatantly harassing me or anything, but I don't like the way I'm being treated? How can I bring it up without making enemies? The danger point someone is making comments or gestures that you find offensive, the person does it seldom enough, and he or she is subtle enough that you're not sure if HR or your boss can even help. What can you do in these situations? It's easy to think that the offender has all the power. It seems as if the rules of polite society make it so that others can behave inappropriately, and you end up looking like you're overreacting if you bring it up.</p>
         <p>Generally speaking, a vast majority of these problems go away if they're privately, respectfully and firmly discussed. Your biggest challenge will be the respect part. If you put up with this behavior for too long, you'll be inclined to tell a more and more potent villain story about the offender. This will jack up your emotions to the point that you'll go in with guns blazing, even if only through your body language. The solution, tell the rest of the story, if you've tolerated the behavior for a long time before holding the conversation, own up to it. This may help you treat the individual like a reasonable, rational and decent person, even if some of his or her behavior doesn't fit this description, when you feel a measure of respect for the other person, you're ready to begin after establishing a mutual purpose for the exchange state your path, for example, establish mutual purpose. I'd like to talk about something that's getting in the way of my working with you. It's a tough issue to bring up, but I think it'll help us be better teammates. If I do is that okay? State my path. When I walk into your office, frequently, your eyes move from my eyes downward, and when I sit next to you at a computer, sometimes you put your arm around the back of my chair. I don't know that you're aware you're doing these things. So I thought I'd bring them up, because they send a message that makes me uncomfortable. How do you see it?</p>
         <p>If you can be respectful and private but firm in this conversation, most problem behavior will stop and remember, if the behavior is over the line and the person appears intentionally sexually aggressive, you should contact HR rather than attempt a private and dangerous conversation. Furthermore, if after a conversation like this, the behavior continues involve HR to ensure your rights and safety are protected an overly sensitive spouse, yeah, but what do you do when your spouse is too sensitive? You try to give your spouse some constructive feedback, but he or she reacts so strongly that you end up going to silence the danger point. Often couples come to an unspoken agreement during the first year or so of their marriage or relationship that affects how they communicate for the rest of the time. Say one person is touchy and can't take feedback, or the other doesn't give it very well. In any case, they in effect, agree to say nothing to each other. They live in silence. Problems have to be huge before they're discussed. The solution this is generally a problem of not knowing how to state your path when something bothers you, catch it early. Contrasting can also help. I'm not trying to blow this out of proportion. I just want to deal with it before it gets out of hand, share your facts, describe the specific behaviors you've observed. When Jimmy leaves his room a mess, you use sarcasm to get his attention, you call him a pig and then laugh as if you didn't mean it. Tentatively, explain the consequences. I don't think it's having the effect you want. He doesn't pick up on the hint, and I'm afraid he's starting to resent you your story. Then encourage testing.</p>

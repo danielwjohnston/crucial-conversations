@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">5,612 words &middot; ~22 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/11%206%20Learn%20to%20Look.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Chapter Six, learn to look how to notice when safety is at risk. I have known 1000 scamps, but I never met one who considered himself so self knowledge isn't so common. Ouidah, let's start this chapter by visiting a failed crucial conversation. You and your team have been working hard on a proposal for a company acquisition. Your manager is now taking the proposal to the steering committee. He has invited you to sit in on the meeting. He has made it clear that your role here is to listen and observe. You're excited for a couple of reasons. First, you believe in your team's recommendation and want to see how the steering committee responds. Second, this is the first time you'll see the organization's leadership team in action. It's exhilarating to be included. The first thing you notice is you take your chair next to a wall on one side of the room is where all the executives are sitting. Not surprisingly, the CEO Karine, is at the head of the rather large table. There doesn't necessarily seem to be much order to where everyone else sits, but you do notice that Marco, the CFO is at the far end of the table. You've heard through the grapevine that those two have a bit of a contentious relationship. The meeting opens and Corrine asks your manager to present the proposal. He does a great job outlining the recommendations as his colleagues listen attentively, he opens it up for questions, someone you aren't sure who asks a probing but friendly question. Your manager responds, but before he can ask for other questions, Corrine jumps in with her opinion. The discussion continues like this for some time. Someone makes a comment. Corine responds, another comment, another interjection from Corrine.</p>
         <p>You notice that Corrine comments about virtually every other person's comments, never letting the discussion go too far without her input. Finally, Marco speaks up. He summarizes what he has heard, clarifies that he understands corrines position, and then forcefully tells her why she is wrong. She pushes back on him. He pushes back on her. Everyone is watching the tense exchange between the two just when you think they're about to start yelling, Corinne pulls back tables the discussion and ends the meeting. Marco pushes his chair back from the table with the force and urgency of someone jumping out of the way of an oncoming bus and stalks from the room without saying anything to anyone. As you and your manager take the elevator back down to your floor, you say, Wow, is it often like that? Pretty much he responds. It always seems to start off well enough, but then inevitably, it deteriorates. Those two just can't work together. From the moment Marco opens his mouth, it's a train wreck. How? So you ask, wondering what your manager is seeing. Well, by the end, it was easy to see how upset they each were. They were constantly interrupting and talking over each other, their voices getting louder and louder. But even before that, from Marcos first comment, I knew it would go badly. He starts with such absolutes, it's always been like this that will never work. The guy is probably the smartest person on the team, and he knows it that language always, never it inevitably gets corrines Back up. You think about this for a minute and then say, I definitely agree, the warning signs were there from the moment Marco started talking.</p>
         <p>But, you know, I think there were a few things that happened even earlier that set the conversation off in the wrong direction. Really, your manager replies with surprise. I thought it was going pretty well until Marco started talking. What did you see before that? Well, you start thoughtfully. It struck me as interesting that Corrine commented on almost everyone else's comments. You would say something, then she would say something, then someone else, then Karine again. Sometimes she even jumped in and cut someone off in order to get her comment in. Oh, sure. Your manager says, but that is just how Corrine is. She's really passionate about things and wants to engage in dialog with all of us. Hmm. You say, Well, that may be true, that she says she wants to have everyone weigh in, but I think her jumping in all the time is impacting the conversation. She's really controlling the pace and direction of the dialog. I wonder if that's part of what makes Marco come in so strong. I've never thought about it or really even noticed that before your manager says, I guess I'll have to watch for it next time the elevator dings and you're headed in separate directions, watch for conditions. The sooner you notice you're not in dialog, the easier it is to get back, and the lower the costs. The sad corollary is that the longer it takes to notice you're not in dialog, the harder it is to get back and the higher the costs. Yet most of us have trouble noticing the early warning signs of declining communication during Crucial Conversations. The key to maintaining dialog is to learn to dual process.</p>

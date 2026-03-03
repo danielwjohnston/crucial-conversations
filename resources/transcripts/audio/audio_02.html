@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">3,777 words &middot; ~15 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/05%202%20Mastering%20Crucial%20Conversations.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Announcer, chapter two, mastering Crucial Conversations. The power of dialog, our lives begin to end the day we become silent about things that matter. Martin Luther King, Jr, to be honest, we didn't study our way into a discovery of crucial conversations. Instead, we stumbled into it over the years, we worked with dozens of leaders in a variety of industries who were trying to implement dramatic changes. Part of our consulting methodology involved helping them find opinion leaders embedded throughout their organizations who might be helpful in the effort. We did so in a pretty straightforward way. First, we asked people to name the two or three people they turned to first when they were struggling to get something done. Over the past decades, we've asked 10s of 1000s of people to identify the individuals and their organizations who knew how to make things happen when others felt stymied. We wanted to find those who were not just influential, but far more influential than the rest. Each time, as we compiled the names into a list, a pattern emerged. Lots of people were named by one or two colleagues. Some found their way onto five or six lists. These were people who were good at influence, but not good enough to be widely identified as top opinion leaders. And then there were the handful who were named 30 or more times. These were the best, the ones who could make big things happen in their areas. Some were managers and supervisors. Many were not one of the opinion leaders we became particularly interested in meeting was named Kevin. He was the only one of eight vice presidents in his company to be identified as exceedingly influential. We wanted to know why, so we watched him at work.</p>
         <p>At first, Kevin didn't do anything remarkable. In truth, he looked like every other VP. He answered his phone, talked to his direct reports, and continued about his pleasant, but routine routine. The startling discovery, after trailing Kevin for almost a week, we began to wonder if he really did act in ways that set him apart from others, or if his influence was simply a matter of popularity. And then we followed Kevin into a meeting. Kevin his peers and their boss were deciding on a new location for their offices. Would they move across town, across the state, or across the country? The first two execs presented their arguments for their top choices, and as expected, their points were greeted by penetrating questions from the full team. No vague claim went unclarified, no unsupported reasoning unquestioned. Then Chris the CEO pitched his preference one that was both unpopular and potentially disastrous. However, when people tried to disagree or push back, Chris responded poorly. Since he was the big boss, he didn't exactly have to browbeat people to get what he wanted. Instead, he became slightly defensive. First, he raised an eyebrow, then he raised his finger, finally, he raised his voice just a little. It wasn't long until people stopped questioning him, and Chris's inadequate proposal was quietly accepted. Well, almost that's when Kevin spoke up. His words were simple enough, something like, Hey, Chris, can I check something out with you? The reaction was stunning. Everyone in the room stopped breathing, but Kevin ignored the apparent terror of his colleagues and plunged on ahead. In the next few minutes, he, in essence, told the CEO that he appeared to be violating his own decision making guidelines.</p>
         <p>He was subtly using his power to move the new offices to his hometown. Kevin continued to explain what he saw happening, and when he finished the first minutes of this delicate exchange, Chris was quiet for a moment, then he nodded, you're absolutely right. He finally concluded, I have been trying to force my opinion on you. Let's back up and try again. This was a crucial conversation, and Kevin played no games whatsoever. He didn't resort to silence like his colleagues, nor did he try to force his arguments on others. Somehow, he managed to achieve absolute candor, but he did so in a way that showed deep respect for Chris. It was a remarkable thing to watch. As a result, the team chose a far more effective location, and Kevin's boss appreciated his caring coaching. When Kevin was done, one of his peers turned to us and said, Did you see how he did that? If you want to know how he gets things done, figure out what he just did. So we did. In fact, we spent the next 30 years discovering what Kevin and people like him do. What typically set them apart from the rest of the pack was their ability to avoid what we came to call the fool's choice. You see, Kevin's contribution was not his insight. Almost everyone could see what was happening. People knew they were allowing themselves to be steamrolled into making a bad decision. But all of them except Kevin believed they had to make a choice between two bad alternatives. Option one, speak up and turn the most power. Powerful person in the company into their sworn enemy. Option two, suffer in silence and make a bad decision that might ruin the company.</p>

@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">5,406 words &middot; ~22 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/07%203%20Choose%20Your%20Topic.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Chapter Three, choose your topic, how to be sure you hold the right conversation. A problem well stated is a problem half solved. Charles Kettering, the moment you open your mouth to hold a crucial conversation, you've already made a decision. You've decided what to talk about. One of the biggest mistakes we make is assuming that just because we're talking we must be solving the right problem. It's not that simple. If you're not addressing the right issue, you'll end up in the same conversation over and over again. Crucial Conversations are topic rich environments, human interactions and relationships are complex. There are multiple issues and side issues and tangents. You've probably been in that conversation before. You think you're talking with your brother about plans for an upcoming family gathering, suddenly you're in a completely different conversation about the time your parents bought you a brand new bike because you've always been their favorite and your brother never could measure up. Whoa. You think? Where did all that come from? Crucial Conversations are most successful when they're focused on one issue, because human interactions are inherently complex. Focusing a crucial conversation on a single topic takes effort. It requires us to thoughtfully unbundle and then prioritize the issues at hand. For example, let's look at the case of Wendy and Sandrine. Wendy is a project manager at a global technology company. She's been there many years and has successfully led numerous projects, large and small. She recently began working with a new manager, Sandrine. Sandrine joined the organization a year ago with a reputation as a hard charging get things done, break eggs when needed. Executive Sandrine asked Wendy to put together a timeline for a new project, and now they're sitting down to review it.</p>
         <p>Sandrine, I'm excited to have you and your team dig in on this project. Let's talk timelines. Wendy, it will take us just over six months? Sandrine, oh, well, when I looked at it, it seemed like you should be able to finish this whole thing by the end of this quarter. At this point, we have the first element of a crucial conversation, a difference of opinion. Wendy thinks the project will take at least twice as long as Sandrine expected. Wendy, well, it's a good thing we're talking about it now, before we've made any commitments, because there's no way to finish it by then. I mean, that's half the usual time for a project like this, Sandrine, that's why I put you in this role in the first place you are able to do the impossible? Let me give you the full context of just how important this is. I need you to figure out how to get this done by the end of the quarter, other project launches are at stake. The accelerated schedules are already in the master plan. Our senior team is counting on us, or more specifically, on you, and just like that, the next two elements of a Crucial Conversation come into play. The stakes are high and emotions are rising. This is an important project for Wendy, for Sandrine and for their organization, Sandrine is feeling pressured, and is starting to apply the same pressure on Wendy. So what happens next? Wendy, wait a minute. You've already made a commitment. You agreed to a deadline before we even talked about whether it was doable. Sandrine, Hey, Wendy, you know, we need a big win this year. Look, I really pushed for you to be the one to lead this project.</p>
         <p>Do you know what I said about you? I said you were a team player. Was I mistaken? Wow, there is a lot going on in this one conversation. Wendy has put together a timeline, shared it with her manager, and, bam, the whole thing has blown up in her face. Not only does she still have to get to agreement with her manager about the project timeline, the original issue, but now there are a whole host of other issues as well. Think about what would be going through your mind right now if you were Wendy, for example. How will I ever get this project done? She's setting me up to fail. This is unfair to my team. What am I going to say to my family about the crazy, long hours I'll be putting in? Can I tell. Tell the truth about what I'm thinking right now. Will I lose my job? If I do, do I even want this career? Do I want to work for Sandrine Wendy is clearly Facing a Crucial Conversation right now, but the question is, which conversation? What should she right now, in this moment with Sandrine, talk about why we usually choose the wrong topic. When faced with complex problems like this, we rarely stop and ponder which topic we should address instead, we naturally default to one of two mistaken directions, easy over hard. When faced with high stakes, emotional conversations, we have a bias for choosing the topic we think we can win with. That usually means we pick something easier than the issue that is really in the way of our most important goals. We think I'll just start with this little issue and see how that goes.</p>

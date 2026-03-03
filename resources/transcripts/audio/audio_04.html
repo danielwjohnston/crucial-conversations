@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">9,476 words &middot; ~38 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/08%204%20Start%20with%20Heart.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Announcer, chapter four, start with heart. How to stay focused on what you really want speak when you are angry and you will make the best speech you will ever regret. Ambrose Bierce, now that you know what you want to talk about, it's time to turn to the how of dialog. How do you encourage the flow of meaning when you're in the thrall of strong emotions, talking about things that matter deeply to you with those who disagree vehemently, given that most people's style is based on long standing habits, it'll probably require a lot of effort. The truth is, people can change. In fact, we've taught these conversation skills to millions around the world and have seen dramatic improvements in results and relationships. But it requires work. You can't simply highlight an inspiring paragraph in a book and walk away changed. Instead, you'll need to start by taking a long, hard look at yourself. That's why start with heart is the foundation of dialog. Change begins with your heart. Our bias is the opposite. Our bodies are designed to gather data about others, not ourselves. To paraphrase Shakespeare, the eye sees everything but itself. We can hear how others are overstating their points, we can see how they're clenching their fists and spraying spittle while they harangue us. What we fail to notice is our own eye roll, head shake and sneer. One of the most important lessons we've learned from those who do their best during crucial moments is that it all begins with me. The first thing that degenerates during a Crucial Conversation is not your behavior, it's your motive, and we can rarely see it happening. The first step to dialog is to get your heart right. Work on me.</p>
         <p>First US second, let's start with a true story. Two young sisters, Aislinn and Cara and their father scurry into their hotel room after spending a hot afternoon at Disneyland. Given the repressive heat, the girls have consumed enough soda to irrigate a small farm. As the two bursting kids enter their room, they have but one thought to head for the head, since the bathroom is a one holer, it isn't long until a fight breaks out. The desperate children start arguing, pushing and name calling as they dance around the tiny bathroom. Eventually, Aislinn calls out to her father for help, Dad, I got here first I know, but I need to go worse. Says, Kara, how do you know you're not in my body? I didn't even go before we left this morning. You're so selfish, dad, in a naive attempt to teach them to solve their own problems, proposes a plan. Girls, I'm not going to solve this for you. You can stay in the bathroom and figure out who goes first and who goes second. There's only one rule, no hitting as the two antsy kids begin their crucial conversation, Dad checks his watch, he wonders how long it will take. As the minutes slowly tick away, he hears nothing more than an occasional outburst of sarcasm. Finally, after 25 long minutes, the toilet flushes. Cara comes out. A minute later, another flush, and out walks Aislinn with both girls in the room. Dad asks, Do you know how many times both of you could have gone to the bathroom in the time it took you to work that out? The idea had not occurred to the little scamps. Dad then probes further.</p>
         <p>Why did it take so long for the two of you to use the bathroom? Because she's always so selfish. Listen to her. She's calling me names when she could have just waited. She always has to have her way. Both girls claimed what they wanted most was to go to the bathroom. Then they behaved in ways that ensured the bathroom was little more than a distant dream based on the 25 minute bathroom dance. What was their real motive to experience the blessed relief of using the toilet? No sometimes the best way to discern motive is to examine behavior. By looking at how the sisters were acting, we can see what they really wanted was to be first, to be right, or perhaps even to make the other sister miserable. The first problem we face in our Crucial Conversations is not that our behavior degenerates. It's that our motives do a shift that we are often completely unaware of. Instead, we cling to our stated motive and ignore what our behavior reveals about our true motive. The first step in achieving the results we really want is to stop believing that others are the source of all that ails us, our sister is not the problem. Our motives are. It's our dogmatic conviction that quote, if we could just fix those losers, all would go better. Close quote that keeps us from taking action that could lead to dialog and progress. It's no surprise, then that those who are best at dialog. Tend to turn this logic around. They believe the best way to work on us is to start with me. People who are best at dialog understand this simple fact and turn it into the principle, work on me.</p>

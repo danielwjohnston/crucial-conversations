@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">4,793 words &middot; ~19 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/09%205%20Master%20My%20Stories.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Spot the story by watching for hot words. To avoid confusing story with fact, watch for hot terms. For example, when assessing the facts, you might say she scowled at me or he made a sarcastic comment. Words such as scowl and sarcastic are hot terms. They express judgments and attributions that, in turn create strong emotions. They are story, not fact. Notice how much different it is when you say, her eyes pinched shut and her lips tightened, as opposed to she scowled at me. In Maria's case, she suggested that Lewis was controlling and didn't respect her. Had she focused on his behavior, he talked a lot and met with the boss one on one. This less volatile description would have allowed for any number of interpretations. For example, perhaps Lewis was nervous, concerned or unsure of himself, removing hot words and getting down to the basic facts is harder than it sounds. For example, as Maria works to separate fact from story, she might go through a few iterations of removing judgments. First attempt all story. Lewis violated our plan, stole my slides and forced me to the sidelines. Second attempt, some facts. Louis stole 10 of the slides I was supposed to cover and never once looked at me to answer questions. Third attempt, more facts, Lewis covered 10 of the slides we previously agreed I would cover when questions were asked, he answered all of them. Scan for other facts. Once we start to tell a story, Lewis is a power hungry weasel, we start to selectively see the evidence or facts that reinforce our story, and we overlook facts that contradict our story.</p>
         <p>We believe our story and want to continue to believe it, thus we only see that which helps us continue to believe as we retrace our path and get back to the facts, we need to take another look at all the facts. Were there things that we in the throes of our story overlooked? For example, if Maria has previously told herself a story about Louis, she'll unconsciously be looking for facts that back that story up. We all like to be right, so we look for confirming data and we overlook or dismiss anything that contradicts it. As Maria scans for additional facts, perhaps she notices that Louis works really well with Cena, a colleague she respects, or that Lewis praised Maria's work in a team meeting last month as she liberates herself from the need to defend her story, Maria's list of facts might grow to include fourth attempt, even more Facts Louis covered 10 of the slides we previously agreed I would cover, and I let him when questions were asked, he answered them without checking if I wanted to, and I did not step in to offer my view. As you scan for other facts to complete the picture, be sure to ask, what facts are there that contradict my story? Watch for three clever stories. As you learn to question and analyze your stories. Pay close attention to an insidious and common type of story, the self justifying story, for example, you're faced with a Crucial Conversation. Rather than engaging in productive dialog, you either shut down or push back, recognizing, on some level, your own bad behavior, you quickly come up with a perfectly plausible reason why what you did was okay. Of course, I yelled at him.</p>
         <p>Did you see what he did? He deserved it. Or hey, don't you dare judge me for not speaking up. I don't have a choice. I have to keep this job. We call these imaginative and self serving concoctions, clever stories. They're clever because they allow us to feel good about behaving badly. Better yet, they allow us to feel good about behaving badly, even while achieving abysmal results. When we feel a need to justify our ineffective behavior or disconnect ourselves from our bad results, we tend to tell ourselves stories in three very predictable ways. Learn what the three are and how to counteract them, and you can take control of your emotional life. Victim stories, it's not my fault. The first of the clever stories is a victim story. Victim stories, as you might imagine, make us out to be innocent sufferers. The theme is always the same, we are good, right? Brilliant or righteous, and the other people or the world at large is aligned against us. We suffer through absolutely no fault of our own. We are innocent. There is such a thing as an innocent victim. You're stopped in the street and held up at gunpoint when an event such as this occurs, it's a sad fact, not a story, you are a victim. But not all tales of victimization are so clear, cut and one sided within most crucial conversations, when you tell a victim's story, you intentionally ignore the role you've played in the problem. You tell your story in a way that judiciously avoids whatever you have done or neglected to do that might have contributed to the problem. For instance, last week, your boss took you off a big project, and it hurt your feelings.</p>

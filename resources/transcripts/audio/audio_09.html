@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">7,337 words &middot; ~29 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/14%209%20Explore%20Others%E2%80%99%20Paths.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>In chapter nine, explore others paths. How to listen when others blow up or clam up, one of the best ways to persuade others is with your ears by listening to them. Dean Rusk, so What risks do you all see in the current project plan? Sanj asks. He looks at the team assembled around the table and sees blank face after blank face. A few people are looking down, diligently concentrating on their doodling. Others meet his eyes for a moment before looking away. No one says anything. Sanj tries again. I think we all know how important this project is. That's why we're all here. If we're going to succeed, we have to be able to talk about the risks in the plan so that we can mitigate them. What are your concerns? More silence. Okay. Well, then great. That's just great. He says, with obvious sarcasm, I'll assume this is buttoned up. Good work, everyone. Now, let's go make it happen. As Sanj watches the team members gather their things and file out of the room, he looks down at the project plan again, a talented and experienced project manager, he has run several multi million dollar projects successfully, but never one quite like this. The project is already way behind, which is just one of the reasons the previous project manager was fired and Sanj was brought in. He's drafted a plan, but he knows he doesn't have the subject matter expertise here to fill in all the gaps. That's why he has a team, for Pete's sake. But when he asks for people's input, he just gets blank stares, nothing. Zilp zitch, nada. They just nod and tell him they like the plan. What else is he supposed to do?</p>
         <p>Unfortunately, variations of this scenario are all too common. You know you need to have a crucial conversation with someone about a key project plan or the trash piling up in front of your neighbor's door, or your son's new boyfriend and his colorful and slightly criminal history, whatever the topic, you know the conversation will be crucial. So you prepare carefully. You find your good intent, master your stories, and carefully state your path. You genuinely want to hear the other person's point of view. And when you ask what the other person means, the person either looks at you with deer in the headlights eyes and says nothing, or comes barreling at you with both guns blazing. After the meeting, Sanj calls Tony, one of the team members, to get his take on things. Hey, Tony, the group was pretty quiet in there. I'm not sure whether everyone really agrees with the project plan or not. What do you think of the risks? Oh, come on, Sanj. Tony replies, everyone knows this project is a train ride to disaster land. There is no way we get this out on time. And nobody is going to tell you to your face, because you know what, you're that guy, the guy from corporate, the guy with a plan, who's going to come in here on his white horse and save the day. Well, forget it, dude, this is a losing project, and the only question is, who will still be on the ship when it sinks? And I tell you this, it's not going to be me. I'm not taking the fall when this goes south. You are, wait a minute, that's not fair.</p>
         <p>You're on the team just as much as I am, and I'm not about to take the fall for this team's incompetence. Sanj jumps in loudly. I'm the only one who cares about this project. How do we get back to dialog? When others move to silence or violence, it can be tempting to join them there. After all, we've put in a lot of effort to open up the dialog and invite them to share their meaning when they don't share or don't share. Well, our natural tendency is to get frustrated. All this talking is just wasted effort, right? I do all the hard work and they blow up or clam up. Our Stories quickly spiral, and suddenly our motive shifts from wanting to understand their point of view to wanting to reinforce our own superiority. So what should you do? After all, you aren't the one going to silence or violence when others do damage to the pool of meaning by clamming up, refusing to speak their minds or blowing up communicating in a way that is abusive and insulting. Is there something you can do to get them back to dialog? The answer is resounding. It depends if you want to let a sleeping dog lie or, in this case, a potential train wreck go on a. Intended then say nothing. It's the other person who seems to have something to say but refuses to open up. It's the other person who's blown a cork. Run for cover. You can't take responsibility for someone else's thoughts and feelings, right? Then again, you'll never work through your differences until all parties freely add to the pool of meaning that requires the people who are blowing up or clamming up to participate as well.</p>

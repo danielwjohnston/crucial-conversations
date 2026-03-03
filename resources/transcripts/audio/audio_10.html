@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">4,545 words &middot; ~18 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/15%2010%20Retake%20Your%20Pen.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>Chapter 10, retake your pen. How to be resilient when hearing tough feedback. No one can hurt me without my permission. Gandhi, one of the authors, once gave a lengthy wedding toast to a happy couple every time he referred to the bride, he erroneously used the name of the groom's ex wife. He was feeling flush with confidence in his artful delivery, until after his fourth use of the wrong name, at that point, a cringing guest couldn't take it anymore and yelled out, it's Bonnie, not Becky. Oops. Critical feedback can be hard to hear. Some of the most crucial conversations of all are when others tell you unpleasant things about yourself. But there's a difference between getting feedback and being feed smacked. Most of us have been feed smacked at some point in our life, in the middle of a meeting, an innocent walk down the hallway or a performance review, someone delivers a verbal wallop that rocks your psychological footing. And for some of us, life is never the same. Take Carmen, for example. Carmen worked in a family business. One day, she asked her uncle, one of the founders, for some feedback. He took off his glasses, locked his eyes on hers and said, You should be more like your sister. Linda Carmen recalls I was dumbfounded. Linda is petite, flirty, Coy and flattering to men. I am quite tall, independent, resourceful and straightforward and work with men as equals. Then she adds, even though this happened decades ago, it still sticks in my mind. We study the stories of a few 100 people who had been feed smacked at some point in their lives. Most told us of scars they carry to this day from these momentary encounters.</p>
         <p>When you listen to what they heard, it's easy to conclude that damage was unavoidable. Some were feed smacked at work with statements like you're an evil person, you're a thief, you are scum. Quit being such a doormat for everyone who walks into your office and please think about leaving. I need warriors, not wimps. You are lazy and entitled. You're venomous and poisonous. You're kind of whiny, you're lazy, I guess you just have no ambition or drive others reeled after an encounter at home, you're so desperate for someone to love that you're settling for your boyfriend, for someone who is supposed to be a good communicator at work, you sure don't communicate well with me. Who would hire you? You only want to have kids so you can have friends. You're a worthless piece of blank and don't care about anyone but yourself. We were struck by how many could remember word for word, what was said as though it were embroidered onto a mental sampler. Sticks and stones may break bones, but these few words shattered self confidence, hope and in some cases, life plans. So what are we to do? Is it inevitable that our well being can be demolished at any moment if the right person says the wrong thing? Feedback, lessons from felons. We've spent much of our careers telling the world that the best way to help people receive and act on negative feedback is to improve how we deliver the message. In the previous chapters of this book, we've given you tools you can use to help others feel safe, make it safe as you say, the right things, CPR in the right way, state, my path for the right reasons.</p>
         <p>Start with heart, and we stand by those ideas, but we grossly underestimated how communication could be improved by improving people's ability to hear hard things, no matter how those messages are delivered. That is until we met 100 felons in downtown Salt Lake City, Utah in the United States, on the corner of 700 east and 100 South in Salt Lake City sits a three story red brick Victorian mansion built in 1892 when it was completed, it boasted the city's first indoor plumbing. But today, something far more innovative happens in it. It is now home to the other side Academy, or Tosa. The inhabitants are 120 men and women who have been arrested an average of 25 times each. In most cases, they've been running and gunning in crime, addiction and homelessness for years or even decades. A woman we'll call Gloria, for example, lived under a bridge with her mother from the time she was five when her mother introduced her to meth at age 10, she thought she found a superpower when she applied to the other side Academy, she was facing charges for a brutal attack on her boyfriend. Another student named Jeffrey, spent six years on the streets letting people do unspeakable things to him in order to stay high. A man will call Dominic embraced a promising. Start to a gang career by stabbing a homeless man. Students at the other side Academy have a lot of problems. Most of the students stay for two to four years as an alternative to a new prison or jail sentence. During that time, they work hard to overcome a lifetime of self destruction.</p>

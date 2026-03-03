@@ -124,8 +124,88 @@
         }
         .print-btn:hover { background: var(--border-color); }
         @media print {
-            .back-link, .nav-footer, .print-btn, .meta { display: none; }
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
             body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
         }
     </style>
 </head>
@@ -139,6 +219,35 @@
     </header>
     <div class="meta">9,028 words &middot; ~36 min read &middot; Audiobook transcription</div>
     <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/12%207%20Make%20It%20Safe.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
         <p>In Chapter Seven, make it safe. How to make it safe? To talk about almost anything. A word fitly spoken is like apples of gold in baskets of silver. Proverbs, 2511, the last chapter contained a promise, if you spot safety risks as they happen, you can step out of the conversation build safety, and then find a way to talk about just about anything with just about anyone in this chapter, we'll fulfill that promise by teaching what it takes to create and restore safety to get started, let's eavesdrop on a crucial conversation between a couple named Oba and Mari. Oba is a chef and Mari is a project manager for a global supply chain company. The last year has been hard. A recession triggered a restructuring in Mari S company, and she was asked to take on additional responsibilities while downsizing her team. Worse, the restaurant OPA worked for closed and he hasn't found another steady job. The financial strain of losing opa's income, compounded by the longer hours Mari is working, has put an incredible amount of pressure on the relationship. Opa feels that Mari doesn't have time for him or their relationship, that he is always coming second to work. Mari is feeling burned out from work and doesn't think OPA has picked up enough of their home responsibilities. For months, the two have been acting out their concerns rather than talking them out. When Mari works late, Oba feels rejected and pouts sitting at home and watching television. Mari comes home sees Oba sitting on the couch while the laundry still isn't done and dishes are piled in the sink.</p>
         <p>She gets angry, makes a snide remark, which makes Oba feel even more resentful, Mari retreats to their room, collapses exhausted, onto the bed, and Oba eventually falls asleep on the couch. After months of this, Oba decides to broach the topic with Mari, rather than waiting to talk when they're both tired or upset. He picks a rare Sunday morning when they're having a relaxing brunch. Oba, Mari, I was wondering if we could talk about what happened on Friday night, you know, when you got home late from work and went straight to our room. Mari, Oh, you mean Friday night when you were sitting on the couch rather than doing chores in the house that Friday night? Oba, hey, I was waiting for you to get home so we could spend some time together. Mari, sure you were waiting for me. All right, waiting for me to do everything around here that needs to be done. When are you going to start carrying your share of the load around here? Oba, walks out. Step out. Make it safe, then step back in. Okay, let's look at Oba. He tried to tackle a tough topic, good for him. That wasn't easy after months of not saying anything, but he dove in anyway, and then his partner responded in a snarky way. Now, what should he do? How can he get back to honest and healthy dialog? What do you do when you don't feel safe sharing what's on your mind? The key is to step out of the content of the conversation. That's right.</p>
         <p>When safety is at risk and you notice people moving to silence or violence, or violence, you need to step out of the content of the conversation, literally, stop talking about the topic of your conversation, and rebuild safety. How do you do that? You first need to understand why someone feels unsafe. People never become defensive about what you're saying, the content of your message, they become defensive because of why they think you're saying it the intent Said another way safety in a conversation is about intent, not content. When people become defensive, it is because either one you have a bad intent toward them, and they are accurately picking up on that or two, they have misunderstood your good intent. If it's the former, you need to go back and start with heart. Remember it's easy for our motives to degrade in a crucial conversation. Check yourself by asking, What am I acting like? I want. This question helps us see ourselves as other people are seeing us. Then ask yourself, what do I really want for you, for them, for the relationship? If your motives have degraded, step back and refocus on what it is you really want. You. Now, often the problem is not that we have bad intent, it's that our intent has been misunderstood. Remember, human beings are wired to look for threats. When people feel threatened, they move to silence or verbal violence or to fight or flight, none of which are great for problem solving. All you need to do to destroy safety in a Crucial Conversation is nothing during these tense seconds at the beginning of a conversation, others are scanning your every facial tic or leg crossing for evidence of your intentions. Do you mean them harm?</p>

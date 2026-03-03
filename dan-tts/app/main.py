@@ -5,6 +5,7 @@ Dan's TTS Project (FastAPI)
 """
 
 import asyncio
+import base64
 import subprocess
 import tempfile
 from pathlib import Path
@@ -62,6 +63,24 @@ async def synthesize_mp3(text: str, voice: str) -> bytes:
     if not audio_chunks:
         raise HTTPException(status_code=500, detail="No audio returned from TTS")
     return b"".join(audio_chunks)
+
+
+async def synthesize_with_boundaries(text: str, voice: str):
+    communicator = edge_tts.Communicate(text, voice=voice, boundary="WordBoundary")
+    audio_chunks = []
+    boundaries = []
+    async for chunk in communicator.stream():
+        if chunk["type"] == "audio":
+            audio_chunks.append(chunk["data"])
+        elif chunk["type"] == "WordBoundary":
+            boundaries.append({
+                "offset": chunk["offset"],
+                "duration": chunk["duration"],
+                "text": chunk["text"],
+            })
+    if not audio_chunks:
+        raise HTTPException(status_code=500, detail="No audio returned from TTS")
+    return b"".join(audio_chunks), boundaries
 
 
 def _transcode(src_bytes: bytes, target: str) -> bytes:
@@ -177,6 +196,31 @@ async def synthesize(payload: SynthesisRequest):
         "flac": "audio/flac",
     }
     return Response(transcoded, media_type=media_types[payload.format])
+
+
+@app.post("/synthesize_with_timing")
+async def synthesize_with_timing(payload: SynthesisRequest):
+    if not payload.text.strip():
+        raise HTTPException(status_code=400, detail="Text is required")
+
+    mp3_bytes, boundaries = await synthesize_with_boundaries(payload.text, payload.voice)
+
+    if payload.format != "mp3":
+        mp3_bytes = await transcode(mp3_bytes, payload.format)
+
+    audio_b64 = base64.b64encode(mp3_bytes).decode("ascii")
+    media_types = {
+        "mp3": "audio/mpeg",
+        "m4a": "audio/mp4",
+        "ogg": "audio/ogg",
+        "flac": "audio/flac",
+    }
+    return {
+        "audio": audio_b64,
+        "contentType": media_types.get(payload.format, "audio/mpeg"),
+        "format": payload.format,
+        "boundaries": boundaries,
+    }
 
 
 async def ensure_sample(voice: str) -> Path:

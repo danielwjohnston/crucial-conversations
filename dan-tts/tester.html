@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dan's TTS Tester</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 32px auto; padding: 0 16px; }
+    textarea { width: 100%; min-height: 140px; }
+    label { display: block; margin-top: 12px; font-weight: 600; }
+    select, input[type="text"], textarea { font-size: 15px; padding: 8px; }
+    button { margin-top: 16px; padding: 10px 16px; font-size: 15px; cursor: pointer; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row > div { flex: 1 1 200px; }
+    audio { width: 100%; margin-top: 16px; }
+    .log { margin-top: 12px; color: #444; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
+    .card { border: 1px solid #e2e2e2; border-radius: 10px; padding: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); background: #fff; display: flex; flex-direction: column; gap: 6px; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #14b8a6); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; letter-spacing: 0.3px; }
+    .card-name { font-weight: 700; font-size: 15px; margin-top: 4px; }
+    .card-meta { color: #555; font-size: 13px; }
+    .card button { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Dan's TTS Tester</h1>
+  <label>API Base URL</label>
+  <input id="api" type="text" value="http://localhost:8000" />
+
+  <label>Text</label>
+  <textarea id="text">Hello world from Dan's TTS Project.</textarea>
+
+  <div class="row">
+    <div>
+      <label>Voice (en-US only) <span id="voice-count" style="font-weight:400;font-size:13px;color:#666;"></span></label>
+      <select id="voice"></select>
+      <button id="refresh">Refresh voices</button>
+      <button id="preview" type="button">Preview voice</button>
+    </div>
+    <div>
+      <label>Format</label>
+      <select id="format">
+        <option value="mp3">mp3</option>
+        <option value="m4a">m4a</option>
+        <option value="ogg">ogg</option>
+        <option value="flac">flac</option>
+      </select>
+    </div>
+  </div>
+
+  <button id="go">Synthesize</button>
+  <button id="download" disabled>Download last audio</button>
+  <audio id="player" controls></audio>
+  <div class="log" id="log"></div>
+
+  <h2>Voices (click play for sample)</h2>
+  <div id="voices-grid" class="grid"></div>
+
+  <script>
+    const btn = document.getElementById('go');
+    const downloadBtn = document.getElementById('download');
+    const logEl = document.getElementById('log');
+    const voiceSelect = document.getElementById('voice');
+    const voiceCount = document.getElementById('voice-count');
+    const refreshBtn = document.getElementById('refresh');
+    const previewBtn = document.getElementById('preview');
+    const grid = document.getElementById('voices-grid');
+    const textArea = document.getElementById('text');
+
+    async function loadVoices(refresh=false) {
+      const api = document.getElementById('api').value.trim().replace(/\/$/, '');
+      logEl.textContent = refresh ? 'Refreshing voices...' : 'Loading voices...';
+      try {
+        const res = await fetch(`${api}/voices${refresh ? '?refresh=1' : ''}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const voices = await res.json();
+        voiceSelect.innerHTML = '';
+        grid.innerHTML = '';
+        voices.forEach(v => {
+          const opt = document.createElement('option');
+          opt.value = v.shortName || v.name;
+          opt.textContent = `${v.shortName || v.name} — ${v.localeName || v.locale || ''} (${v.gender || ''})`;
+          voiceSelect.appendChild(opt);
+
+          // card
+          const card = document.createElement('div');
+          card.className = 'card';
+          const avatar = document.createElement('div');
+          avatar.className = 'avatar';
+          avatar.textContent = (v.shortName || v.name || '?').slice(3,5).toUpperCase();
+          const name = document.createElement('div');
+          name.className = 'card-name';
+          name.textContent = v.shortName || v.name;
+          const meta = document.createElement('div');
+          meta.className = 'card-meta';
+          meta.textContent = `${v.localeName || v.locale || ''} · ${v.gender || ''}`;
+          const play = document.createElement('button');
+          play.textContent = '▶ Play sample';
+          play.onclick = async () => {
+            if (!v.sampleUrl) return;
+            const src = `${api}${v.sampleUrl}`;
+            try {
+              logEl.textContent = `Loading sample for ${v.shortName}...`;
+              const res = await fetch(src);
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              const player = document.getElementById('player');
+              player.src = url;
+              await player.play();
+              logEl.textContent = `Played sample (${v.shortName}).`;
+            } catch (err) {
+              console.error(err);
+              logEl.textContent = 'Error: ' + err.message;
+            }
+          };
+          card.appendChild(avatar);
+          card.appendChild(name);
+          card.appendChild(meta);
+          card.appendChild(play);
+          grid.appendChild(card);
+        });
+        voiceCount.textContent = voices.length ? `(${voices.length} voices)` : '(no voices)';
+        logEl.textContent = voices.length ? 'Voices loaded.' : 'No voices returned.';
+      } catch (err) {
+        console.error(err);
+        logEl.textContent = 'Error loading voices: ' + err.message;
+      }
+    }
+
+    let lastBlob = null;
+    let lastExt = "mp3";
+
+    async function synthesize(text, voice, format) {
+      const api = document.getElementById('api').value.trim().replace(/\/$/, '');
+      logEl.textContent = 'Requesting...';
+      const res = await fetch(`${api}/synthesize`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice, format })
+      });
+      if (!res.ok) {
+        const msg = await res.text();
+        throw new Error(`HTTP ${res.status}: ${msg}`);
+      }
+      const blob = await res.blob();
+      lastBlob = blob;
+      lastExt = format;
+      downloadBtn.disabled = false;
+      const url = URL.createObjectURL(blob);
+      const player = document.getElementById('player');
+      player.src = url;
+      await player.play();
+      logEl.textContent = `Done (${format}, ${blob.size} bytes).`;
+    }
+
+    btn.onclick = async () => {
+      const text = document.getElementById('text').value;
+      const voice = voiceSelect.value || 'en-US-AriaNeural';
+      const format = document.getElementById('format').value;
+      try {
+        await synthesize(text, voice, format);
+      } catch (err) {
+        console.error(err);
+        logEl.textContent = 'Error: ' + err.message;
+      }
+    };
+
+    previewBtn.onclick = async () => {
+      const voice = voiceSelect.value || 'en-US-AriaNeural';
+      try {
+        await synthesize('This is a sample of the selected voice.', voice, 'mp3');
+      } catch (err) {
+        console.error(err);
+        logEl.textContent = 'Error: ' + err.message;
+      }
+    };
+
+    refreshBtn.onclick = () => loadVoices(true);
+
+    downloadBtn.onclick = () => {
+      if (!lastBlob) return;
+      const url = URL.createObjectURL(lastBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tts.${lastExt}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    loadVoices();
+  </script>
+</body>
+</html>

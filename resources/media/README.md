@@ -70,27 +70,16 @@ Videos are linked to YouTube (not downloaded) and organized by chapter relevance
 ## 🗂️ File Organization
 
 ```text
-MEDIA/
-├── 📹 VIDEOS/
-│   ├── youtube_videos/          # YouTube video files
-│   ├── training_sessions/       # Training recordings
-│   ├── interviews/             # Interview videos
-│   └── demonstrations/         # Demo videos
-├── 🎧 AUDIO/
-│   ├── podcasts/               # Podcast episodes
-│   ├── audio_book/             # Audio book files
-│   ├── guided_exercises/        # Meditation/audio exercises
-│   └── examples/              # Audio examples
-├── 📄 TRANSCRIPTIONS/
-│   ├── video_transcripts/       # Video transcriptions
-│   ├── audio_transcripts/       # Audio transcriptions
-│   ├── meeting_notes/          # Meeting transcriptions
-│   └── session_summaries/       # Session summaries
-├── 📺 EMBEDS/
-│   ├── youtube_embeds/         # YouTube embed codes
-│   ├── video_players/         # Video player files
-│   └── audio_players/         # Audio player files
-└── 📋 README.md              # This file
+media/
+├── AUDIO/             # Source audio files used in resources
+├── EMBEDS/
+│   ├── youtube_embeds/ # Curated YouTube catalog (index.html)
+│   ├── video_players/  # Placeholder (currently empty)
+│   └── audio_players/  # Placeholder (currently empty)
+├── TRANSCRIPTIONS/     # Audio/video transcripts (organized by type)
+├── VIDEOS/             # Placeholder for future local video assets
+├── review_queue/       # Staging area for new media before sorting
+└── README.md
 ```
 
 ## 🔧 Integration Options
@@ -215,6 +204,10 @@ MEDIA/
 - Archive materials
 
 ## 🔄 Updating Content
+
+### **Review Queue**
+
+- Drop new media assets into `review_queue/` for triage before they are placed into `AUDIO/`, `TRANSCRIPTIONS/`, `EMBEDS/`, or `VIDEOS/`.
 
 ### **Regular Updates**
 

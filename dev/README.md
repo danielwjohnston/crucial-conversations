@@ -1,8 +1,8 @@
-# Dev Branch — Shared JS Extraction
+# Dev — Shared JS Test Harness
 
 ## Purpose
 
-This folder contains a **development branch** for extracting the shared JavaScript engine from all 13 slidedecks into a single `shared.js` file. This is a non-destructive staging area — production slidedecks in `../slidedecks/` are untouched.
+Production slidedecks now use the extracted `shared.js`. This folder remains as a **test harness** and sandbox for iterating on the shared engine without touching production files until changes are validated.
 
 ## Problem
 

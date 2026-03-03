@@ -1,0 +1,138 @@
+/*
+  ============================================================================
+  Shared Navigation Bar & Breadcrumbs — Resource Pages
+  ============================================================================
+  Provides a consistent sticky nav bar and breadcrumb trail across all
+  resource pages. Injected via shared-nav.js or included directly.
+  Designed to coexist with each page's own styles.
+  ============================================================================
+*/
+
+/* === Site Nav Bar === */
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+[data-theme="dark"] .site-nav {
+    background: #111;
+    border-bottom-color: #2f2f2f;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.site-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    gap: 12px;
+}
+
+.site-nav-brand {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #c20510;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.site-nav-brand:hover { opacity: 0.8; }
+
+[data-theme="dark"] .site-nav-brand { color: #e30613; }
+
+.site-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.site-nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+.site-nav-links a:hover { color: #e30613; }
+.site-nav-links a.active { color: #e30613; font-weight: 700; }
+
+[data-theme="dark"] .site-nav-links a { color: #ccc; }
+[data-theme="dark"] .site-nav-links a:hover { color: #e30613; }
+[data-theme="dark"] .site-nav-links a.active { color: #e30613; }
+
+/* === Breadcrumbs === */
+.site-breadcrumbs {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.82rem;
+    color: #666;
+    padding: 8px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.site-breadcrumbs a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+.site-breadcrumbs a:hover { text-decoration: underline; }
+
+.site-breadcrumbs .sep {
+    margin: 0 6px;
+    color: #aaa;
+}
+
+[data-theme="dark"] .site-breadcrumbs { color: #999; }
+[data-theme="dark"] .site-breadcrumbs a { color: #8ab4ff; }
+[data-theme="dark"] .site-breadcrumbs .sep { color: #555; }
+
+/* === Shared Footer === */
+.site-footer {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin-top: 60px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    color: #666;
+    font-size: 0.82rem;
+}
+
+[data-theme="dark"] .site-footer {
+    border-top-color: #2f2f2f;
+    color: #888;
+}
+
+.site-footer a {
+    color: #4a90e2;
+    text-decoration: none;
+    margin: 0 8px;
+}
+.site-footer a:hover { text-decoration: underline; }
+
+[data-theme="dark"] .site-footer a { color: #8ab4ff; }
+
+/* === Mobile === */
+@media (max-width: 600px) {
+    .site-nav { padding: 0 12px; }
+    .site-nav-inner { height: 42px; gap: 8px; }
+    .site-nav-brand { font-size: 0.85rem; }
+    .site-nav-links { gap: 14px; }
+    .site-nav-links a { font-size: 0.8rem; }
+    .site-breadcrumbs { padding: 6px 12px; font-size: 0.78rem; }
+}
+
+/* === Print: hide nav === */
+@media print {
+    .site-nav, .site-breadcrumbs, .site-footer { display: none !important; }
+}

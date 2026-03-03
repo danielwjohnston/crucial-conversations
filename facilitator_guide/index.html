@@ -106,6 +106,7 @@
       .card { padding: 18px; }
     }
   </style>
+    <link rel="stylesheet" href="../resources/shared-nav.css">
 </head>
 <body>
   <header>
@@ -199,5 +200,12 @@
     buttons.forEach(btn => btn.addEventListener('click', () => load(btn.dataset.target)));
     load('notes');
   </script>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../index.html"},{"label":"Facilitator Guide"}],
+        activeNav: 'facilitator'
+      };
+    </script>
+    <script src="../resources/shared-nav.js"></script>
 </body>
 </html>

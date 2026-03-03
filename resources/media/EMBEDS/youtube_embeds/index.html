@@ -129,9 +129,9 @@
             .video-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="stylesheet" href="../../../shared-nav.css">
 </head>
 <body>
-    <a href="../../../../index.html" class="back-link">← Back to Chapter Select</a>
     <header>
         <h1>📹 YouTube Video Library</h1>
         <p>Curated videos from Crucial Learning and related content for each chapter</p>
@@ -399,5 +399,12 @@
 
     </div>
 
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../../../index.html"},{"label":"Resources","href":"../../../index.html"},{"label":"Video Library"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../../../shared-nav.js"></script>
 </body>
 </html>

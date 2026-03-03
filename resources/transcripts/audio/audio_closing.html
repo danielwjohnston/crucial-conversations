@@ -208,6 +208,7 @@
             .audio-player .play-icon { display: none; }
         }
     </style>
+    <link rel="stylesheet" href="../../shared-nav.css">
 </head>
 <body>
     <a href="../index.html" class="back-link">&larr; All Transcripts</a>
@@ -255,5 +256,12 @@
         <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
         <span class="nav-btn disabled">Next &#x25B6;</span>
     </nav>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../../index.html"},{"label":"Resources","href":"../../index.html"},{"label":"Transcripts","href":"../index.html"},{"label":"closing"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../../shared-nav.js"></script>
 </body>
 </html>

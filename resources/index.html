@@ -101,9 +101,9 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="shared-nav.css">
 </head>
 <body>
-    <a href="../index.html" class="back-link">← Back to Main</a>
     
     <header>
         <h1>Crucial Conversations Resources</h1>
@@ -199,9 +199,15 @@
         </div>
     </div>
     
-    <footer style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid var(--border-color); color: var(--text-light);">
-        <p>Crucial Conversations Training Resources</p>
-        <p style="font-size: 0.9rem; margin-top: 10px;">© Training Materials - Internal Use Only</p>
-    </footer>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [
+          { label: 'Home', href: '../index.html' },
+          { label: 'Resources' }
+        ],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="shared-nav.js"></script>
 </body>
 </html>

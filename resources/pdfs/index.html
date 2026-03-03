@@ -67,9 +67,9 @@
         }
         .file-link:hover { background: var(--blue); color: white; }
     </style>
+    <link rel="stylesheet" href="../shared-nav.css">
 </head>
 <body>
-    <a href="../index.html" class="back-link">← Back to Resources</a>
     <header>
         <h1>📄 PDF Guides</h1>
         <p>Leadership guides, handouts, and presentation materials</p>
@@ -145,5 +145,12 @@
             <a href="Leadership_Bookclub_Chapter4_Slides.pptx" class="file-link" target="_blank">Open</a>
         </li>
     </ul>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../index.html"},{"label":"Resources","href":"../index.html"},{"label":"PDF Guides"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../shared-nav.js"></script>
 </body>
 </html>

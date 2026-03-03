@@ -178,9 +178,9 @@
             .section { page-break-inside: avoid; }
         }
     </style>
+    <link rel="stylesheet" href="../shared-nav.css">
 </head>
 <body>
-    <a href="index.html" class="back-link">← All Transcripts</a>
     <button class="print-btn" onclick="window.print()">🖨 Print</button>
     <header>
         <div class="chapter-num">Chapter 9</div>
@@ -282,5 +282,12 @@
         <a href="index.html" class="nav-btn secondary">All Transcripts</a>
         <a href="chapter_10.html" class="nav-btn">Chapter 10 &#x25B6;</a>
     </nav>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../index.html"},{"label":"Resources","href":"../index.html"},{"label":"Transcripts","href":"index.html"},{"label":"Chapter 9"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../shared-nav.js"></script>
 </body>
 </html>

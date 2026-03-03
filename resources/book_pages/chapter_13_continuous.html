@@ -236,6 +236,7 @@
       .section { page-break-inside: avoid; }
     }
   </style>
+    <link rel="stylesheet" href="../shared-nav.css">
 </head>
 <body>
   <a href="../index.html" class="back-link">&larr; Back to Resources</a>
@@ -440,5 +441,12 @@
       } catch (e) {}
     })();
   </script>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../index.html"},{"label":"Resources","href":"../index.html"},{"label":"Book Pages"},{"label":"Chapter 13"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../shared-nav.js"></script>
 </body>
 </html>

@@ -127,6 +127,7 @@
             .term-label { width: auto; }
         }
     </style>
+    <link rel="stylesheet" href="shared-nav.css">
 </head>
 <body>
     <button class="print-btn" onclick="window.print()">🖨 Print Glossary</button>
@@ -352,5 +353,12 @@
     <footer style="text-align:center; color:var(--text-light); font-size:0.85em; margin-top:40px; padding-top:20px; border-top:1px solid var(--border-color);">
         &copy;2026 Leadership Bookclub &mdash; Crucial Conversations Quick Reference
     </footer>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../index.html"},{"label":"Resources","href":"index.html"},{"label":"Glossary"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="shared-nav.js"></script>
 </body>
 </html>

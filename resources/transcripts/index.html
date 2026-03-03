@@ -114,9 +114,9 @@
             margin: 40px 0 32px;
         }
     </style>
+    <link rel="stylesheet" href="../shared-nav.css">
 </head>
 <body>
-    <a href="../../index.html" class="back-link">← Back to Chapter Select</a>
     <header>
         <h1>📖 Transcripts</h1>
         <p>Two ways to read every chapter — presentation summaries with Dan's Digest, or the full audiobook text</p>
@@ -189,5 +189,12 @@
         <li><a href="audio/audio_13.html"><span class="ch-num audio">13</span><span class="ch-info"><span class="ch-title">Putting It All Together</span><span class="ch-subtitle">3,527 words · ~14 min read</span></span><span class="ch-badge audio">Read →</span></a></li>
         <li><a href="audio/audio_closing.html"><span class="ch-num audio">—</span><span class="ch-info"><span class="ch-title">End Credits</span></span><span class="ch-badge audio">Read →</span></a></li>
     </ul>
+    <script>
+      window.CC_NAV_CONFIG = {
+        breadcrumbs: [{"label":"Home","href":"../../index.html"},{"label":"Resources","href":"../index.html"},{"label":"Transcripts"}],
+        activeNav: 'resources'
+      };
+    </script>
+    <script src="../shared-nav.js"></script>
 </body>
 </html>

@@ -1,0 +1,167 @@
+<!--
+  Ebook Index — "Read the Book"
+  Central chapter listing for the HTML-adapted ebook pages.
+  Each chapter links to its own page with embedded audiobook player.
+  Origin: AI-generated scaffold (Mar 2026). Content pages filled from screenshots.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Read the Book | Crucial Conversations</title>
+  <style>
+    :root {
+      --brand-red: #e30613;
+      --brand-red-accessible: #c20510;
+      --text-dark: #333;
+      --text-light: #666;
+      --bg-light: #f8f9fa;
+      --border-color: #ddd;
+      --blue: #4a90e2;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      background: white;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 30px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid var(--brand-red);
+    }
+    header h1 { color: var(--brand-red-accessible); font-size: 2rem; margin-bottom: 6px; }
+    header p { color: var(--text-light); font-size: 1.05rem; }
+    .description {
+      background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+      border: 1px solid var(--brand-red);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+    .part-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--brand-red);
+      font-weight: 700;
+      margin: 28px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--bg-light);
+    }
+    .part-label:first-of-type { margin-top: 0; }
+    .chapter-list { list-style: none; }
+    .chapter-list li {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chapter-list li:hover {
+      border-color: var(--brand-red);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .chapter-list a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: var(--text-dark);
+    }
+    .ch-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--brand-red);
+      color: white;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .ch-num.front { background: #555; }
+    .ch-info { flex: 1; }
+    .ch-title { font-weight: 700; display: block; }
+    .ch-subtitle { font-size: 0.9rem; color: var(--text-light); }
+    .ch-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .ch-badge.ready { color: var(--brand-red); }
+    .ch-badge.coming { color: #999; }
+    @media (max-width: 600px) {
+      body { padding: 20px 15px; }
+      .chapter-list a { padding: 12px 14px; gap: 10px; }
+    }
+  </style>
+  <link rel="stylesheet" href="../shared-nav.css">
+</head>
+<body>
+  <header>
+    <h1>Read the Book</h1>
+    <p>Crucial Conversations: Tools for Talking When Stakes Are High, Third Edition</p>
+  </header>
+
+  <div class="description">
+    <strong>Read the full book text adapted for the web.</strong> Each chapter page includes the complete book content faithfully transcribed from the ebook, with an integrated audiobook player so you can read along while you listen. Use the theme toggle on any page for light or dark reading mode.
+  </div>
+
+  <div class="part-label">Front Matter</div>
+  <ul class="chapter-list">
+    <li><a href="cover.html"><span class="ch-num front">&mdash;</span><span class="ch-info"><span class="ch-title">Cover &amp; Front Matter</span><span class="ch-subtitle">Title page, copyright, dedication</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="preface.html"><span class="ch-num front">&mdash;</span><span class="ch-info"><span class="ch-title">Preface</span><span class="ch-subtitle">What's new in the third edition</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+  </ul>
+
+  <div class="part-label">Part I &mdash; What to Do Before You Open Your Mouth</div>
+  <ul class="chapter-list">
+    <li><a href="chapter_01.html"><span class="ch-num">1</span><span class="ch-info"><span class="ch-title">What's a Crucial Conversation?</span><span class="ch-subtitle">And who cares?</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_02.html"><span class="ch-num">2</span><span class="ch-info"><span class="ch-title">Mastering Crucial Conversations</span><span class="ch-subtitle">The power of dialogue</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_03.html"><span class="ch-num">3</span><span class="ch-info"><span class="ch-title">Choose Your Topic</span><span class="ch-subtitle">How to be sure you hold the right conversation</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_04.html"><span class="ch-num">4</span><span class="ch-info"><span class="ch-title">Start with Heart</span><span class="ch-subtitle">How to stay focused on what you really want</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+  </ul>
+
+  <div class="part-label">Part II &mdash; How to Open Your Mouth</div>
+  <ul class="chapter-list">
+    <li><a href="chapter_05.html"><span class="ch-num">5</span><span class="ch-info"><span class="ch-title">Master My Stories</span><span class="ch-subtitle">How to stay in dialogue when you're angry, scared, or hurt</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_06.html"><span class="ch-num">6</span><span class="ch-info"><span class="ch-title">Learn to Look</span><span class="ch-subtitle">How to notice when safety is at risk</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_07.html"><span class="ch-num">7</span><span class="ch-info"><span class="ch-title">Make It Safe</span><span class="ch-subtitle">How to make it safe to talk about almost anything</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_08.html"><span class="ch-num">8</span><span class="ch-info"><span class="ch-title">STATE My Path</span><span class="ch-subtitle">How to speak persuasively, not abrasively</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_09.html"><span class="ch-num">9</span><span class="ch-info"><span class="ch-title">Explore Others' Paths</span><span class="ch-subtitle">How to listen when others blow up or clam up</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_10.html"><span class="ch-num">10</span><span class="ch-info"><span class="ch-title">Retake Your Pen</span><span class="ch-subtitle">How to be resilient when hearing tough feedback</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+  </ul>
+
+  <div class="part-label">Part III &mdash; How to Finish</div>
+  <ul class="chapter-list">
+    <li><a href="chapter_11.html"><span class="ch-num">11</span><span class="ch-info"><span class="ch-title">Move to Action</span><span class="ch-subtitle">How to turn crucial conversations into action and results</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_12.html"><span class="ch-num">12</span><span class="ch-info"><span class="ch-title">Yeah, But</span><span class="ch-subtitle">Advice for tough cases</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+    <li><a href="chapter_13.html"><span class="ch-num">13</span><span class="ch-info"><span class="ch-title">Putting It All Together</span><span class="ch-subtitle">Tools for preparing and learning</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+  </ul>
+
+  <div class="part-label">Back Matter</div>
+  <ul class="chapter-list">
+    <li><a href="backmatter.html"><span class="ch-num front">&mdash;</span><span class="ch-info"><span class="ch-title">Notes, Authors &amp; Courses</span><span class="ch-subtitle">References, author bios, and related courses</span></span><span class="ch-badge coming">Coming Soon</span></a></li>
+  </ul>
+
+  <script>
+    window.CC_NAV_CONFIG = {
+      breadcrumbs: [
+        { label: 'Home', href: '../../index.html' },
+        { label: 'Resources', href: '../index.html' },
+        { label: 'Read the Book' }
+      ],
+      activeNav: 'resources'
+    };
+  </script>
+  <script src="../shared-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+/*
+  ============================================================================
+  Ebook Chapter Stylesheet
+  ============================================================================
+  Shared styles for all ebook chapter pages. Uses CSS custom properties for
+  light/dark mode. Default = light. [data-theme="dark"] on <html> for dark.
+  
+  Each chapter page also loads ../shared-nav.css for the site-wide nav bar.
+  ============================================================================
+*/
+
+/* === Theme tokens === */
+:root {
+  --brand-red: #e30613;
+  --brand-red-accessible: #c20510;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --bg-page: #ffffff;
+  --bg-surface: #f8f9fa;
+  --border-color: #ddd;
+  --blue: #4a90e2;
+  --quote-border: var(--brand-red);
+  --quote-bg: #fff5f5;
+  --quote-text: var(--text-primary);
+  --heading-color: var(--brand-red-accessible);
+  --table-header-bg: var(--bg-surface);
+  --table-stripe-bg: #fafafa;
+  --table-border: var(--border-color);
+  --figure-bg: var(--bg-surface);
+  --figure-border: var(--border-color);
+}
+[data-theme="dark"] {
+  --text-primary: #f2f2f2;
+  --text-secondary: #c9c9c9;
+  --bg-page: #0a0a0a;
+  --bg-surface: #151515;
+  --border-color: #2f2f2f;
+  --quote-border: #666;
+  --quote-bg: rgba(255,255,255,0.03);
+  --quote-text: #e6e6e6;
+  --heading-color: #ffffff;
+  --table-header-bg: #111;
+  --table-stripe-bg: #0e0e0e;
+  --table-border: #2f2f2f;
+  --figure-bg: #111;
+  --figure-border: #2f2f2f;
+}
+
+/* === Base === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.75;
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 40px 30px 80px;
+}
+
+/* === Toolbar (print + theme toggle) === */
+.ebook-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.ebook-toolbar button {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.ebook-toolbar button:hover { background: var(--border-color); }
+
+/* === Chapter header === */
+.chapter-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 3px solid var(--brand-red);
+}
+.chapter-header .part-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.chapter-header .chapter-num {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--brand-red);
+  font-weight: 700;
+}
+.chapter-header h1 {
+  font-size: 2rem;
+  color: var(--heading-color);
+  margin: 8px 0 4px;
+}
+.chapter-header .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* === Content sections === */
+.section { margin-bottom: 32px; }
+.section h2 {
+  font-size: 1.35rem;
+  color: var(--heading-color);
+  margin: 28px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
+.section h3 {
+  font-size: 1.1rem;
+  color: var(--heading-color);
+  margin: 18px 0 8px;
+  font-weight: 700;
+}
+.section h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 14px 0 6px;
+  font-weight: 700;
+}
+.section p { margin-bottom: 12px; }
+
+.section ul, .section ol {
+  margin: 10px 0 10px 20px;
+  padding-left: 0;
+}
+.section li {
+  margin-bottom: 6px;
+  padding-left: 4px;
+}
+
+strong { color: var(--text-primary); }
+em { color: var(--text-secondary); }
+
+/* === Blockquotes === */
+.quote {
+  background: var(--quote-bg);
+  border-left: 4px solid var(--quote-border);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--quote-text);
+}
+.quote .attribution {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* === Figures / diagrams (for book imagery) === */
+.figure {
+  background: var(--figure-bg);
+  border: 1px solid var(--figure-border);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 24px 0;
+  text-align: center;
+}
+.figure-caption {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  font-style: italic;
+}
+.figure-placeholder {
+  background: var(--bg-surface);
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* === Tables === */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+th, td { border: 1px solid var(--table-border); padding: 10px 12px; vertical-align: top; text-align: left; }
+th { background: var(--table-header-bg); font-weight: 700; color: var(--heading-color); }
+tr:nth-child(even) td { background: var(--table-stripe-bg); }
+
+/* === Audio player (embedded from audiobook) === */
+.audio-player {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 0 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.audio-player .play-icon {
+  width: 48px; height: 48px;
+  background: var(--brand-red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.audio-player .play-icon:hover { background: var(--brand-red-accessible); transform: scale(1.08); }
+.audio-player .play-icon svg { width: 20px; height: 20px; fill: white; margin-left: 2px; }
+.audio-player .player-body { flex: 1; min-width: 0; }
+.audio-player .player-label {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+  font-weight: 700; margin-bottom: 6px;
+}
+.audio-player audio { width: 100%; height: 36px; border-radius: 6px; }
+.audio-player audio::-webkit-media-controls-panel { background: rgba(255,255,255,0.08); }
+.audio-player .speed-controls { display: flex; gap: 4px; margin-top: 8px; }
+.audio-player .speed-btn {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7); font-size: 0.7rem; padding: 3px 8px;
+  border-radius: 4px; cursor: pointer; font-weight: 600; transition: all 0.15s;
+}
+.audio-player .speed-btn:hover,
+.audio-player .speed-btn.active {
+  background: var(--brand-red); border-color: var(--brand-red); color: white;
+}
+
+/* === Placeholder notice (for chapters not yet transcribed) === */
+.placeholder-notice {
+  background: linear-gradient(135deg, #fff8e1, #fff3cd);
+  border: 1px solid #ffc107;
+  border-radius: 10px;
+  padding: 32px 24px;
+  text-align: center;
+  margin: 40px 0;
+  color: #856404;
+}
+[data-theme="dark"] .placeholder-notice {
+  background: linear-gradient(135deg, #2a2000, #1f1800);
+  border-color: #665200;
+  color: #ffd54f;
+}
+.placeholder-notice h3 {
+  color: inherit;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+.placeholder-notice p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* === Nav footer (prev/next chapter) === */
+.nav-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border-color);
+  font-size: 0.95rem;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; background: var(--brand-red); color: white;
+  border: none; border-radius: 6px; font-weight: 700; font-size: 0.9rem;
+  text-decoration: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s; white-space: nowrap;
+}
+.nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+.nav-btn.secondary { background: #555; }
+.nav-btn.secondary:hover { background: #333; }
+
+/* === Mobile === */
+@media (max-width: 600px) {
+  body { padding: 20px 16px 60px; }
+  .chapter-header h1 { font-size: 1.5rem; }
+  .section h2 { font-size: 1.15rem; }
+  .quote { padding: 12px 14px; }
+  .nav-footer { flex-direction: column; align-items: stretch; text-align: center; }
+  .nav-btn { justify-content: center; }
+  table { font-size: 0.82rem; }
+  th, td { padding: 8px; }
+  .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+  .audio-player .play-icon { display: none; }
+}
+
+/* === Print === */
+@media print {
+  .ebook-toolbar, .nav-footer, .audio-player { display: none !important; }
+  body { padding: 20px; max-width: 100%; }
+  .section { page-break-inside: avoid; }
+}

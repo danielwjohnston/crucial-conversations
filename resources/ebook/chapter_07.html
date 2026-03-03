@@ -1,0 +1,96 @@
+<!--
+  Chapter 7: "Make It Safe"
+  Source: Ebook screenshots (REVIEW_QUEUE), transcribed to HTML.
+  Audio: Audiobook chapter integrated via player component.
+  Status: Placeholder — awaiting transcription from screenshots.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 — Make It Safe | Crucial Conversations</title>
+  <link rel="stylesheet" href="ebook.css">
+  <link rel="stylesheet" href="../shared-nav.css">
+</head>
+<body>
+
+  <div class="ebook-toolbar">
+    <button onclick="window.print()">&#x1f5a8; Print</button>
+    <button onclick="toggleTheme()" aria-label="Toggle dark mode">&#x1f313; Theme</button>
+  </div>
+
+  <header class="chapter-header">
+    <div class="part-label">Part II — How to Open Your Mouth</div>
+    <div class="chapter-num">Chapter 7</div>
+    <h1>Make It Safe</h1>
+    <div class="subtitle">How to Make It Safe to Talk About Almost Anything</div>
+  </header>
+
+  <!-- Audiobook player -->
+  <div class="audio-player">
+    <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+      <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+    </div>
+    <div class="player-body">
+      <div class="player-label">Listen to this chapter</div>
+      <audio controls preload="metadata">
+        <source src="../media/AUDIO/12%207%20Make%20It%20Safe.m4a" type="audio/mp4">
+        Your browser does not support the audio element.
+      </audio>
+      <div class="speed-controls">
+        <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+        <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+        <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+        <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+        <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+      </div>
+    </div>
+  </div>
+
+  <article>
+    <div class="placeholder-notice">
+      <h3>&#x1f4d6; Coming Soon</h3>
+      <p>Content will be transcribed from ebook screenshots.</p>
+    </div>
+  </article>
+
+  <nav class="nav-footer">
+    <a href="chapter_06.html" class="nav-btn secondary">&laquo; Previous</a>
+    <a href="index.html" class="nav-btn secondary">All Chapters</a>
+    <a href="chapter_08.html" class="nav-btn">Next &raquo;</a>
+  </nav>
+
+  <script>
+    function setSpeed(btn, rate) {
+      var player = btn.closest('.audio-player');
+      var audio = player.querySelector('audio');
+      audio.playbackRate = rate;
+      player.querySelectorAll('.speed-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+    function toggleTheme() {
+      var html = document.documentElement;
+      var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      try { localStorage.setItem('cc-theme', next); } catch (e) {}
+    }
+    (function() {
+      try { if (localStorage.getItem('cc-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch(e) {}
+    })();
+  </script>
+
+  <script>
+    window.CC_NAV_CONFIG = {
+      breadcrumbs: [
+        { label: 'Home', href: '../../index.html' },
+        { label: 'Resources', href: '../index.html' },
+        { label: 'Read the Book', href: 'index.html' },
+        { label: 'Chapter 7' }
+      ],
+      activeNav: 'resources'
+    };
+  </script>
+  <script src="../shared-nav.js"></script>
+</body>
+</html>

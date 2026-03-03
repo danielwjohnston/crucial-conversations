@@ -46,6 +46,9 @@
     .text-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--fg2); margin-top: 2px; }
     .clear-btn { position: absolute; top: 6px; right: 8px; background: none; border: none; font-size: 16px; color: var(--fg2); cursor: pointer; padding: 2px 6px; border-radius: 4px; }
     .clear-btn:hover { background: var(--bg2); color: var(--fg); }
+    .url-row { display: flex; gap: 6px; align-items: flex-end; }
+    .url-row input { flex: 1; }
+    .url-row .btn { flex-shrink: 0; margin-top: 0; }
     .row { display: flex; gap: 10px; flex-wrap: wrap; }
     .row > div { flex: 1 1 140px; }
 
@@ -124,6 +127,12 @@
   <div class="main-layout">
     <!-- LEFT: Controls + highlight -->
     <div class="left-col">
+      <label>Load from URL</label>
+      <div class="url-row">
+        <input id="url-input" type="text" placeholder="https://crucial-conversations.netlify.app/resources/ebook/chapter_12" />
+        <button class="btn btn-secondary" id="load-url">Load</button>
+      </div>
+
       <label>Text</label>
       <div class="text-wrap">
         <textarea id="text">Hello world from Dan's TTS Project.</textarea>
@@ -201,6 +210,8 @@
     const previewBtn = document.getElementById('preview');
     const grid = document.getElementById('voices-grid');
     const textArea = document.getElementById('text');
+    const urlInput = document.getElementById('url-input');
+    const loadUrlBtn = document.getElementById('load-url');
     const textCount = document.getElementById('text-count');
     const clearBtn = document.getElementById('clear-text');
     const loadingBar = document.getElementById('loading');
@@ -567,6 +578,40 @@
         historyList.appendChild(row);
       });
     }
+
+    /* ---- Load from URL ---- */
+    loadUrlBtn.onclick = async () => {
+      const url = urlInput.value.trim();
+      if (!url) { logEl.textContent = 'Enter a URL first.'; return; }
+      const api = document.getElementById('api').value.trim().replace(/\/$/, '');
+      logEl.textContent = 'Fetching page text...';
+      loadUrlBtn.disabled = true;
+      loadUrlBtn.textContent = 'Loading...';
+      try {
+        const res = await fetch(`${api}/extract_text`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+        if (!res.ok) {
+          const msg = await res.text();
+          throw new Error(`HTTP ${res.status}: ${msg}`);
+        }
+        const data = await res.json();
+        textArea.value = data.text;
+        updateCount();
+        logEl.textContent = `Loaded "${data.title || url}" (${data.chars} chars). Ready to synthesize.`;
+      } catch (err) {
+        console.error(err);
+        logEl.textContent = 'Error loading URL: ' + err.message;
+      } finally {
+        loadUrlBtn.disabled = false;
+        loadUrlBtn.textContent = 'Load';
+      }
+    };
+    urlInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); loadUrlBtn.click(); }
+    });
 
     /* ---- Init ---- */
     loadVoices();

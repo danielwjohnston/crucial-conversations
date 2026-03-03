@@ -6,12 +6,15 @@ Dan's TTS Project (FastAPI)
 
 import asyncio
 import base64
+import re
 import subprocess
 import tempfile
 from pathlib import Path
 from typing import Dict, List, Literal, Optional
 
+import aiohttp
 import edge_tts
+from bs4 import BeautifulSoup
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -52,6 +55,10 @@ class SynthesisRequest(BaseModel):
     format: SUPPORTED_FORMATS = Field(
         "mp3", description="Output format: mp3 (direct), m4a, ogg, or flac"
     )
+
+
+class ExtractTextRequest(BaseModel):
+    url: str = Field(..., description="URL to fetch and extract text from")
 
 
 async def synthesize_mp3(text: str, voice: str) -> bytes:
@@ -242,6 +249,37 @@ async def sample_audio(voice: str):
         raise
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Sample generation failed: {exc}")
+
+
+@app.post("/extract_text")
+async def extract_text(payload: ExtractTextRequest):
+    url = payload.url.strip()
+    if not url.startswith(("http://", "https://")):
+        raise HTTPException(status_code=400, detail="URL must start with http:// or https://")
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=15)) as resp:
+                if resp.status != 200:
+                    raise HTTPException(status_code=502, detail=f"URL returned HTTP {resp.status}")
+                html = await resp.text()
+    except aiohttp.ClientError as exc:
+        raise HTTPException(status_code=502, detail=f"Failed to fetch URL: {exc}")
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="URL fetch timed out")
+
+    soup = BeautifulSoup(html, "html.parser")
+    for tag in soup(["script", "style", "nav", "header", "footer", "noscript", "svg", "img"]):
+        tag.decompose()
+    # Try to get main content first
+    main = soup.find("main") or soup.find("article") or soup.find("body")
+    if main is None:
+        main = soup
+    text = main.get_text(separator="\n", strip=True)
+    # Collapse excessive blank lines
+    text = re.sub(r"\n{3,}", "\n\n", text).strip()
+    title = soup.title.string.strip() if soup.title and soup.title.string else ""
+    return {"text": text, "title": title, "chars": len(text)}
 
 
 @app.get("/health")

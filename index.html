@@ -467,22 +467,31 @@
             h1 { font-size: 2em; }
             .stats { gap: 20px; }
             .nav-content { flex-direction: column; }
+            .nav-links { gap: 16px; justify-content: center; }
             .search-box input { width: 150px; }
             .chapters-grid { grid-template-columns: 1fr; }
             .resources-grid { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
+            .chapter-card .btn {
+                display: block;
+                margin: 6px 0 0 0 !important;
+                text-align: center;
+            }
+            .resource-card .btn {
+                display: block;
+                margin: 0;
+                text-align: center;
+                white-space: normal;
+                word-wrap: break-word;
+            }
         }
 
         .cta-link {
-            display: inline-block;
-            background: var(--brand-red);
-            color: #fff;
-            padding: 10px 16px;
-            border-radius: 6px;
+            color: var(--brand-red);
             font-weight: 700;
             text-decoration: none;
         }
-        .cta-link:hover { opacity: 0.9; }
+        .cta-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>

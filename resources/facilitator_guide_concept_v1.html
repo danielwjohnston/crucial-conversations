@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crucial Conversations Facilitator Guide - Continuous Format</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: white;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover { 
+            text-decoration: underline; 
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--brand-red-accessible);
+            margin-bottom: 10px;
+        }
+        
+        header .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        
+        .chapter-section {
+            margin-bottom: 60px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .chapter-section:last-child {
+            border-bottom: none;
+        }
+        
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .chapter-number {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--brand-red);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .chapter-title {
+            font-size: 2rem;
+            color: var(--brand-red-accessible);
+            margin-bottom: 15px;
+        }
+        
+        .chapter-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        
+        .two-column {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+            align-items: flex-start;
+        }
+        
+        .column-left {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .column-right {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .discussion-box {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--brand-red);
+        }
+        
+        .discussion-label {
+            font-weight: 700;
+            color: var(--brand-red);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .discussion-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        
+        .timing-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .timing-label {
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .timing-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--brand-red);
+        }
+        
+        .content-section {
+            margin: 40px 0;
+        }
+        
+        .content-section h3 {
+            font-size: 1.3rem;
+            color: var(--brand-red-accessible);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--brand-red);
+            padding-bottom: 10px;
+        }
+        
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .content-section li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .content-section li:before {
+            content: "•";
+            color: var(--brand-red);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border: 1px solid var(--brand-red);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box h4 {
+            color: var(--brand-red);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .page-break {
+            height: 1px;
+            background: var(--border-color);
+            margin: 60px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .page-break:before {
+            content: "◇";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 20px;
+            color: var(--text-light);
+        }
+        
+        .objectives-list {
+            background: #f0f8ff;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--blue);
+            margin: 25px 0;
+        }
+        
+        .objectives-list h4 {
+            color: var(--blue);
+            margin-bottom: 15px;
+        }
+        
+        .objectives-list li {
+            color: var(--text-dark);
+        }
+        
+        .objectives-list li:before {
+            color: var(--blue);
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            body {
+                padding: 20px 15px 40px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 200px;
+            z-index: 1000;
+        }
+        
+        .navigation h5 {
+            font-size: 0.9rem;
+            color: var(--brand-red);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navigation ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .navigation li {
+            margin-bottom: 5px;
+        }
+        
+        .navigation a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 1200px) {
+            .navigation {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Main</a>
+    
+    <header>
+        <h1>Crucial Conversations</h1>
+        <div class="subtitle">Facilitator Guide - Training Manual</div>
+    </header>
+    
+    <nav class="navigation">
+        <h5>Quick Navigation</h5>
+        <ul>
+            <li><a href="#chapter1">Chapter 1</a></li>
+            <li><a href="#chapter2">Chapter 2</a></li>
+            <li><a href="#chapter3">Chapter 3</a></li>
+            <li><a href="#chapter4">Chapter 4</a></li>
+            <li><a href="#chapter5">Chapter 5</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <section id="chapter1" class="chapter-section">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 1</div>
+                <h2 class="chapter-title">What's a Crucial Conversation?</h2>
+                <div class="chapter-subtitle">Understanding the Foundation</div>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Opening Discussion</div>
+                        <div class="discussion-question">
+                            Think about a recent conversation where stakes were high, opinions varied, and emotions ran strong. What made it crucial, and how did you handle it?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Discussion Time</div>
+                        <div class="timing-value">10 min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>Key Learning Objectives</h3>
+                <div class="objectives-list">
+                    <ul>
+                        <li>Identify what makes a conversation "crucial"</li>
+                        <li>Recognize the three conditions that define crucial conversations</li>
+                        <li>Understand why we often handle crucial conversations poorly</li>
+                        <li>Learn the impact of crucial conversations on relationships and results</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>What Makes a Conversation Crucial?</h3>
+                <ul>
+                    <li>High stakes - Something important is at risk for everyone involved</li>
+                    <li>Opposing opinions - People have different perspectives and viewpoints</li>
+                    <li>Strong emotions - Feelings are running high and may cloud judgment</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>Remember</h4>
+                <p>Crucial conversations happen every day. The question isn't whether they'll occur, but how we'll handle them when they do.</p>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <div class="content-section">
+                <h3>Common Mistakes in Crucial Conversations</h3>
+                <ul>
+                    <li>Avoiding the conversation entirely</li>
+                    <li>Facing the conversation but handling it poorly</li>
+                    <li>Accepting poor results and telling ourselves we had no choice</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Group Activity</div>
+                        <div class="discussion-question">
+                            In small groups, share examples of crucial conversations you've encountered at work. What patterns do you notice?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Activity Time</div>
+                        <div class="timing-value">15 min</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="chapter2" class="chapter-section">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 2</div>
+                <h2 class="chapter-title">Mastering Crucial Conversations</h2>
+                <div class="chapter-subtitle">The Dialogue Skills</div>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Opening Discussion</div>
+                        <div class="discussion-question">
+                            What does it mean to be in dialogue? How is it different from debate or discussion?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Discussion Time</div>
+                        <div class="timing-value">8 min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>The Definition of Dialogue</h3>
+                <div class="highlight-box">
+                    <h4>Dialogue Defined</h4>
+                    <p>The free flow of meaning between two or more people. When people are in dialogue, they're sharing their opinions, feelings, and experiences openly and honestly.</p>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>Why Dialogue Matters</h3>
+                <ul>
+                    <li>Creates shared meaning and understanding</li>
+                    <li>Builds trust and strengthens relationships</li>
+                    <li>Leads to better decisions and outcomes</li>
+                    <li>Reduces conflict and misunderstanding</li>
+                </ul>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <div class="content-section">
+                <h3>The Pool of Shared Meaning</h3>
+                <ul>
+                    <li>Concept: Shared understanding built through open communication</li>
+                    <li>Benefits: Better decisions, stronger commitment, improved relationships</li>
+                    <li>Challenge: Building and maintaining the pool of shared meaning</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Practice Exercise</div>
+                        <div class="discussion-question">
+                            Practice active listening with a partner. Focus on understanding their perspective before sharing your own.
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Practice Time</div>
+                        <div class="timing-value">12 min</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="chapter3" class="chapter-section">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 3</div>
+                <h2 class="chapter-title">Start with Heart</h2>
+                <div class="chapter-subtitle">Beginning with the Right Intentions</div>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Reflection Question</div>
+                        <div class="discussion-question">
+                            What motivates you in difficult conversations? Are you focused on winning, being right, or finding solutions?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Reflection Time</div>
+                        <div class="timing-value">10 min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>Start with Heart: Core Principles</h3>
+                <ul>
+                    <li>Focus on what you really want</li>
+                    <li>Refuse the "Sucker's Choice"</li>
+                    <li>Clarify your motives before speaking</li>
+                    <li>Shift from winning to learning</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>The Sucker's Choice</h4>
+                <p>The false dilemma of believing you must choose between two bad options. Great leaders find the "and" - they achieve both goals.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>Working on Me First</h3>
+                <ul>
+                    <li>Recognize your role in the problem</li>
+                    <li>Take responsibility for your emotions and actions</li>
+                    <li>Focus on what you can control: yourself</li>
+                    <li>Move from victim to actor mindset</li>
+                </ul>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Personal Application</div>
+                        <div class="discussion-question">
+                            Identify a current difficult situation. What do you really want for yourself, for others, and for the relationship?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Application Time</div>
+                        <div class="timing-value">15 min</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="chapter4" class="chapter-section">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 4</div>
+                <h2 class="chapter-title">Learn to Look</h2>
+                <div class="chapter-subtitle">Recognizing Crucial Conversations</div>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Skill Building</div>
+                        <div class="discussion-question">
+                            How can you recognize when a conversation is becoming crucial? What physical and emotional cues do you notice?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Skill Practice</div>
+                        <div class="timing-value">12 min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>Recognizing Crucial Conversations</h3>
+                <ul>
+                    <li>Watch for content and conditions</li>
+                    <li>Notice physical and emotional signals</li>
+                    <li>Identify when safety is at risk</li>
+                    <li>Recognize your own style under stress</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>Look For</h4>
+                <p>Watch for the moment when a conversation turns crucial. The sooner you recognize it, the more likely you are to succeed.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>Styles Under Stress</h3>
+                <ul>
+                    <li>Silence: Withdrawing, avoiding, masking</li>
+                    <li>Violence: Controlling, labeling, attacking</li>
+                    <li>Recognize your default style</li>
+                    <li>Learn to catch yourself in the moment</li>
+                </ul>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Self-Assessment</div>
+                        <div class="discussion-question">
+                            What's your style under stress? Share an example and discuss alternative approaches.
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Assessment Time</div>
+                        <div class="timing-value">18 min</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="chapter5" class="chapter-section">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter 5</div>
+                <h2 class="chapter-title">Make It Safe</h2>
+                <div class="chapter-subtitle">Creating Conditions for Dialogue</div>
+            </div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Safety Check</div>
+                        <div class="discussion-question">
+                            What makes you feel safe (or unsafe) in difficult conversations? How do you create safety for others?
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Discussion Time</div>
+                        <div class="timing-value">10 min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3>Building Safety</h3>
+                <ul>
+                    <li>Recognize when safety is at risk</li>
+                    <li>Step out of the content to build safety</li>
+                    <li>Use contrasting to fix misunderstandings</li>
+                    <li>Apologize when appropriate</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>Safety First</h4>
+                <p>When people feel unsafe, they can't engage in dialogue. Safety is the foundation for all crucial conversations.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>Contrasting Statements</h3>
+                <ul>
+                    <li>Address misunderstandings directly</li>
+                    <li>State what you DON'T mean, then what you DO mean</li>
+                    <li>Restore respect and clarify intentions</li>
+                    <li>Use as a safety tool, not a debate tactic</li>
+                </ul>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <div class="two-column">
+                <div class="column-left">
+                    <div class="discussion-box">
+                        <div class="discussion-label">Practice Scenario</div>
+                        <div class="discussion-question">
+                            Practice creating contrasting statements for challenging situations. Work with a partner to refine your approach.
+                        </div>
+                    </div>
+                </div>
+                <div class="column-right">
+                    <div class="timing-box">
+                        <div class="timing-label">Practice Time</div>
+                        <div class="timing-value">20 min</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Additional chapters would follow the same pattern -->
+        
+    </main>
+    
+    <footer style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid var(--border-color); color: var(--text-light);">
+        <p>Crucial Conversations Facilitator Guide</p>
+        <p style="font-size: 0.9rem; margin-top: 10px;">© Training Materials - Internal Use Only</p>
+    </footer>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.chapter-section');
+            const navLinks = document.querySelectorAll('.navigation a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.fontWeight = 'normal';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preface — Audio Transcript</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.8;
+            background: white;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header .chapter-num {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        header h1 {
+            font-size: 2rem;
+            color: var(--brand-red-accessible);
+            margin: 8px 0 4px;
+        }
+        header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .meta {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+        article p {
+            margin-bottom: 18px;
+            text-align: justify;
+            hyphens: auto;
+        }
+        article p:first-of-type::first-letter {
+            font-size: 2.4em;
+            float: left;
+            line-height: 1;
+            padding-right: 8px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 48px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            font-size: 0.95rem;
+            gap: 12px;
+        }
+        .nav-footer a {
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
+        .print-btn {
+            display: inline-block;
+            margin-left: 16px;
+            padding: 6px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .print-btn:hover { background: var(--border-color); }
+        @media print {
+            .back-link, .nav-footer, .print-btn, .meta, .audio-player { display: none; }
+            body { padding: 20px; max-width: 100%; }
+        }
+
+        /* === Audio Player === */
+        .audio-player {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 0 0 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .audio-player .play-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .audio-player .play-icon:hover {
+            background: var(--brand-red-accessible);
+            transform: scale(1.08);
+        }
+        .audio-player .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 2px;
+        }
+        .audio-player .player-body { flex: 1; min-width: 0; }
+        .audio-player .player-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .audio-player audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+        }
+        .audio-player audio::-webkit-media-controls-panel {
+            background: rgba(255,255,255,0.08);
+        }
+        .audio-player .speed-controls {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .audio-player .speed-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+        .audio-player .speed-btn:hover,
+        .audio-player .speed-btn.active {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            color: white;
+        }
+        @media print {
+            .audio-player { display: none; }
+        }
+        @media (max-width: 600px) {
+            .audio-player { flex-direction: column; text-align: center; padding: 16px; }
+            .audio-player .play-icon { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">&larr; All Transcripts</a>
+    <button class="print-btn" onclick="window.print()">&#x1f5a8; Print</button>
+    <header>
+        <div class="chapter-num">Audio Transcript</div>
+        <h1>Preface</h1>
+        
+    </header>
+    <div class="meta">910 words &middot; ~4 min read &middot; Audiobook transcription</div>
+    <article>
+    <div class="audio-player">
+        <div class="play-icon" onclick="var a=this.closest('.audio-player').querySelector('audio');if(a.paused)a.play();else a.pause();" title="Play / Pause">
+            <svg viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+        </div>
+        <div class="player-body">
+            <div class="player-label">Listen to this chapter</div>
+            <audio controls preload="metadata">
+                <source src="../../media/audio/03%20Preface.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="speed-controls">
+                <button class="speed-btn" onclick="setSpeed(this,0.75)">0.75x</button>
+                <button class="speed-btn active" onclick="setSpeed(this,1)">1x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.25)">1.25x</button>
+                <button class="speed-btn" onclick="setSpeed(this,1.5)">1.5x</button>
+                <button class="speed-btn" onclick="setSpeed(this,2)">2x</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    function setSpeed(btn, rate) {
+        const player = btn.closest('.audio-player');
+        const audio = player.querySelector('audio');
+        audio.playbackRate = rate;
+        player.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    </script>
+
+        <p>Preface when we first published crucial conversations in 2002 we made a bold claim. We argued that the root cause of many, if not most, human problems lies in how people behave when we disagree about high stakes emotional issues. We suggested that dramatic improvements in organizational performance were possible if people learned the skills routinely practiced by those who have found a way to master these high stakes, crucial moments, if anything, our conviction in this principle has grown in subsequent decades. A growing body of research evidence shows that when leaders create a culture of intellectual and emotional honesty, nuclear power plants are safer. Workplaces become more inclusive. Financial services firms gain greater customer loyalty. Hospitals save more lives. Government Organizations deliver better service. Tech firms learn to function seamlessly across international boundaries. Non profits execute better on their missions. And bigotry is stemmed, but we'd be less than honest if we didn't admit that the most gratifying results we've experienced over the past 20 years have not come through research numbers, but through the 1000s of stories told by those who have used these ideas to influence change when it mattered the most, one of the first was a woman who reunited with her estranged father after reading the book, a nurse described how she saved a patient's life by stepping up to a crucial conversation with a defensive doctor who was misreading the patient's symptoms. One man masterfully avoided a rift with siblings over a will that threatened to tear the family apart after their father's death. Two brothers broke through a decade of alienation that started when one acknowledged his sexual orientation. One intrepid person even credits her Crucial Conversations training with helping save her life during a carjacking in Brazil.</p>
+        <p>Multiply these stories by our more than 5 million readers, and you'll have a sense of the meaning and satisfaction we've derived from our relationship with people like you. What's new? We've made a number of important changes in this new edition, which we believe will make this book an even more powerful resource. Some of the changes demonstrate how concepts apply to modern modes of communication these days, many of our most crucial conversations happen via video, asynchronous social media, audio or, heaven forbid, text only modes of communication. We've learned a great deal about what works and what doesn't in these domains. We've done a great deal of work in the past decade studying what it takes to surface and confront issues of diversity, inclusion and even unconscious bias. One of our landmark studies involved over 13,000 subjects to test the effects of some of the skills we can now share. Other changes address new ways of working and new stresses that result from our increasingly global and heterogeneous society. Crucial conversations take on heightened importance as remote relationships and diverse cultures are now the norm, rather than a novel exception in most workplaces. Finally, in recent years, we've seen increasing evidence that dangerous conflict results from the failure to find ways to candidly and respectfully discuss our political and social differences. Some of the updates in this book will address head on, how we can all do our best when it matters most. In these novel challenges, one of the most useful changes you will notice is the restructuring of all the content in the book around an easy to understand model for preparing for beginning and concluding a crucial conversation.</p>
+        <p>We have found that laying the skills out temporally makes it far easier to know which skill to use when to get the best results. Finally, one of the most obvious changes long time students of this book will note is the addition of a new author on this edition, Emily Gregory has been an important contributor to our work for almost 20 years. She has worked shoulder to shoulder with us in deepening our research, strengthening our courses and expanding our influence to include close to 20,000 trainers worldwide. The addition of her voice in this edition has enriched every chapter. We are confident that not only will these changes improve your experience, they will also increase your capacity to turn these words into productive habits in your work and personal life. Where next? We're thrilled that so many people have responded positively to this work. To be honest, 20 years ago, we dared to hope the ideas we shared would alter the world, but what we didn't know was whether the world would respond as we hoped. So far, so good. It has been immensely gratifying to see so many people embrace the notion that crucial conversations really can make a difference. We've been privileged to teach heads of government, business moguls and influential social entrepreneurs. The day we held in our hands two copies of our book, one in Arabic and one in Hebrew, gave us an even greater sense of possible. Civility. We've shared the principles in areas of turmoil and unrest, such as Kabul and Cairo, as well as in areas of growth and influence such as Bangkok and Benin City. With each new audience and each new success story, we feel a greater motivation to ensure our work makes a lasting difference.</p>
+        <p>Thus, the new addition, we hope the improvements in this edition substantially improve your experience with these life changing ideas. Joseph grenny, Carrie Patterson, Ron McMillon, Al Switzer and Emily Gregory Paul.</p>
+    </article>
+        <nav class="nav-footer">
+        <a href="audio_publisher.html" class="nav-btn">&#x25C0; Publisher's Note</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_01.html" class="nav-btn">What's a Crucial Conversation &#x25B6;</a>
+    </nav>
+</body>
+</html>

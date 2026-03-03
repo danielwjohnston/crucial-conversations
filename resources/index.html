@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crucial Conversations — Resources</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: white;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 36px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header h1 { color: var(--brand-red-accessible); font-size: 2rem; margin-bottom: 6px; }
+        header p { color: var(--text-light); font-size: 1.05rem; }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .resource-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--brand-red);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .resource-card h3 {
+            color: var(--brand-red-accessible);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        .resource-card p {
+            color: var(--text-light);
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        .resource-link {
+            display: inline-block;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .resource-link:hover { text-decoration: underline; }
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--brand-red-accessible);
+            margin: 40px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--brand-red);
+        }
+        .description {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border: 1px solid var(--brand-red);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Main</a>
+    
+    <header>
+        <h1>Crucial Conversations Resources</h1>
+        <p>Training materials, guides, and supporting documents</p>
+    </header>
+    
+    <div class="description">
+        <strong>Welcome to the Crucial Conversations resource center.</strong> Here you'll find comprehensive materials to support your training and facilitation, including facilitator guides, chapter transcripts, handouts, and multimedia resources.
+    </div>
+    
+    <h2 class="section-title">Facilitator Resources</h2>
+    <div class="resource-grid">
+        <div class="resource-card">
+            <h3>📖 Facilitator Guide (Book Pages)</h3>
+            <p>Continuous-format facilitator guide with discussion questions, timing, and structured content for all chapters.</p>
+            <a href="book_pages/facilitator_guide_continuous.html" class="resource-link">View Guide →</a>
+        </div>
+        
+        <div class="resource-card">
+            <h3>📝 Chapter Transcripts (Slides)</h3>
+            <p>Slide/presentation transcripts for all 13 chapters, including discussion prompts.</p>
+            <a href="transcripts/index.html" class="resource-link">View Slide Transcripts →</a>
+        </div>
+        
+        <div class="resource-card">
+            <h3>🎧 Audiobook Transcripts</h3>
+            <p>Audio transcripts including preface, all chapters, and closing credits.</p>
+            <a href="transcripts/audio/index.html" class="resource-link">View Audio Transcripts →</a>
+        </div>
+    </div>
+
+    <h2 class="section-title">Book Pages</h2>
+    <div class="resource-grid">
+        <div class="resource-card">
+            <h3>📘 Chapter 12</h3>
+            <p>“Yeah, But” — Advice for tough cases, continuous HTML from book pages.</p>
+            <a href="book_pages/chapter_12_continuous.html" class="resource-link">View Chapter 12 →</a>
+        </div>
+        <div class="resource-card">
+            <h3>📙 Chapter 13</h3>
+            <p>“Putting It All Together” — Tools for preparing and learning, continuous HTML from book pages.</p>
+            <a href="book_pages/chapter_13_continuous.html" class="resource-link">View Chapter 13 →</a>
+        </div>
+        <div class="resource-card">
+            <h3>📚 Combined Book Pages</h3>
+            <p>Continuous reference of book content (including cases and table) in one HTML.</p>
+            <a href="book_pages/facilitator_guide_continuous.html" class="resource-link">View Combined →</a>
+        </div>
+    </div>
+    
+    <h2 class="section-title">Participant Materials</h2>
+    <div class="resource-grid">
+        <div class="resource-card">
+            <h3>📋 Handouts</h3>
+            <p>Printable handouts, worksheets, and reference materials for participants.</p>
+            <a href="handouts/index.html" class="resource-link">View Handouts →</a>
+        </div>
+        
+        <div class="resource-card">
+            <h3>📊 Infographics</h3>
+            <p>Visual summaries and key concept graphics for easy reference.</p>
+            <a href="infographics/index.html" class="resource-link">View Infographics →</a>
+        </div>
+        
+        <div class="resource-card">
+            <h3>📑 PDF Resources</h3>
+            <p>Downloadable PDF documents including guides and reference materials.</p>
+            <a href="pdfs/index.html" class="resource-link">View PDFs →</a>
+        </div>
+    </div>
+    
+    <h2 class="section-title">Media & Multimedia</h2>
+    <div class="resource-grid">
+        <div class="resource-card">
+            <h3>🎥 Video Library</h3>
+            <p>Curated YouTube videos and multimedia content for training enhancement.</p>
+            <a href="media/EMBEDS/youtube_embeds/index.html" class="resource-link">View Videos →</a>
+        </div>
+        
+        <div class="resource-card">
+            <h3>🎵 Audio Resources</h3>
+            <p>Audio files, recordings, and sound materials for training sessions.</p>
+            <a href="media/index.html" class="resource-link">View Audio →</a>
+        </div>
+    </div>
+    
+    <h2 class="section-title">Reference Materials</h2>
+    <div class="resource-grid">
+        <div class="resource-card">
+            <h3>📚 Glossary</h3>
+            <p>Comprehensive glossary of Crucial Conversations terminology and concepts.</p>
+            <a href="glossary.html" class="resource-link">View Glossary →</a>
+        </div>
+    </div>
+    
+    <footer style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid var(--border-color); color: var(--text-light);">
+        <p>Crucial Conversations Training Resources</p>
+        <p style="font-size: 0.9rem; margin-top: 10px;">© Training Materials - Internal Use Only</p>
+    </footer>
+</body>
+</html>

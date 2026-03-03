@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -134,10 +157,10 @@
         <p>However, no matter how many times I applied and interviewed for such positions, I was never selected as I was passed over again and again. I began to tell myself stories about it, but I said nothing. After becoming a trainer for Crucial Conversations. I took another look at my situation, and I realized there was a conversation I was not having. I had not asked the leaders in my organization what was preventing me from moving forward. It was tough medicine. But as I learned about mastering my story, I realized that at first I had remained silent by telling myself it was just bad luck. As the luck story wore thin, it became a politics story. Others were better at buttering up the right people. I had lost out because I had integrity. My victim and villain stories were keeping me silent and resentful. After many hours of reflection, I got to a news story. Part of being passed over was because I had not asked for feedback. I was no longer a victim. I was an actor, and I decided to take action. The conversation was tough. I was told that in order to move to a cabinet level position. That I would first have to take a cabinet level position in a smaller organization. That information rang true, but I didn't like it. However, I was now in a position to make a decision. So I did. I left my organization and got a job leading a department four times larger than the one where I previously worked. Had I not finally faced my story, I would not have gotten the results I wanted most. Summary, Master my stories. If strong emotions are keeping you stuck in silence or violence, try these steps. Retrace your path.</p>
         <p>Examine your behavior. If you find yourself moving away from dialog, ask yourself what you're really doing. Put your feelings into words. Learn to accurately identify and name the emotions behind your story. Ask what emotions are encouraging me to act this way. Spot your story, identify your story. Ask, what story must I be telling? It to create these emotions, separate fact from story, abandon your absolute certainty by distinguishing between hard facts and your invented story. Ask, what evidence do I have to support this story. Watch for clever stories, victim, villain and helpless stories sit at the top of the list. Tell the rest of the story. Ask, what am i Pretending not to notice about my role in the problem? Why would a reasonable, rational and decent person do this? What do I really want? What should I do right now to move toward what I really want?</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_04.html">&larr; Start with Heart</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_part2.html">Part II: How to Open Your Mout &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_04.html" class="nav-btn">&#x25C0; Start with Heart</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_part2.html" class="nav-btn">Part II: How to Open Your Mout &#x25B6;</a>
     </nav>
 </body>
 </html>

@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -118,10 +141,10 @@
     <article>
         <p>Nick part one, what to do before you open your mouth, 70% of the success of a crucial conversation happens in your head, not through your mouth. The skills in this section are the prerequisites of success. Get these right and the right words will often flow naturally from you. Ignore these, and no amount of technique or artifice will be enough to compensate. In this section, you'll learn how to be sure you're talking about the right things. Chapter Three, choose your topic. How to get your motives right. Chapter Four, start with heart and how to understand and manage your own emotions when they're getting in the way of dialog. Chapter Five, Master, my stories, you.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_02.html">&larr; Mastering Crucial Conversation</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_03.html">Choose Your Topic &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_02.html" class="nav-btn">&#x25C0; Mastering Crucial Conversation</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_03.html" class="nav-btn">Choose Your Topic &#x25B6;</a>
     </nav>
 </body>
 </html>

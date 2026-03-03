@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -136,10 +159,10 @@
         <p>At the same time, I have 30 minutes to get this data file over to the ops team. Let's figure out this data file issue, and then come back to Mark, because that needs to be addressed. When you place a bookmark, you make a conscious choice about what you want to talk about, and you register clearly with the other person that you will return to the bookmarked issue later. Never allow the conversation to shift or the topic to change without acknowledging you've done it back to Wendy. Remember Wendy, she was facing a pretty complex conversation with her manager. They started out talking about a project timeline. As the conversation progressed, new issues came into play, how decisions were being made, what input was being considered, and the pressure that Sandrine was putting on Wendy with veiled threats. Let's see how Wendy responded when Sandrine said, Look, I really pushed for you to be the one to lead this project. Do you know what I said about you? I said you were a team player. Was I mistaken? Wendy made the smart choice in this situation to bookmark the project, timeline, the content issue, and move the conversation to the relationship level. Her simple problem sentence was, this is about whether I can trust our process and trust you. She responded to Sandrine saying, I get we're in a tough spot here. I don't want to disappoint our leadership any more than you do, and I want you to know that I'm committed to getting stuff done at the same time. I want us to set realistic goals, otherwise we're setting ourselves up to fail. And maybe even more important, I want us to work together in a way.</p>
         <p>Today where we're up front with each other about our needs and concerns. This was the start of a relationship conversation and the start of a better relationship summary. Choose your topic. You can't solve the real problem if you don't choose the right topic. Here's how to make sure you're talking about the right thing. Learn the three signs you're having the wrong conversation. Number one, your emotions escalate. Number two, you walk away skeptical. Number three, your deja vu dialog. Use three skills to identify your topic and prepare to keep focused on it. Number one, unbundle, unpack the various issues at play using CPR. Are they content, pattern or relationship concerns or perhaps process. Number two, choose ask yourself, what do I really want? Use this as a filter to choose which topic is most relevant at the moment. Number three, simplify, condense your concern into a single sentence so you can maintain focus once the conversation gets underway. Finally, be both focused and flexible. Pay attention to others unintentional or intentional efforts to change the topic. Don't allow the topic to change without a conscious decision. And if you do decide to shift topics, bookmark the original one to make it easy to return to after the new topic is handled. You.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_part1.html">&larr; Part I: What to Do Before You </a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_04.html">Start with Heart &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_part1.html" class="nav-btn">&#x25C0; Part I: What to Do Before You</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_04.html" class="nav-btn">Start with Heart &#x25B6;</a>
     </nav>
 </body>
 </html>

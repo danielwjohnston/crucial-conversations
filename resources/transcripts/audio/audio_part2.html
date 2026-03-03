@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -118,10 +141,10 @@
     <article>
         <p>Part Two, how to open your mouth. At this point, you are mentally and emotionally prepared for a healthy conversation. Now it's time to open your mouth and speak. But how? What do you say? First, second, third, and how can you be prepared for the inevitable land mines you'll run across once you do the skills in chapter six, learn to look will help you be prepared for surprises. The skills in chapter seven make it safe, reduce the chance others will become defensive. The skills in chapter eight state my path, help you make your points in a way that invites interest rather than defensiveness. And the skills in chapter nine, explore others. Paths will guide you in discovering the meaning others have to offer, and finally, will help you learn to do so without it getting under your skin. In chapter 10, retake your pen. I.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_05.html">&larr; Master My Stories</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_06.html">Learn to Look &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_05.html" class="nav-btn">&#x25C0; Master My Stories</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_06.html" class="nav-btn">Learn to Look &#x25B6;</a>
     </nav>
 </body>
 </html>

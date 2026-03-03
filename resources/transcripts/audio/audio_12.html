@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -125,10 +148,10 @@
         <p>Also, the longer you go without saying anything, the greater the pain when you finally deliver the message the solution use contrasting. Explain. That you don't want to hurt the person's feelings, but you do want to share something that could be helpful. Establish mutual purpose, let the other person know your intentions are honorable. Also explain that you're reluctant to bring up the issue because of its personal nature, but since the problem is interfering with the person's effectiveness, you really must tentatively describe the problem, don't play it up or pile it on, describe the specific behaviors and then move to solutions. Although these discussions are never easy, they certainly don't have to be offensive or insulting. There's more where that came from. Crucial conversations aren't just the big, anticipated, sometimes dreaded conversations you carefully plan for and then hold with precision and grace. Most often, you stumble into them without warning at any moment and with nearly everyone as you continue to practice your skills, you'll find you'll be better on your toes and more adept at navigating even the trickiest of situations. But we don't plan to abandon you here. Rather, we have curated a vast library of these kinds of Yeah, but scenarios, situations when people find it challenging to use their skills. For example, how do you surface microaggressions or racism? How do you respond to false accusations? How do you tell the truth when it comes across as harsh, even brutal. How do you confront a liar. How do you speak truth to someone in power? How do you talk to someone you don't even respect? How do you speak up for your morals and values?</p>
         <p>Over the years, we've offered tips, advice and even scripts for just how to hold these crucial conversations in our weekly newsletter and blog, crucial skills. We welcome you to read along each week as we answer readers real life questions, and of course, we welcome your own. You can also search our database of over 1000 previous responses to give you targeted advice when you need it most, to find additional advice for these and other very crucial conversations, visit us at crucial learning.com/blog</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_11.html">&larr; Move to Action</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_13.html">Putting It All Together &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_11.html" class="nav-btn">&#x25C0; Move to Action</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_13.html" class="nav-btn">Putting It All Together &#x25B6;</a>
     </nav>
 </body>
 </html>

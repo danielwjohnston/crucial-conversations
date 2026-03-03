@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -121,10 +144,10 @@
         <p>We have found that laying the skills out temporally makes it far easier to know which skill to use when to get the best results. Finally, one of the most obvious changes long time students of this book will note is the addition of a new author on this edition, Emily Gregory has been an important contributor to our work for almost 20 years. She has worked shoulder to shoulder with us in deepening our research, strengthening our courses and expanding our influence to include close to 20,000 trainers worldwide. The addition of her voice in this edition has enriched every chapter. We are confident that not only will these changes improve your experience, they will also increase your capacity to turn these words into productive habits in your work and personal life. Where next? We're thrilled that so many people have responded positively to this work. To be honest, 20 years ago, we dared to hope the ideas we shared would alter the world, but what we didn't know was whether the world would respond as we hoped. So far, so good. It has been immensely gratifying to see so many people embrace the notion that crucial conversations really can make a difference. We've been privileged to teach heads of government, business moguls and influential social entrepreneurs. The day we held in our hands two copies of our book, one in Arabic and one in Hebrew, gave us an even greater sense of possible. Civility. We've shared the principles in areas of turmoil and unrest, such as Kabul and Cairo, as well as in areas of growth and influence such as Bangkok and Benin City. With each new audience and each new success story, we feel a greater motivation to ensure our work makes a lasting difference.</p>
         <p>Thus, the new addition, we hope the improvements in this edition substantially improve your experience with these life changing ideas. Joseph grenny, Carrie Patterson, Ron McMillon, Al Switzer and Emily Gregory Paul.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_publisher.html">&larr; Publisher's Note</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_01.html">What's a Crucial Conversation &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_publisher.html" class="nav-btn">&#x25C0; Publisher's Note</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_01.html" class="nav-btn">What's a Crucial Conversation &#x25B6;</a>
     </nav>
 </body>
 </html>

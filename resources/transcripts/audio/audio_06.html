@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -137,10 +160,10 @@
         <p>On probation because of feedback about my blow ups, I had three months to turn things around, or I was gone. I thought overnight about what I was going to do. I realized that what I had learned about myself in the Crucial Conversations class gave me the tools to fix the problem. Prior to the class, I had no clue about how to turn things around, and most likely would have walked out the door because of crucial conversations. However, I accepted the challenge. My coach told me that this would be a life change and not a temporary change, and I realized I had some fences to mend within the organization. I knew the road was going to be long and hard. Apologizing was difficult, but I wanted to change myself. It is now, a year later, and I still work for the same company. The things that have happened in the last year amaze me. I have mended all the fences, and at times, individuals have come to me for advice on dealing with situations. I have even had Crucial Conversations with managers of our company on behalf of others. My wife tells me the pattern of behavior of the last 30 years has changed things that used to cause me to blow up at home no longer do. And she says it's like being married to a different person. I am a different person. One even I like Crucial Conversations, has definitely changed me, and this old dog has learned new tricks. Summary, learn to look. When caught up in a crucial conversation, it's difficult to see exactly what's going on and why. When a discussion becomes stressful, we often end up doing the exact opposite of what works.</p>
         <p>We turn to the less healthy components of our style under stress to break from this insidious pattern, learn to look learn to look at content and conditions. Learn to look for when things become crucial. Learn to look for safety problems. Learn to look to see if others are moving toward silence or violence. And learn to look for outbreaks of your style under stress. You.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_part2.html">&larr; Part II: How to Open Your Mout</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_07.html">Make It Safe &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_part2.html" class="nav-btn">&#x25C0; Part II: How to Open Your Mout</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_07.html" class="nav-btn">Make It Safe &#x25B6;</a>
     </nav>
 </body>
 </html>

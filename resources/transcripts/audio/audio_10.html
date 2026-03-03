@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -133,10 +156,10 @@
         <p>I need some time, and I'll get back to you to let you know where I come out, then use whatever practices work for you to reconnect with a sense of safety and worth five. Fourth, engage. Examine what you were told. If you've done a good job. Re establishing feelings of safety and worth. You'll look for truth rather than defensively poking holes in the feedback. Sift through the bag or pool of meaning, even if it's 95% junk and 5% gold, look for the gold. There is almost always at least a kernel of truth in what people are telling. You scour the message until you find it, then, if appropriate, re engage with the person who shared the feedback and acknowledge what you heard, what you accept and what you commit to do. At times, this may mean sharing your view of things, if you're doing so with no covert need for approval, you won't need to be defensive or combative. Today, Marlin carries himself with an easy confidence. He is reunited with parents and siblings with whom he had been at war for 30 years. Over three years, he participated in 300 games. That is a lot of feedback, but what Marlin came to learn is that how he responded to the feedback was more important than the feedback itself. He came to see games he took badly as a reminder that he had inner work to do. As he learned to be the steward of his own safety and worth, he cultivated a peace that has changed everything. It turns out that the misery we feel when feed smacked is a symptom of a much deeper problem.</p>
         <p>Those who acknowledge and address this deeper issue don't just get better at these crucial conversations, they become better equipped for all of life's vicissitudes. Summary, retake your pen when you find yourself reacting to hard feedback, remind yourself that your reaction is largely within your control. Retake your pen by taking steps to secure your safety and affirm your worth. Then use four skills to manage how you address the information others share. First, collect yourself, breathe deeply, name your emotions and present yourself with soothing truths that establish your safety and worth. Second, understand, be curious, ask questions and ask for examples, and then just listen. Detach yourself from what is being said as though it is being said about a third person. Third, recover. Take a time out if needed to recover emotionally and process what you've heard. Fourth, engage, examine what you were told, look for the truth, rather than defensively poking holes in the feedback, if appropriate, re engage with the person who shared the feedback and acknowledge what you heard, what you accept and what you commit to do if needed, share your feelings of things in a non combative way.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_09.html">&larr; Explore Others' Paths</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_part3.html">Part III: How to Finish &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_09.html" class="nav-btn">&#x25C0; Explore Others' Paths</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_part3.html" class="nav-btn">Part III: How to Finish &#x25B6;</a>
     </nav>
 </body>
 </html>

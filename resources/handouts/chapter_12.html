@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 12 Handout — Yeah, But</title>
+    <style>
+        :root {
+            --brand-red: #e30613;
+            --brand-red-accessible: #c20510;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f8f9fa;
+            --border-color: #ddd;
+            --blue: #4a90e2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 80px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--brand-red);
+        }
+        header .chapter-num {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--brand-red-accessible);
+            margin: 6px 0 4px;
+        }
+        header .subtitle {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .part-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 3px 12px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+        h2 {
+            color: var(--brand-red-accessible);
+            font-size: 1.3rem;
+            margin: 28px 0 14px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+        .concepts-grid {
+            display: grid;
+            gap: 12px;
+        }
+        .concept {
+            background: var(--bg-light);
+            border-radius: 8px;
+            padding: 14px 18px;
+            border-left: 4px solid var(--brand-red);
+        }
+        .concept-term {
+            font-weight: 700;
+            color: var(--brand-red-accessible);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .concept-def {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+        }
+        .discussion-box {
+            background: #fff8e1;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 16px 0;
+        }
+        .discussion-box .label {
+            font-weight: 700;
+            color: #e65100;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .reflection-list {
+            list-style: none;
+            counter-reset: refl;
+        }
+        .reflection-list li {
+            counter-increment: refl;
+            padding: 10px 14px 10px 44px;
+            position: relative;
+            margin-bottom: 8px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        .reflection-list li::before {
+            content: counter(refl);
+            position: absolute;
+            left: 14px;
+            top: 10px;
+            width: 22px;
+            height: 22px;
+            background: var(--brand-red);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .write-area {
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            min-height: 100px;
+            margin: 12px 0;
+            padding: 12px;
+            background: var(--bg-light);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: center;
+            line-height: 100px;
+        }
+        .print-btn {
+            display: inline-block;
+            margin-left: 16px;
+            padding: 6px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .print-btn:hover { background: var(--border-color); }
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            gap: 12px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        @media print {
+            .back-link, .nav-footer, .print-btn { display: none; }
+            body { padding: 20px; max-width: 100%; }
+            .concept { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">&larr; All Handouts</a>
+    <button class="print-btn" onclick="window.print()">&#x1f5a8; Print</button>
+    <header>
+        <div class="chapter-num">Chapter 12 Handout</div>
+        <h1>Yeah, But</h1>
+        <div class="subtitle">Advice for tough cases</div>
+        <div class="part-badge">Part III — How to Finish</div>
+    </header>
+
+    <h2>Key Concepts</h2>
+    <div class="concepts-grid">
+            <div class="concept">
+                <div class="concept-term">Power Imbalance</div>
+                <div class="concept-def">When talking to someone with authority, use facts, ask permission, and focus on mutual purpose.</div>
+            </div>
+            <div class="concept">
+                <div class="concept-term">Sensitive Topics</div>
+                <div class="concept-def">Start with safety, use Contrasting, and stick to observable behavior.</div>
+            </div>
+            <div class="concept">
+                <div class="concept-term">Trust Violations</div>
+                <div class="concept-def">Don’t pretend trust exists when it doesn’t. Be honest about what needs to happen to rebuild it.</div>
+            </div>
+            <div class="concept">
+                <div class="concept-term">Lost Cause?</div>
+                <div class="concept-def">Some people aren’t motivated to change—but skills still matter. Use natural consequences.</div>
+            </div>
+    </div>
+
+    <h2>Discussion Question</h2>
+    <div class="discussion-box">
+        <div class="label">Whole-Group Discussion</div>
+        <p>What’s the toughest ‘Yeah, But’ scenario you face? Which principle from this chapter could help you navigate it?</p>
+    </div>
+
+    <h2>Personal Reflection</h2>
+    <ol class="reflection-list">
+            <li>Identify your toughest conversation partner. What makes it hard?</li>
+            <li>Which tool (Contrasting, natural consequences, CRIB) would help most?</li>
+            <li>What’s the first safe step you could take this week?</li>
+    </ol>
+
+    <h2>Notes</h2>
+    <div class="write-area">Use this space for your notes (print-friendly)</div>
+
+    <nav class="nav-footer">
+        <a href="chapter_11.html" class="nav-btn">&#x25C0; Ch. 11</a>
+        <a href="index.html" class="nav-btn secondary">All Handouts</a>
+        <a href="chapter_13.html" class="nav-btn">Ch. 13 &#x25B6;</a>
+    </nav>
+</body>
+</html>

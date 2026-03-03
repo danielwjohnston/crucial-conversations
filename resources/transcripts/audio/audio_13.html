@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -130,10 +153,10 @@
         <p>As they approached, some were emotional, and many thanked me for raising the sensitive issues I learned many lessons through this experience, but one that stands out is the importance of realizing it is possible to be both candid and respectful with the right set of skills. Knowledge of Crucial Conversations helped me turn an intimidating experience into a memory. And meaningful opportunity to stand up for something I believed. In conclusion, it's not about communication, it's about results. Let's end where we started. We began this book by suggesting we got dragged somewhat unwillingly into the topic of communication. What we were most interested in was not writing a book on communication. Rather, we wanted to identify crucial moments, moments when people's actions disproportionately affect their organizations, their relationships and their lives. Our research led us, time and again, to focus on moments when people need to step up to emotionally and politically risky conversations. That's why we came to call these moments Crucial Conversations. We found that time and again, what stands between us and what we really want is lag time. The problem isn't that we have problems. The problem is the lag time between when we know we have them and when we find a way to effectively confront, discuss and resolve them. If you reduce this lag time, everything gets better. Our sole motivation in writing this book has been to help you improve the results you care about most and our dearest hope as we conclude it is that you will do so, take action, identify a crucial conversation you could improve. Now use the tools in this last chapter to identify the principle or skill that will help you approach it in a more effective way than you ever have.</p>
         <p>Then give it a try. One thing our research shows clearly is that you need not be perfect to make progress. You needn't worry if you make only stuttering progress. We promise you that if you persist and work at these ideas, you will see dramatic improvement in your relationships and results. These moments are truly crucial, and a little bit of change can lead to an enormous amount of progress.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_12.html">&larr; Yeah, But</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_closing.html">End Credits &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_12.html" class="nav-btn">&#x25C0; Yeah, But</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_closing.html" class="nav-btn">End Credits &#x25B6;</a>
     </nav>
 </body>
 </html>

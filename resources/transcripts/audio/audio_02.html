@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -131,10 +154,10 @@
         <p>We then get tactical teaching strategies for sharing your views in a way that is both truthful and least likely to provoke defensiveness. This we cover in chapter eight, state my path, and for helping others to productively express their views as well, which we cover in chapter nine. Explore others paths. Then we take you to a remarkable place in the US Rocky Mountains, where we learn lessons for minimizing the misery we feel when receiving tough feedback. This is Chapter 10. Retake your pen. In part three, how to finish. We'll share two important tools for finishing strong. Chapter 11, move to action as you listen on in chapter 12, yeah, bud, you will learn the key to skills of talking, listening and acting together in a way that improves both relationships and results. Finally, we'll tie all the theories and skills together in chapter 13, putting it all together by providing both a model and an extended example, we are confident that as you not only listen but practice what you learn, you will gain greater and greater confidence in talking when stakes are high, summary mastering Crucial Conversations, when Facing a Crucial Conversation, most of us unconsciously make a fool's choice. We think we have to choose between telling the truth and keeping a friend. Skilled communicators resist this false trade off and look for ways to do both. They look for a way to be both 100% honest and 100% respectful at the same time. In short, they look for a way to get to dialog, a condition where meaning flows freely between parties, resulting in a larger pool of information shared by all a larger shared pool of meaning leads to better decisions, better relationships and more unified action.</p>
         <p>The remainder of this book shares learnable skills designed to help you get to dialog during your most crucial moments.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_01.html">&larr; What's a Crucial Conversation</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_part1.html">Part I: What to Do Before You  &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_01.html" class="nav-btn">&#x25C0; What's a Crucial Conversation</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_part1.html" class="nav-btn">Part I: What to Do Before You &#x25B6;</a>
     </nav>
 </body>
 </html>

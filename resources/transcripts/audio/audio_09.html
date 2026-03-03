@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -143,10 +166,10 @@
         <p>The deal was finalized over the last two days, negotiating the details of the final documents under tight time pressures over the phone and on two different continents was challenging and full of land mines. In fact, just yesterday, at the moment of extreme tension, it seemed that the entire deal was coming unwound. I had to work the phones for four hours to rebuild dialog between the parties so that we could get through the final pieces of the contract. Last night, we were down to one. Word in the 17 page agreement, I wouldn't give in and our partners, people tried to bully me. I had to step back again, explore their views and rebuild safety by finding a mutual purpose. We resolved the final piece very easily on a phone call at 5am in which I used the communication process to find common understanding between the parties, I truly don't think that we would have struck the deal if a good friend had not recommended this powerful approach to communication. Summary, explore others paths to encourage the free flow of meaning and help others leave silence or violence behind. Explore their path to action. Start with an attitude of curiosity and patience. This helps restore safety. Then use four powerful listening skills to retrace the other person's path to action to its origins. Ask. Start by simply expressing interest in the other person's views. Mirror. Increase safety by respectfully acknowledging the emotions people appear to be feeling.</p>
         <p>Paraphrase as others begin to share part of their story, restate what you've heard to show not just that you understand, but also that it's safe for others to share what they're thinking prime if others continue to hold back prime, take your best guess at what they may be thinking and feeling as you begin to respond, remember, Agree, agree when you share views. Build, if others leave something out, agree, where you share views, then build compare when you do differ significantly. Don't suggest others are wrong. Compare your two views.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_08.html">&larr; STATE My Path</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_10.html">Retake Your Pen &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_08.html" class="nav-btn">&#x25C0; STATE My Path</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_10.html" class="nav-btn">Retake Your Pen &#x25B6;</a>
     </nav>
 </body>
 </html>

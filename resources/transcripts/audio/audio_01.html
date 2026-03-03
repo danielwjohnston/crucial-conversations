@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -135,10 +158,10 @@
         <p>Are you on your worst behavior? If so, you definitely have something to gain by learning more about how to handle Crucial Conversations boost your personal health. If the evidence so far isn't compelling enough, what would you say if we told you that the ability to master Crucial Conversations is a key to a healthier and longer life? Immune systems. Consider the groundbreaking research done by Dr Janice keikol Glasser and Dr Ronald Glasser. They studied the immune systems of couples who had been married an average of 42 years by comparing those who argued constantly with those who resolved their differences effectively, it turned out that arguing for decades doesn't lessen the destructive blow of constant conflict. Quite the contrary, those who routinely failed their Crucial Conversations had far weaker immune systems and worse health than those who found a way to resolve them Well, life threatening diseases in perhaps the most revealing of all the health related studies, a group of subjects who had contracted malignant melanoma received traditional treatment and then were divided into two groups. One group met weekly for only six weeks, the other did not. Facilitators taught the first group of recovering patients specific communication skills after meeting only six times and then dispersing for five years, the subjects who learned how to express themselves effectively had a higher survival rate. Only 9% succumbed, as opposed to almost 30% in the untrained group. Think about the implications of this study, just a modest improvement in the ability to talk and connect with others corresponded to a two thirds decrease in the death rate. This study is just one example of how the way you talk or don't talk can dramatically affect your health.</p>
         <p>Mountains of research suggests that the negative feelings we hold in and the emotional pain we suffer as we stumble our way through unhealthy conversations slowly eat away at our health. In some cases, the impact of failed conversations leads to minor problems. In others, it results in disaster. In all cases, failed conversations never make us happier, healthier or better off. So what about you? What are the specific conversations that gnaw at you the most, which conversations, if you held them or improved them, would strengthen your immune system, help ward off disease and increase your quality of life and well being? Summary, what's a crucial conversation when stakes are high, opinions vary and emotions start to run strong, casual conversations transform into crucial ones. Ironically, the more crucial the conversation, the less likely we are to handle it well. When we fail a crucial conversation, every aspect of our lives can be affected, from our companies to our careers to our communities to our relationships to our personal health, and the longer the lag time, the more room for mischief. But the good news is, as we learn how to step up to crucial conversations and handle the. Well, with one set of high leverage skills, we can influence virtually every domain of our lives. What is this all important skill set? What do people who sail through Crucial Conversations actually do? More importantly? Can we do it too? You?</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_preface.html">&larr; Preface</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_02.html">Mastering Crucial Conversation &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_preface.html" class="nav-btn">&#x25C0; Preface</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_02.html" class="nav-btn">Mastering Crucial Conversation &#x25B6;</a>
     </nav>
 </body>
 </html>

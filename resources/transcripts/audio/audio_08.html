@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -143,10 +166,10 @@
         <p>We had the police at our house to defuse the violence. We watched helplessly as she used drugs and alcohol and cut herself. She stopped going to school. We had her hospitalized. We prayed a lot. The good news is that I began using my crucial conversation skills during her manic highs and lows, and it worked. The contrasting statement was extremely effective, and still is in diffusing her anger and sadness later on, after she was level the state, my path skills became a literal life saver. I noticed that if I was careful to remove my judgments when I shared my concern and just state them factually, then encourage her to share her views, she could hear me much easier. With the help of crucial conversations, I was able to maintain a relationship with my daughter during a time in her life when she was hard to reach. Since her diagnosis and treatment, she has truly turned her life around. She takes her medication, changed her friendships, goes to therapy, asks for support from her teachers when she is feeling stressed in school, volunteers with special needs kids at church, and most importantly, talks to my husband and to me, as we face more challenges ahead, I can and will continue to use these skills in many ways. I believe you have helped us save her. Summary state my path when you have a tough message to share, or when you're so convinced of your own rightness that you may push too hard, remember to state your path, share your facts. Start with the least controversial, most persuasive elements from your path to action. Tell your story, explain what you're beginning to conclude. Ask for others' paths. Encourage others to share both their facts and their stories.</p>
         <p>Talk tentatively, state your story as a story, don't disguise it as a fact, and encourage testing. Make it safe for others to express differing or even opposing views. I.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_07.html">&larr; Make It Safe</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_09.html">Explore Others' Paths &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_07.html" class="nav-btn">&#x25C0; Make It Safe</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_09.html" class="nav-btn">Explore Others' Paths &#x25B6;</a>
     </nav>
 </body>
 </html>

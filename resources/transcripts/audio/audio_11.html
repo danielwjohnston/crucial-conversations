@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -132,10 +155,10 @@
         <p>It can be helpful to think of this as more of a plan to check in, rather than a plan to check up. For example, I think this is great. Thanks for taking the time to really dig into this. I'll circle back next week for a quick check, just to make sure that after we've had some time to sit with this, everything still seems okay and on track for both of us. Document your work. Once again, a proverb comes to mind. One dull pencil is worth six sharp minds. Don't leave your hard work to memory if you've gone to the effort to complete a crucial conversation, don't fritter away all the meaning you created by trusting your memories. Write down the details of conclusions, decisions decisions and assignments. Remember to record who does what by when, revisit your notes at key times, usually the next meeting and review assignments as you review what was supposed to be completed, hold people accountable when someone fails to deliver on a promise, it's time for dialog. Org discuss the issue by using the state skills we covered in chapter eight. When you hold people accountable, not only do you increase their motivation and ability to deliver on promises, but you create a culture of integrity. Summary, move to action, turn your successful crucial conversations into great decisions and united action by avoiding the two traps of violated expectations and inaction. Decide how to decide command. Decisions are made without involving others. Consult. Input is gathered from the group, and then a subset decides, vote an agreed upon percentage swings the decision consensus. Everyone comes to an agreement and then supports the final decision.</p>
         <p>Finish clearly, determine who does what by when, make the deliverables crystal clear, set a follow up time. Record the commitments and then follow up, finally hold people accountable to their promises.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_part3.html">&larr; Part III: How to Finish</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_12.html">Yeah, But &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_part3.html" class="nav-btn">&#x25C0; Part III: How to Finish</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_12.html" class="nav-btn">Yeah, But &#x25B6;</a>
     </nav>
 </body>
 </html>

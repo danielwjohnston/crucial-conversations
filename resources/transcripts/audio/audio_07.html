@@ -77,10 +77,12 @@
         .nav-footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 48px;
             padding-top: 20px;
             border-top: 2px solid var(--border-color);
             font-size: 0.95rem;
+            gap: 12px;
         }
         .nav-footer a {
             color: var(--blue);
@@ -88,6 +90,27 @@
             font-weight: 600;
         }
         .nav-footer a:hover { text-decoration: underline; }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--brand-red);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .nav-btn:hover { background: var(--brand-red-accessible); transform: translateY(-1px); color: white; text-decoration: none; }
+        .nav-btn.secondary { background: #555; }
+        .nav-btn.secondary:hover { background: #333; }
+        .nav-btn.disabled { opacity: 0.35; pointer-events: none; }
+        .nav-center { text-align: center; }
         .print-btn {
             display: inline-block;
             margin-left: 16px;
@@ -149,10 +172,10 @@
         <p>I immediately called the surgeon and began our conversation by praising his success and offering my assistance. I explained that the patient's family had driven two hours to pick her up and she was ready to go. I offered to do the paperwork while he gave instructions to the couple over the phone, but he persisted. No, I need to see this patient, and I can't be in until tomorrow. And then defensively, he raised his voice, is the insurance company putting you up to this? I mean, why are you pressuring me? Taken aback, I responded by using the contrasting skill, honestly, I don't even know who the payer is. This isn't about the insurance company. This is about meeting the needs of the patient and the family. They've had a wonderful experience. They think you walk on water. They were told they could go home. And I'm afraid canceling the discharge could Sully an otherwise wonderful clinical outcome. Floundering a bit. The surgeon responded. Tell them, I'll be in, but it won't be until seven, reaching agreement, I promised to communicate his willingness to make a special trip back and personally give instructions. He came in that night, discharged the patient and avoided tarnishing an otherwise excellent episode of care in the healthcare environment. Crucial Conversations are real. They're up front, and they happen all the time. This conversation was successful because I followed two of the quintessential rules, mutual respect and mutual purpose. Summary, make it safe. Step out of the content when others move to silence or violence. Step out of the content of the conversation. And make it safe when safety is restored, go back to the issue at hand and continue the dialog. Decide which condition of safety is at risk. Mutual purpose.</p>
         <p>Do others believe you care about their goals in the conversation? Do they trust your motives or mutual respect? Do others believe you respect them. Share your good intent. To start the conversation off right, share your positive intent. What do you really want for you and the other person? Apologize when appropriate, when you've clearly violated respect. Apologize, contrast, to fix misunderstanding when others misunderstand either your purpose or your intent, use contrasting start with what you don't intend or mean, then explain what you do intend or mean. Create a mutual purpose when you are at cross purposes, use the four crib skills to get back to mutual purpose. Commit to seek mutual purpose. Recognize the purpose behind the strategy. Invent a mutual purpose. Brainstorm new strategies.</p>
     </article>
-    <nav class="nav-footer">
-        <a href="audio_06.html">&larr; Learn to Look</a>
-        <a href="../index.html">All Transcripts</a>
-        <a href="audio_08.html">STATE My Path &rarr;</a>
+        <nav class="nav-footer">
+        <a href="audio_06.html" class="nav-btn">&#x25C0; Learn to Look</a>
+        <a href="../index.html" class="nav-btn secondary">All Transcripts</a>
+        <a href="audio_08.html" class="nav-btn">STATE My Path &#x25B6;</a>
     </nav>
 </body>
 </html>

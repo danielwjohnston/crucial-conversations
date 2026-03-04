@@ -21,7 +21,7 @@ crucial-conversations/
 │   ├── chapter_12_yeah_but.html
 │   └── chapter_13_putting_together.html
 ├── resources/                         # Supporting materials
-│   ├── pdfs/                         # PDF handouts and guides
+│   ├── pdfs/                         # PDF handouts and guides (incl. Preparation Tool)
 │   ├── handouts/                     # Participant materials
 │   ├── infographics/                 # Visual learning aids
 │   └── transcripts/                  # Audio transcriptions
